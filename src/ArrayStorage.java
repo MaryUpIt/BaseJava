@@ -13,7 +13,7 @@ public class ArrayStorage {
     }
 
     void save(Resume resume) {
-        if (countResume < 10000) {
+        if (countResume < storage.length) {
             storage[countResume++] = resume;
         } else {
             System.out.println("Хранилище переполнено");
@@ -41,6 +41,14 @@ public class ArrayStorage {
 
     }
 
+    Resume[] getAll() {
+        return Arrays.copyOf(storage, countResume);
+    }
+
+    int size() {
+        return countResume;
+    }
+
     private int findIndex(String uuid) {
         int index = 0;
         for (Resume resume : getAll()) {
@@ -50,17 +58,5 @@ public class ArrayStorage {
             index++;
         }
         return -1;
-    }
-
-
-    /**
-     * @return array, contains only Resumes in storage (without null)
-     */
-    Resume[] getAll() {
-        return Arrays.copyOf(storage, countResume);
-    }
-
-    int size() {
-        return countResume;
     }
 }
