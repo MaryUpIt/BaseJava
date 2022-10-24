@@ -5,12 +5,13 @@ import java.util.Objects;
 /**
  * Initial resume class
  */
-public class Resume implements Comparable<Resume>{
+public class Resume implements Comparable<Resume> {
     private String uuid;
 
     public Resume(String uuid) {
-         this.uuid= uuid;
-     }
+        this.uuid = uuid;
+    }
+
     public String getUuid() {
         return uuid;
     }
@@ -37,6 +38,8 @@ public class Resume implements Comparable<Resume>{
 
     @Override
     public int compareTo(Resume resume) {
-        return uuid.compareTo(resume.uuid);
+        int id = Integer.parseInt(uuid.substring(4));
+        int resumeId = Integer.parseInt(resume.uuid.substring(4));
+        return id - resumeId;
     }
 }

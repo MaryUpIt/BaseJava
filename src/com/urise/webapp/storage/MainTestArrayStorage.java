@@ -9,6 +9,9 @@ public class MainTestArrayStorage {
         Resume resume1 = new Resume("uuid1");
         Resume resume2 = new Resume("uuid2");
         Resume resume3 = new Resume("uuid3");
+        System.out.println(resume1.compareTo(resume2));
+        System.out.println(resume2.compareTo(resume1));
+        System.out.println(resume1.compareTo(resume1));
 
         ARRAY_STORAGE.save(resume1);
         ARRAY_STORAGE.save(resume2);

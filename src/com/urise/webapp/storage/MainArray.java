@@ -1,12 +1,13 @@
 package com.urise.webapp.storage;
 
 import com.urise.webapp.model.Resume;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class MainArray {
-    private final static ArrayStorage ARRAY_STORAGE = new ArrayStorage();
+    private final static SortedArrayStorage ARRAY_STORAGE = new SortedArrayStorage();
 
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -32,26 +33,25 @@ public class MainArray {
                 case "save":
                     resume = new Resume(uuid);
                     ARRAY_STORAGE.save(resume);
-                    printAll();
                     break;
                 case "update":
                     resume = new Resume(uuid);
                     ARRAY_STORAGE.update(resume);
-                    printAll();
                     break;
                 case "delete":
                     ARRAY_STORAGE.delete(uuid);
-                    printAll();
                     break;
                 case "get":
                     System.out.println(ARRAY_STORAGE.get(uuid));
                     break;
                 case "clear":
                     ARRAY_STORAGE.clear();
-                    printAll();
                     break;
                 case "exit":
                     return;
+                case "test":
+                    ARRAY_STORAGE.test();
+                    break;
                 default:
                     System.out.println("Неверная команда.");
                     break;
