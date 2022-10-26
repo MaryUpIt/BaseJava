@@ -49,9 +49,6 @@ public class MainArray {
                     break;
                 case "exit":
                     return;
-                case "test":
-                    ARRAY_STORAGE.test();
-                    break;
                 default:
                     System.out.println("Неверная команда.");
                     break;

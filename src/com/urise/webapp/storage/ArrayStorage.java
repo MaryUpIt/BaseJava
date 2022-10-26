@@ -3,17 +3,8 @@ package com.urise.webapp.storage;
 import com.urise.webapp.model.Resume;
 
 public class ArrayStorage extends AbstractArrayStorage {
+
     @Override
-    public void save(Resume resume) {
-        if (size >= STORAGE_LIMIT) {
-            System.out.println("Хранилище переполнено");
-        } else if (findIndex(resume.getUuid()) != -1) {
-            System.out.println("Такое резюме уже есть в хранилище,  воспользуйтесь методом update");
-        } else {
-            storage[size++] = resume;
-            System.out.println("Добавлено резюме: " + resume);
-        }
-    }
     protected int findIndex(String uuid) {
         Resume resume = new Resume(uuid);
         for (int i = 0; i < size; i++) {
@@ -23,4 +14,18 @@ public class ArrayStorage extends AbstractArrayStorage {
         }
         return -1;
     }
+
+    @Override
+    protected void saveResume(Resume resume) {
+        storage[size++] = resume;
+
+    }
+
+    @Override
+    protected void deleteResume(int index) {
+        storage[index] = storage[size-1];
+        storage[size-1] = null;
+        size--;
+    }
 }
+
