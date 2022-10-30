@@ -45,6 +45,7 @@ public abstract class AbstractArrayStorage implements Storage {
         if (index >= 0) {
             deleteResume(index);
             size--;
+            storage[size] = null;
             System.out.printf("резюме с идентификатором %s удалено из хранилища.\n", uuid);
         } else {
             System.out.printf("резюме с идентификатором %s отсутствует в хранилище.\n", uuid);
