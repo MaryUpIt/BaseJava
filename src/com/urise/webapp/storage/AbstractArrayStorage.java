@@ -1,11 +1,14 @@
 package com.urise.webapp.storage;
 
+import com.urise.webapp.exceptions.ExistStorageException;
+import com.urise.webapp.exceptions.NotExistStorageException;
+import com.urise.webapp.exceptions.StorageException;
 import com.urise.webapp.model.Resume;
 
 import java.util.Arrays;
 
 public abstract class AbstractArrayStorage implements Storage {
-    protected final static int STORAGE_LIMIT = 10_000;
+    protected final static int STORAGE_LIMIT = 10;
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size;
 
@@ -18,9 +21,9 @@ public abstract class AbstractArrayStorage implements Storage {
     final public void save(Resume resume) {
         int index = findIndex(resume.getUuid());
         if (size >= STORAGE_LIMIT) {
-            System.out.println("Хранилище переполнено");
+            throw new StorageException("Storage overflow", resume.getUuid());
         } else if (index >= 0) {
-            System.out.println("Такое резюме уже есть в хранилище,  воспользуйтесь методом update");
+            throw new ExistStorageException(resume.getUuid());
         } else {
             saveResume(resume, index);
             size++;
@@ -32,7 +35,7 @@ public abstract class AbstractArrayStorage implements Storage {
     final public void update(Resume resume) {
         int index = findIndex(resume.getUuid());
         if (index < 0) {
-            System.out.println("Такого резюме нет в хранилище, воспользуйтесь методом save");
+            throw new NotExistStorageException(resume.getUuid());
         } else {
             storage[index] = resume;
             System.out.println("Обновление резюме: " + resume);
@@ -42,24 +45,23 @@ public abstract class AbstractArrayStorage implements Storage {
     @Override
     final public void delete(String uuid) {
         int index = findIndex(uuid);
-        if (index >= 0) {
-            deleteResume(index);
-            size--;
-            storage[size] = null;
-            System.out.printf("резюме с идентификатором %s удалено из хранилища.\n", uuid);
-        } else {
-            System.out.printf("резюме с идентификатором %s отсутствует в хранилище.\n", uuid);
+        if (index < 0) {
+            throw new NotExistStorageException(uuid);
         }
+        deleteResume(index);
+        size--;
+        storage[size] = null;
+        System.out.printf("резюме с идентификатором %s удалено из хранилища.\n", uuid);
     }
+
 
     @Override
     final public Resume get(String uuid) {
         int index = findIndex(uuid);
-        if (index >= 0) {
-            return storage[index];
+        if (index < 0) {
+            throw new NotExistStorageException(uuid);
         }
-        System.out.printf("резюме с идентификатором %s отсутствует в хранилище.\n", uuid);
-        return null;
+        return storage[index];
     }
 
     @Override
