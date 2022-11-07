@@ -72,7 +72,7 @@ public abstract class AbstractArrayStorageTest {
         Resume resume = new Resume(UUID_1);
         storage.update(resume);
         assertSame(resume, storage.get(UUID_1));
-        assertFalse(RESUME_1 == resume);
+        assertFalse(storage.get(UUID_1) == RESUME_1);
         assertTrue(storage.get(UUID_1) == resume);
     }
 
