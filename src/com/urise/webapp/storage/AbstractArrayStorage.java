@@ -3,7 +3,9 @@ package com.urise.webapp.storage;
 import com.urise.webapp.exceptions.StorageException;
 import com.urise.webapp.model.Resume;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public abstract class AbstractArrayStorage extends AbstractStorage {
@@ -58,7 +60,9 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
     @Override
     public List<Resume> getList() {
-        return Arrays.stream(storage).toList();
+        List<Resume> storage = new ArrayList<>();
+        Collections.addAll(storage, getAll());
+        return storage;
     }
 
     protected abstract void saveResume(Resume resume, int index);

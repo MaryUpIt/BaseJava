@@ -6,6 +6,8 @@ import com.urise.webapp.model.Resume;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 
@@ -23,7 +25,6 @@ public abstract class AbstractStorageTest {
     protected AbstractStorageTest(Storage storage) {
         this.storage = storage;
     }
-
 
     @Before
     public void setUp() {
@@ -43,27 +44,22 @@ public abstract class AbstractStorageTest {
         storage.save(new Resume(UUID_4));
         assertSize(4);
         assertGet(RESUME_4);
-
-
     }
 
     @Test(expected = ExistStorageException.class)
     public void saveExist() {
         storage.save(RESUME_3);
-
     }
 
-
-       @Test
+    @Test
     public void update() {
         Resume resume = new Resume(UUID_1);
         storage.update(resume);
         assertSame(resume, storage.get(UUID_1));
-        assertNotSame(RESUME_1, storage.get(UUID_1));
-        assertFalse(storage.get(UUID_1) == RESUME_1);
-        assertTrue(storage.get(UUID_1) == resume);
+//        assertNotSame(RESUME_1, storage.get(UUID_1));
+//        assertFalse(storage.get(UUID_1) == RESUME_1);
+//        assertTrue(storage.get(UUID_1) == resume);
     }
-
 
     @Test(expected = NotExistStorageException.class)
     public void updateNotExist() {
@@ -103,14 +99,19 @@ public abstract class AbstractStorageTest {
     @Test
     public void getAll() {
         Resume[] resumes = storage.getAll();
-        Resume[] checkedResumes = new Resume[]{RESUME_1,RESUME_2,RESUME_3};
+        Resume[] checkedResumes = new Resume[]{RESUME_1, RESUME_2, RESUME_3};
         assertEquals(3, resumes.length);
         assertArrayEquals(checkedResumes, resumes);
-//        assertEquals(RESUME_1, resumes[0]);
-//        assertEquals(RESUME_2, resumes[1]);
-//        assertEquals(RESUME_3, resumes[2]);
+    }
 
-      }
+    @Test
+    public void getList() {
+        List<Resume>list = storage.getList();
+        assertEquals(3,list.size());
+        assertEquals(RESUME_1, list.get(0));
+        assertEquals(RESUME_2, list.get(1));
+        assertEquals(RESUME_3, list.get(2));
+    }
 
     private void assertSize(int n) {
         assertEquals(n, storage.size());
