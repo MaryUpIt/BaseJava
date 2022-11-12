@@ -1,83 +1,65 @@
 package com.urise.webapp.storage;
 
-import com.urise.webapp.exceptions.ExistStorageException;
-import com.urise.webapp.exceptions.NotExistStorageException;
 import com.urise.webapp.exceptions.StorageException;
 import com.urise.webapp.model.Resume;
 
 import java.util.Arrays;
+import java.util.List;
 
-public abstract class AbstractArrayStorage implements Storage {
+public abstract class AbstractArrayStorage extends AbstractStorage {
     protected final static int STORAGE_LIMIT = 100;
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
-    protected int size;
+    int size;
 
     @Override
-    final public int size() {
+    public int getSize() {
         return size;
     }
 
     @Override
-    final public void save(Resume resume) {
+    public void store(Resume resume) {
         int index = findIndex(resume.getUuid());
         if (size >= STORAGE_LIMIT) {
             throw new StorageException("Storage overflow", resume.getUuid());
-        } else if (index >= 0) {
-            throw new ExistStorageException(resume.getUuid());
-        } else {
-            saveResume(resume, index);
-            size++;
-            System.out.println("Резюме " + resume + " добавлено в хранилище");
         }
+        saveResume(resume, index);
+        size++;
     }
 
     @Override
-    final public void update(Resume resume) {
-        int index = findIndex(resume.getUuid());
-        if (index < 0) {
-            throw new NotExistStorageException(resume.getUuid());
-        } else {
-            storage[index] = resume;
-            System.out.println("Обновление резюме: " + resume);
-        }
+    protected void updateResume(int index, Resume resume) {
+        storage[index] = resume;
+
     }
 
     @Override
-    final public void delete(String uuid) {
-        int index = findIndex(uuid);
-        if (index < 0) {
-            throw new NotExistStorageException(uuid);
-        }
+    public void removeResume(int index) {
         deleteResume(index);
         size--;
         storage[size] = null;
-        System.out.printf("резюме с идентификатором %s удалено из хранилища.\n", uuid);
     }
 
-
     @Override
-    final public Resume get(String uuid) {
-        int index = findIndex(uuid);
-        if (index < 0) {
-            throw new NotExistStorageException(uuid);
-        }
+    public Resume getResume(int index) {
         return storage[index];
     }
 
     @Override
-    final public void clear() {
+    public void clear() {
         Arrays.fill(storage, 0, size, null);
         size = 0;
-        System.out.println("Хранилище очищено");
-
+        System.out.println("Storage clear");
     }
 
     @Override
-    final public Resume[] getAll() {
+    public Resume[] getAll() {
         return Arrays.copyOf(storage, size);
     }
 
-    protected abstract int findIndex(String uuid);
+    @Override
+    public List<Resume> getList() {
+        return Arrays.stream(storage).toList();
+    }
 
     protected abstract void saveResume(Resume resume, int index);
 
