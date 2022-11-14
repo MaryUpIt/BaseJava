@@ -10,33 +10,30 @@ public class ListStorage extends AbstractStorage {
     protected List<Resume> storage = new ArrayList<>();
 
     @Override
-    public int getSize() {
+    public int size() {
         return storage.size();
     }
 
+
     @Override
-    public void store(Resume resume) {
+    public void doSave(Object searchKey, Resume resume) {
         storage.add(resume);
     }
 
     @Override
-    protected void updateResume(int index, Resume resume) {
-        storage.set(index, resume);
+    protected void doUpdate(Object searchKey, Resume resume) {
+        storage.set((int) searchKey, resume);
     }
 
     @Override
-    protected void removeResume(int index) {
-        storage.remove(index);
+    protected void doDelete(Object searchKey) {
+        storage.remove((int) searchKey);
+
     }
 
     @Override
-    public Resume getResume(int index) {
-        return storage.get(index);
-    }
-
-    @Override
-    protected int findIndex(String uuid) {
-        return storage.indexOf(new Resume(uuid));
+    protected Resume doGet(Object searchKey) {
+        return storage.get((int) searchKey);
     }
 
     @Override
@@ -53,5 +50,18 @@ public class ListStorage extends AbstractStorage {
     @Override
     public List<Resume> getList() {
         return storage;
+    }
+
+    @Override
+    protected Object findSearchKey(String uuid) {
+        return storage.indexOf(new Resume(uuid));
+    }
+
+    @Override
+    public boolean isExist(Object searchKey) {
+        if ((int) searchKey >= 0) {
+            return true;
+        }
+        return false;
     }
 }
