@@ -18,7 +18,6 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         return size;
     }
 
-
     @Override
     public void doSave(Object searchKey, Resume resume) {
         if (size >= STORAGE_LIMIT) {
@@ -30,10 +29,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
     @Override
     public boolean isExist(Object searchKey) {
-        if ((int) searchKey >= 0) {
-            return true;
-        }
-        return false;
+        return  (int) searchKey >= 0;
     }
 
     @Override
