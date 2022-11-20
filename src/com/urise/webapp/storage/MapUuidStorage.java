@@ -2,10 +2,7 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.model.Resume;
 
-import java.util.*;
-
-public class MapUuidStorage extends MapStorage {
-    private final Map<String, Resume> map = new TreeMap<>();
+public class MapUuidStorage extends AbstractMapStorage {
 
     @Override
     protected void doSave(Object searchKey, Resume resume) {
@@ -29,11 +26,14 @@ public class MapUuidStorage extends MapStorage {
     }
 
     @Override
-    protected Object findSearchKey(String uuid) {
+    protected String findSearchKey(String uuid) {
         return uuid;
     }
 
-
+    @Override
+    protected boolean isExist(Object searchKey) {
+        return map.containsKey(searchKey);
+    }
 
 
 }

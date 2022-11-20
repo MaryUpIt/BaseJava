@@ -5,14 +5,11 @@ import com.urise.webapp.model.Resume;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
-public abstract class MapStorage extends AbstractStorage {
-    private Map<Object, Resume> map;
+abstract public class AbstractMapStorage extends AbstractStorage {
+    protected Map<Object, Resume> map = new TreeMap<>();
 
-    @Override
-    protected boolean isExist(Object searchKey) {
-        return map.containsKey(searchKey);
-    }
 
     @Override
     public int size() {
@@ -33,4 +30,5 @@ public abstract class MapStorage extends AbstractStorage {
     public List<Resume> getList() {
         return new ArrayList<>(map.values());
     }
+
 }

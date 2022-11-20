@@ -13,6 +13,7 @@ public class Resume implements Comparable<Resume> {
 
     public Resume(String uuid) {
         this.uuid = uuid;
+        fullName = "";
     }
 
     public Resume(String uuid, String fullName) {
