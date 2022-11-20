@@ -28,11 +28,6 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    public boolean isExist(Object searchKey) {
-        return  (int) searchKey >= 0;
-    }
-
-    @Override
     protected void doUpdate(Object searchKey, Resume resume) {
         storage[(int) searchKey] = resume;
 
@@ -66,6 +61,11 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         List<Resume> storage = new ArrayList<>();
         Collections.addAll(storage, getAll());
         return storage;
+    }
+
+    @Override
+    protected boolean isExist(Object searchKey) {
+        return  (int) searchKey >= 0;
     }
 
     protected abstract void saveResume(Resume resume, int index);

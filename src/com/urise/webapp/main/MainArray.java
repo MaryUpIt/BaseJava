@@ -8,9 +8,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class MainArray {
+
     private final static SortedArrayStorage ARRAY_STORAGE = new SortedArrayStorage();
 
     public static void main(String[] args) throws IOException {
+
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         Resume resume;
         while (true) {
