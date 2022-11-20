@@ -1,10 +1,7 @@
 package com.urise.webapp.storage;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class MapUuidStorageTest extends MapStorageTest{
-
-    protected MapUuidStorageTest() {
+public class MapUuidStorageTest extends AbstractStorageTest {
+    public MapUuidStorageTest() {
         super(new MapUuidStorage());
     }
 }

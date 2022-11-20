@@ -13,7 +13,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 public abstract class AbstractStorageTest {
-
     final Storage storage;
     private static final String UUID_1 = "uuid1";
     private static final Resume RESUME_1 = new Resume(UUID_1);
@@ -23,6 +22,8 @@ public abstract class AbstractStorageTest {
     private static final Resume RESUME_3 = new Resume(UUID_3);
     private static final String UUID_4 = "uuid4";
     private static final Resume RESUME_4 = new Resume(UUID_4);
+
+
 
     protected AbstractStorageTest(Storage storage) {
         this.storage = storage;
@@ -133,4 +134,6 @@ public abstract class AbstractStorageTest {
     private void assertGet(Resume resume) {
         assertEquals(resume, storage.get(resume.getUuid()));
     }
+
+
 }

@@ -1,6 +1,8 @@
 package com.urise.webapp.storage;
 
-public class ArrayStorageTest extends AbstractArrayStorageTest {
+import static org.junit.jupiter.api.Assertions.*;
+
+public class ArrayStorageTest extends AbstractArrayStorageTest{
 
     public ArrayStorageTest() {
         super(new ArrayStorage());
