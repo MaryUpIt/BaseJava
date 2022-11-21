@@ -2,13 +2,10 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.model.Resume;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 abstract public class AbstractMapStorage extends AbstractStorage {
-    protected Map<Object, Resume> map = new TreeMap<>();
+    protected Map<Object, Resume> map = new HashMap<>();
 
 
     @Override
@@ -19,11 +16,6 @@ abstract public class AbstractMapStorage extends AbstractStorage {
     @Override
     public void clear() {
         map.clear();
-    }
-
-    @Override
-    public Resume[] getAll() {
-        return map.values().toArray(new Resume[0]);
     }
 
     @Override

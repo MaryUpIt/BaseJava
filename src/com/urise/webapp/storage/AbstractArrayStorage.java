@@ -3,9 +3,7 @@ package com.urise.webapp.storage;
 import com.urise.webapp.exceptions.StorageException;
 import com.urise.webapp.model.Resume;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public abstract class AbstractArrayStorage extends AbstractStorage {
@@ -30,7 +28,6 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     @Override
     protected void doUpdate(Object searchKey, Resume resume) {
         storage[(int) searchKey] = resume;
-
     }
 
     @Override
@@ -52,15 +49,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    public Resume[] getAll() {
-        return Arrays.copyOf(storage, size);
-    }
-
-    @Override
     public List<Resume> getList() {
-        List<Resume> storage = new ArrayList<>();
-        Collections.addAll(storage, getAll());
-        return storage;
+        return Arrays.asList(Arrays.copyOf(storage, size));
     }
 
     @Override

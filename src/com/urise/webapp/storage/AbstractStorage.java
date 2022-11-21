@@ -9,16 +9,9 @@ import java.util.List;
 
 abstract public class AbstractStorage implements Storage {
 
-    public static final Comparator<Resume> NAME_COMPARATOR = (resume1, resume2) -> {
-        int compare = 0;
-        if (resume1.getFullName() != null || resume2.getFullName() != null) {
-            compare = resume1.getFullName().compareTo(resume2.getFullName());
-        }
-        if (compare == 0) {
-            compare = resume1.getUuid().compareTo(resume2.getUuid());
-        }
-        return compare;
-    };
+    public static final Comparator<Resume> NAME_COMPARATOR = Comparator.comparing(Resume::getFullName).thenComparing(Resume::getUuid);
+//        (resume1, resume2) -> resume1.getFullName().compareTo(resume2.getFullName());
+//        if (EXP or 0) -> resume1.getUuid().compareTo(resume2.getUuid());
 
     @Override
     final public void save(Resume resume) {
