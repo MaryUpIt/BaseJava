@@ -15,13 +15,13 @@ import static org.junit.jupiter.api.Assertions.*;
 public abstract class AbstractStorageTest {
     final Storage storage;
     private static final String UUID_1 = "uuid1";
-    private static final Resume RESUME_1 = new Resume(UUID_1);
+    private static final Resume RESUME_1 = new Resume(UUID_1, "Anna");
     private static final String UUID_2 = "uuid2";
-    private static final Resume RESUME_2 = new Resume(UUID_2);
+    private static final Resume RESUME_2 = new Resume(UUID_2, "Mariya");
     private static final String UUID_3 = "uuid3";
-    private static final Resume RESUME_3 = new Resume(UUID_3);
+    private static final Resume RESUME_3 = new Resume(UUID_3,"Dmitriy");
     private static final String UUID_4 = "uuid4";
-    private static final Resume RESUME_4 = new Resume(UUID_4);
+    private static final Resume RESUME_4 = new Resume(UUID_4, "Fedor");
 
 
 
@@ -45,7 +45,7 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void save() {
-        storage.save(new Resume(UUID_4));
+        storage.save(RESUME_4);
         assertSize(4);
         assertGet(RESUME_4);
     }
@@ -60,7 +60,7 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void update() {
-        Resume resume = new Resume(UUID_1);
+        Resume resume = new Resume(UUID_1, "Ignat");
         storage.update(resume);
         assertSame(resume, storage.get(UUID_1));
 //        assertNotSame(RESUME_1, storage.get(UUID_1));
@@ -110,21 +110,21 @@ public abstract class AbstractStorageTest {
         assertSize(0);
     }
 
-    @Test
-    public void getAll() {
-        Resume[] resumes = storage.getAll();
-        Resume[] checkedResumes = new Resume[]{RESUME_1, RESUME_2, RESUME_3};
-        assertEquals(3, resumes.length);
-        assertArrayEquals(checkedResumes, resumes);
-    }
+//    @Test
+//    public void getAll() {
+//        Resume[] resumes = storage.getAll();
+//        Resume[] checkedResumes = new Resume[]{RESUME_1, RESUME_2, RESUME_3};
+//        assertEquals(3, resumes.length);
+//        assertArrayEquals(checkedResumes, resumes);
+//    }
 
     @Test
-    public void getList() {
+    public void getAllSorted() {
         List<Resume> list = storage.getAllSorted();
         assertEquals(3, list.size());
         assertEquals(RESUME_1, list.get(0));
-        assertEquals(RESUME_2, list.get(1));
-        assertEquals(RESUME_3, list.get(2));
+        assertEquals(RESUME_2, list.get(2));
+        assertEquals(RESUME_3, list.get(1));
     }
 
     private void assertSize(int n) {
