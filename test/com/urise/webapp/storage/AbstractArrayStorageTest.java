@@ -18,12 +18,12 @@ public abstract class  AbstractArrayStorageTest extends AbstractStorageTest {
             storage.clear();
             for (int i = 0; i < AbstractArrayStorage.STORAGE_LIMIT; i++) {
                 try {
-                    storage.save(new Resume());
+                    storage.save(new Resume(null));
                 } catch (StorageException e) {
                     fail(e.getMessage());
                 }
             }
-            storage.save(new Resume());
+            storage.save(new Resume(null));
         });
     }
 }

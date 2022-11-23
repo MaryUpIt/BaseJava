@@ -1,7 +1,7 @@
 package com.urise.webapp.main;
 
 import com.urise.webapp.model.Resume;
-import com.urise.webapp.storage.SortedArrayStorage;
+import com.urise.webapp.storage.ArrayStorage;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,22 +10,24 @@ import java.util.List;
 
 public class MainArray {
 
-    private final static SortedArrayStorage ARRAY_STORAGE = new SortedArrayStorage();
+    private final static ArrayStorage ARRAY_STORAGE = new ArrayStorage();
 
     public static void main(String[] args) throws IOException {
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         Resume resume;
         while (true) {
-            System.out.print("Введите одну из команд - (list | size | save uuid | update uuid | delete uuid | get uuid | clear | exit): ");
+            System.out.print("Введите одну из команд - (list | size | save uuid fullName | update uuid fullName| delete uuid | get uuid | clear | exit): ");
             String[] params = reader.readLine().trim().toLowerCase().split(" ");
-            if (params.length < 1 || params.length > 2) {
+            if (params.length < 1 || params.length > 3) {
                 System.out.println("Неверная команда.");
                 continue;
             }
-            String uuid = null;
-            if (params.length == 2) {
-                uuid = params[1].intern();
+            String param = null;
+          //  String fullName = null;
+            if (params.length > 1) {
+                param = params[1].intern();
+               // fullName =params[2].intern();
             }
             switch (params[0]) {
                 case "list":
@@ -35,18 +37,19 @@ public class MainArray {
                     System.out.println(ARRAY_STORAGE.size());
                     break;
                 case "save":
-                    resume = new Resume(uuid);
+                    resume = new Resume(param);
                     ARRAY_STORAGE.save(resume);
                     break;
                 case "update":
-                    resume = new Resume(uuid);
+                    resume = ARRAY_STORAGE.get(param);
+                    resume.setFullName(params[2]);
                     ARRAY_STORAGE.update(resume);
                     break;
                 case "delete":
-                    ARRAY_STORAGE.delete(uuid);
+                    ARRAY_STORAGE.delete(param);
                     break;
                 case "get":
-                    System.out.println(ARRAY_STORAGE.get(uuid));
+                    System.out.println(ARRAY_STORAGE.get(param));
                     break;
                 case "clear":
                     ARRAY_STORAGE.clear();

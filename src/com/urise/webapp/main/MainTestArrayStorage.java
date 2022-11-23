@@ -7,9 +7,9 @@ public class MainTestArrayStorage {
     static final ArrayStorage ARRAY_STORAGE = new ArrayStorage();
 
     public static void main(String[] args) {
-        Resume resume1 = new Resume("uuid1");
-        Resume resume2 = new Resume("uuid2");
-        Resume resume3 = new Resume("uuid3");
+        Resume resume1 = new Resume("uuid1", "Anna");
+        Resume resume2 = new Resume("uuid2", "Fedor");
+        Resume resume3 = new Resume("uuid3", "Boris");
 //        System.out.println(resume1.compareTo(resume2));
 //        System.out.println(resume2.compareTo(resume1));
 //        System.out.println(resume1.compareTo(resume1));
@@ -33,7 +33,7 @@ public class MainTestArrayStorage {
     }
 
     static void printAll() {
-        System.out.println("\nGet All");
+        System.out.println("\nStorage: ");
         for (Resume resume : ARRAY_STORAGE.getAllSorted()) {
             System.out.println(resume);
         }

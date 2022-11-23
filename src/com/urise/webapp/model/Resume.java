@@ -6,16 +6,13 @@ public class Resume implements Comparable<Resume> {
     private final String uuid;
     private String fullName;
 
-    public Resume() {
-        this(null);
-    }
-
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
     }
 
-
     public Resume(String uuid, String fullName) {
+//        Objects.requireNonNull(uuid, "uuid must be not null");
+//        Objects.requireNonNull(fullName, "uuid must be not null");
         this.uuid = uuid;
         this.fullName = fullName;
     }

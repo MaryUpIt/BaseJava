@@ -110,13 +110,6 @@ public abstract class AbstractStorageTest {
         assertSize(0);
     }
 
-//    @Test
-//    public void getAll() {
-//        Resume[] resumes = storage.getAll();
-//        Resume[] checkedResumes = new Resume[]{RESUME_1, RESUME_2, RESUME_3};
-//        assertEquals(3, resumes.length);
-//        assertArrayEquals(checkedResumes, resumes);
-//    }
 
     @Test
     public void getAllSorted() {

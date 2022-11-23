@@ -4,8 +4,8 @@ import com.urise.webapp.model.Resume;
 
 import java.util.*;
 
-abstract public class AbstractMapStorage extends AbstractStorage {
-    protected Map<Object, Resume> map = new HashMap<>();
+abstract public class AbstractMapStorage<SearchKey> extends AbstractStorage<SearchKey> {
+    protected Map<String, Resume> map = new HashMap<>();
 
 
     @Override
@@ -19,7 +19,7 @@ abstract public class AbstractMapStorage extends AbstractStorage {
     }
 
     @Override
-    public List<Resume> getList() {
+    public List<Resume> doGetAll() {
         return new ArrayList<>(map.values());
     }
 
