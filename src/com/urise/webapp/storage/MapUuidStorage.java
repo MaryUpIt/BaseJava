@@ -7,7 +7,6 @@ public class MapUuidStorage extends AbstractMapStorage<String> {
     @Override
     protected void doSave(String searchKey, Resume resume) {
         map.put(searchKey, resume);
-
     }
 
     @Override

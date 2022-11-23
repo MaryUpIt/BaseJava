@@ -12,50 +12,50 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     int size;
 
     @Override
-    public int size() {
+    final public int size() {
         return size;
     }
 
     @Override
-    public void doSave(Integer searchKey, Resume resume) {
-        if (size >= STORAGE_LIMIT) {
-            throw new StorageException("Storage overflow", resume.getUuid());
-        }
-        saveResume(resume, (int) searchKey);
-        size++;
-    }
-
-    @Override
-    protected void doUpdate(Integer searchKey, Resume resume) {
-        storage[(int) searchKey] = resume;
-    }
-
-    @Override
-    public void doDelete(Integer searchKey) {
-        deleteResume((int) searchKey);
-        size--;
-    }
-
-    @Override
-    public Resume doGet(Integer searchKey) {
-        return storage[(int) searchKey];
-    }
-
-    @Override
-    public void clear() {
+    final public void clear() {
         Arrays.fill(storage, 0, size, null);
         size = 0;
         System.out.println("Storage clear");
     }
 
     @Override
-    public List<Resume> doGetAll() {
+    final protected void doSave(Integer searchKey, Resume resume) {
+        if (size >= STORAGE_LIMIT) {
+            throw new StorageException("Storage overflow", resume.getUuid());
+        }
+        saveResume(resume, searchKey);
+        size++;
+    }
+
+    @Override
+    final protected void doUpdate(Integer searchKey, Resume resume) {
+        storage[searchKey] = resume;
+    }
+
+    @Override
+    final protected void doDelete(Integer searchKey) {
+        deleteResume(searchKey);
+        size--;
+    }
+
+    @Override
+    final protected Resume doGet(Integer searchKey) {
+        return storage[searchKey];
+    }
+
+    @Override
+    final protected List<Resume> doGetAll() {
         return Arrays.asList(Arrays.copyOf(storage, size));
     }
 
     @Override
-    protected boolean isExist(Integer searchKey) {
-        return (int) searchKey >= 0;
+    final protected boolean isExist(Integer searchKey) {
+        return searchKey >= 0;
     }
 
     protected abstract void saveResume(Resume resume, int index);

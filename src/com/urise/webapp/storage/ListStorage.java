@@ -10,45 +10,45 @@ public class ListStorage extends AbstractStorage<Integer> {
     protected List<Resume> storage = new ArrayList<>();
 
     @Override
-    public int size() {
+    final public int size() {
         return storage.size();
     }
 
-
     @Override
-    public void doSave(Integer searchKey, Resume resume) {
-        storage.add(resume);
-    }
-
-    @Override
-    protected void doUpdate(Integer searchKey, Resume resume) {
-        storage.set((int) searchKey, resume);
-    }
-
-    @Override
-    protected void doDelete(Integer searchKey) {
-        storage.remove((int) searchKey);
-
-    }
-
-    @Override
-    protected Resume doGet(Integer searchKey) {
-        return storage.get((int) searchKey);
-    }
-
-    @Override
-    public void clear() {
+    final public void clear() {
         storage.clear();
         System.out.println("Storage clear");
     }
 
     @Override
-    public List<Resume> doGetAll() {
+    final public List<Resume> doGetAll() {
         return storage;
     }
 
+
     @Override
-    protected Integer findSearchKey(String uuid) {
+    final public void doSave(Integer searchKey, Resume resume) {
+        storage.add(resume);
+    }
+
+    @Override
+    final protected void doUpdate(Integer searchKey, Resume resume) {
+        storage.set(searchKey, resume);
+    }
+
+    @Override
+    final protected void doDelete(Integer searchKey) {
+        storage.remove(searchKey);
+
+    }
+
+    @Override
+    final protected Resume doGet(Integer searchKey) {
+        return storage.get(searchKey);
+    }
+
+    @Override
+    final protected Integer findSearchKey(String uuid) {
         for (int i = 0; i < storage.size(); i++) {
             if (uuid.equals(storage.get(i).getUuid())) {
                 return i;
@@ -58,7 +58,7 @@ public class ListStorage extends AbstractStorage<Integer> {
     }
 
     @Override
-    protected boolean isExist(Integer searchKey) {
-        return (int) searchKey >= 0;
+    final protected boolean isExist(Integer searchKey) {
+        return searchKey >= 0;
     }
 }

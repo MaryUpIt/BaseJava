@@ -9,17 +9,13 @@ import java.util.List;
 
 abstract public class AbstractStorage<SearchKey> implements Storage {
 
-
     public static final Comparator<Resume> NAME_COMPARATOR = Comparator.comparing(Resume::getFullName).thenComparing(Resume::getUuid);
-//        (resume1, resume2) -> resume1.getFullName().compareTo(resume2.getFullName());
-//        if (EXP or 0) -> resume1.getUuid().compareTo(resume2.getUuid());
 
     @Override
     final public void save(Resume resume) {
         SearchKey searchKey = getNotExistingSearchKey(resume.getUuid());
         doSave(searchKey, resume);
         System.out.println("Resume " + resume + " add in storage.");
-
     }
 
     @Override
@@ -27,7 +23,6 @@ abstract public class AbstractStorage<SearchKey> implements Storage {
         SearchKey searchKey = getExistingSearchKey(resume.getUuid());
         doUpdate(searchKey, resume);
         System.out.println("Update resume: " + resume);
-
     }
 
     @Override
@@ -41,15 +36,13 @@ abstract public class AbstractStorage<SearchKey> implements Storage {
     final public Resume get(String uuid) {
         SearchKey searchKey = getExistingSearchKey(uuid);
         return doGet(searchKey);
-
     }
 
     @Override
-    public List<Resume> getAllSorted() {
+    final public List<Resume> getAllSorted() {
         List<Resume> list = doGetAll();
         list.sort(NAME_COMPARATOR);
         return list;
-
     }
 
     private SearchKey getExistingSearchKey(String uuid) {
@@ -57,7 +50,6 @@ abstract public class AbstractStorage<SearchKey> implements Storage {
         if (!isExist(searchKey)) {
             throw new NotExistStorageException(uuid);
         }
-
         return searchKey;
     }
 
@@ -82,6 +74,4 @@ abstract public class AbstractStorage<SearchKey> implements Storage {
     protected abstract boolean isExist(SearchKey searchKey);
 
     protected abstract List<Resume> doGetAll();
-
-
 }

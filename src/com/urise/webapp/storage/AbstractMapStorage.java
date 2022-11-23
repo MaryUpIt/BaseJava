@@ -9,17 +9,17 @@ abstract public class AbstractMapStorage<SearchKey> extends AbstractStorage<Sear
 
 
     @Override
-    public int size() {
+    final public int size() {
         return map.size();
     }
 
     @Override
-    public void clear() {
+    final public void clear() {
         map.clear();
     }
 
     @Override
-    public List<Resume> doGetAll() {
+    final public List<Resume> doGetAll() {
         return new ArrayList<>(map.values());
     }
 
