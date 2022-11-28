@@ -5,7 +5,7 @@ import com.urise.webapp.model.Resume;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public abstract class  AbstractArrayStorageTest extends AbstractStorageTest {
 
@@ -18,12 +18,12 @@ public abstract class  AbstractArrayStorageTest extends AbstractStorageTest {
             storage.clear();
             for (int i = 0; i < AbstractArrayStorage.STORAGE_LIMIT; i++) {
                 try {
-                    storage.save(new Resume(null));
+                    storage.save(new Resume("uuid" +i, "NAME"));
                 } catch (StorageException e) {
-                    fail(e.getMessage());
+                     fail(e.getMessage());
                 }
             }
-            storage.save(new Resume(null));
+            storage.save(new Resume("Overflow"));
         });
     }
 }

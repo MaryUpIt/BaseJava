@@ -6,13 +6,17 @@ import com.urise.webapp.model.Resume;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.logging.Logger;
 
 abstract public class AbstractStorage<SearchKey> implements Storage {
+    //protected final Logger log = Logger.getLogger(getClass().getName());
+    private static final Logger LOG = Logger.getLogger(AbstractStorage.class.getName());
 
     public static final Comparator<Resume> NAME_COMPARATOR = Comparator.comparing(Resume::getFullName).thenComparing(Resume::getUuid);
 
     @Override
     final public void save(Resume resume) {
+        LOG.info("SAVE: " + resume);
         SearchKey searchKey = getNotExistingSearchKey(resume.getUuid());
         doSave(searchKey, resume);
         System.out.println("Resume " + resume + " add in storage.");
@@ -20,6 +24,7 @@ abstract public class AbstractStorage<SearchKey> implements Storage {
 
     @Override
     final public void update(Resume resume) {
+        LOG.info("UPDATE: " + resume);
         SearchKey searchKey = getExistingSearchKey(resume.getUuid());
         doUpdate(searchKey, resume);
         System.out.println("Update resume: " + resume);
@@ -27,6 +32,7 @@ abstract public class AbstractStorage<SearchKey> implements Storage {
 
     @Override
     final public void delete(String uuid) {
+        LOG.info("DELETE: " + uuid);
         SearchKey searchKey = getExistingSearchKey(uuid);
         doDelete(searchKey);
         System.out.printf("Resume %s delete from storage.\n", uuid);
@@ -34,12 +40,14 @@ abstract public class AbstractStorage<SearchKey> implements Storage {
 
     @Override
     final public Resume get(String uuid) {
+        LOG.info("GET: " + uuid);
         SearchKey searchKey = getExistingSearchKey(uuid);
         return doGet(searchKey);
     }
 
     @Override
     final public List<Resume> getAllSorted() {
+        LOG.info("GET ALL SORTED");
         List<Resume> list = doGetAll();
         list.sort(NAME_COMPARATOR);
         return list;
@@ -48,6 +56,7 @@ abstract public class AbstractStorage<SearchKey> implements Storage {
     private SearchKey getExistingSearchKey(String uuid) {
         SearchKey searchKey = findSearchKey(uuid);
         if (!isExist(searchKey)) {
+            LOG.warning("Resume " + uuid +" not exist");
             throw new NotExistStorageException(uuid);
         }
         return searchKey;
@@ -56,6 +65,7 @@ abstract public class AbstractStorage<SearchKey> implements Storage {
     private SearchKey getNotExistingSearchKey(String uuid) {
         SearchKey searchKey = findSearchKey(uuid);
         if (isExist(searchKey)) {
+            LOG.warning("Resume " + uuid +" already exist");
             throw new ExistStorageException(uuid);
         }
         return searchKey;
