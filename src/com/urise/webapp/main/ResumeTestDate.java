@@ -29,7 +29,7 @@ public class ResumeTestDate {
         experience.put(new Period(LocalDate.of(2017,1,1),LocalDate.of(2020,1,1)),
                 new Organization("Yandex", "Java Developer"));
         experience.put(new Period(LocalDate.of(2015,1,1),LocalDate.of(2017,1,1)),
-                new Organization("Yandex", "Junior Java Developer"));
+                new Organization("Microsoft", "Junior Java Trainee"));
         resume.setSections(EXPERIENCE, new OrganizationSections(experience));
 
         System.out.println(resume);
