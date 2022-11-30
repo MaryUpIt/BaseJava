@@ -4,7 +4,8 @@ package com.urise.webapp.main;
 import com.urise.webapp.model.*;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.urise.webapp.model.ContactType.*;
 import static com.urise.webapp.model.SectionType.*;
@@ -17,20 +18,54 @@ public class ResumeTestDate {
         resume.setContacts(LINKEDIN, "LinkedIn");
         resume.setContacts(EMAIL, "email@gmail.com");
         resume.setSections(PERSONAL, new TextSection("analytical mindset, logic, creativity, initiative"));
+
         List<String> qualifications = new ArrayList<>();
         qualifications.add("Languages:Java, JavaScript, Python, SQL.");
         qualifications.add("Version control: Git.");
-        qualifications.add("DB: PostgreSQL.");
-        qualifications.add("FrameWorks:  Java 8 (Time API, Streams), Spring (MVC, Security, Data, Clouds, Boot)," +
+        ListSection skills = new ListSection(qualifications);
+        skills.addSection("DB: PostgreSQL.");
+        skills.addSection("FrameWorks:  Java 8 (Time API, Streams), Spring (MVC, Security, Data, Clouds, Boot)," +
                 " JPA (Hibernate, EclipseLink), Apache Commons, Eclipse SWT, JUnit.");
-        resume.setSections(QUALIFICATIONS, new ListSection(qualifications));
+        resume.setSections(QUALIFICATIONS, skills);
 
-        Map<Period, Organization> experience = new HashMap<>();
-        experience.put(new Period(LocalDate.of(2017, 1, 1), LocalDate.of(2020, 1, 1)),
-                new Organization("Yandex", "Java Developer"));
-        experience.put(new Period(LocalDate.of(2015, 1, 1), LocalDate.of(2017, 1, 1)),
-                new Organization("Microsoft", "Junior Java Trainee"));
-        resume.setSections(EXPERIENCE, new OrganizationSections(experience));
+
+        Organization organization = new Organization("FistProduction", "www.firstproduction.com");
+        LocalDate dateFrom = LocalDate.of(2017, 7, 1);
+        LocalDate dateTo = LocalDate.of(2018, 12, 26);
+        String responsibilities = """
+                Work as part of a software development team
+                Write code per app specifications
+                Test to ensure designs are in compliance with specifications
+                Analyze user requirements to determine how to translate into Java
+                Debug and resolving technical issues
+                Make recommendations to existing job infrastructure
+                Continually engage in professional development
+                Develop documentation to track""";
+
+        organization.addPosition(new Period("Java Junior", responsibilities, dateFrom, dateTo));
+        dateFrom = dateTo;
+        dateTo = LocalDate.of(2020, 10, 28);
+        responsibilities = """
+                Designing, implementing, and maintaining Java applications that are often high-volume and low-latency, required for mission-critical systems
+                Delivering high availability and performance
+                Contributing in all phases of the development lifecycle
+                Writing well-designed, efficient, and testable code
+                Conducting software analysis, programming, testing, and debugging
+                Managing Java and Java EE application development
+                Ensuring designs comply with specifications
+                Preparing and producing releases of software components
+                Transforming requirements into stipulations
+                Support continuous improvement
+                """;
+        organization.addPosition(new Period("Java Developer", responsibilities, dateFrom, dateTo));
+       // System.out.println(organization);
+
+        OrganizationSections organizations = new OrganizationSections();
+        organizations.addOrganization(organization);
+      //  System.out.println(organizations);
+
+
+        resume.setSections(EXPERIENCE, organizations);
 
         System.out.println(resume);
         System.out.println(PHONE.getTitle() + " :" + resume.getContacts(PHONE));

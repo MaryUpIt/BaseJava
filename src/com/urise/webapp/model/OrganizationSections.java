@@ -1,20 +1,32 @@
 package com.urise.webapp.model;
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class OrganizationSections extends AbstractSection {
-    private Map<Period, Organization> sections;
 
-    public OrganizationSections(Map<Period, Organization> sections) {
+    private List<Organization> sections;
+
+    public OrganizationSections(List<Organization> sections) {
         this.sections = sections;
+    }
+
+    public OrganizationSections() {
+        sections = new ArrayList<>();
+    }
+
+
+    public void addOrganization(Organization organization) {
+        sections.add(organization);
     }
 
     @Override
     public String toString() {
-        StringBuilder organization = new StringBuilder("");
-        for (Map.Entry<Period, Organization> entry : sections.entrySet()) {
-            organization.append(entry.getKey() + " : " + entry.getValue()+"\n");
+        StringBuilder organizations = new StringBuilder("");
+        for (Organization organization : sections) {
+            organizations.append(organization + "\n");
         }
-        return organization.toString();
+
+        return organizations.toString();
     }
 }
