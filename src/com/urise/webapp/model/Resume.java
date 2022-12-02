@@ -1,13 +1,14 @@
 package com.urise.webapp.model;
 
 import java.util.EnumMap;
+import java.util.Objects;
 import java.util.UUID;
 
 public class Resume implements Comparable<Resume> {
     private final String uuid;
-    private String fullName;
-    private EnumMap<ContactType, String> contacts;
-    private EnumMap<SectionType,AbstractSection> sections;
+    private final String fullName;
+    private final EnumMap<ContactType, String> contacts;
+    private final EnumMap<SectionType,AbstractSection> sections;
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
@@ -18,10 +19,6 @@ public class Resume implements Comparable<Resume> {
         this.fullName = fullName;
         contacts = new EnumMap<>(ContactType.class);
         sections = new EnumMap<>(SectionType.class);
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
     }
 
     public String getFullName() {
@@ -53,22 +50,24 @@ public class Resume implements Comparable<Resume> {
         return uuid + " : " + fullName;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        Resume resume = (Resume) obj;
-        return uuid.equals(resume.uuid) && fullName.equals(resume.fullName);
-    }
 
-
-    @Override
-    public int hashCode() {
-        return uuid.hashCode();
-    }
 
     @Override
     public int compareTo(Resume resume) {
         return uuid.compareTo(resume.uuid);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Resume resume = (Resume) o;
+        return Objects.equals(uuid, resume.uuid) && Objects.equals(fullName, resume.fullName)
+                && Objects.equals(contacts, resume.contacts) && Objects.equals(sections, resume.sections);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(uuid);
     }
 }

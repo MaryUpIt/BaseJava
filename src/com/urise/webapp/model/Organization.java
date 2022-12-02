@@ -18,7 +18,11 @@ public class Organization {
     public Organization(String title, String website, List<Period> periods) {
         this.title = title;
         this.website = website;
-        this.periods = periods;
+        if (periods == null) {
+            this.periods = new ArrayList<>();
+        } else {
+            this.periods = periods;
+        }
     }
 
 
@@ -53,7 +57,8 @@ public class Organization {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Organization that = (Organization) o;
-        return Objects.equals(title, that.title) && Objects.equals(website, that.website) && Objects.equals(periods, that.periods);
+        return Objects.equals(title, that.title) && Objects.equals(website, that.website)
+                && Objects.equals(periods, that.periods);
     }
 
     @Override

@@ -6,25 +6,29 @@ import java.util.Objects;
 
 public class OrganizationSection extends AbstractSection {
 
-    private final List<Organization> content;
+    private final List<Organization> organizations;
 
-    public OrganizationSection(List<Organization> content) {
-        this.content = content;
+    public OrganizationSection(List<Organization> organizations) {
+        if (organizations == null) {
+            this.organizations = new ArrayList<>();
+        } else {
+            this.organizations = organizations;
+        }
     }
 
     public OrganizationSection() {
-        content = new ArrayList<>();
+        organizations = new ArrayList<>();
     }
 
 
     public void addOrganization(Organization organization) {
-        content.add(organization);
+        organizations.add(organization);
     }
 
     @Override
     public String toString() {
         StringBuilder organizations = new StringBuilder("");
-        for (Organization organization : content) {
+        for (Organization organization : this.organizations) {
             organizations.append(organization + "\n");
         }
 
@@ -36,11 +40,11 @@ public class OrganizationSection extends AbstractSection {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         OrganizationSection that = (OrganizationSection) o;
-        return Objects.equals(content, that.content);
+        return organizations.equals(that.organizations);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(content);
+        return Objects.hash(organizations);
     }
 }
