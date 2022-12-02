@@ -32,6 +32,22 @@ public class Resume implements Comparable<Resume> {
         return uuid;
     }
 
+    public void setContacts(ContactType contactType, String contact) {
+        contacts.put(contactType,contact);
+    }
+
+    public String getContacts(ContactType contactType) {
+        return contacts.get(contactType);
+    }
+
+    public void setSections(SectionType sectionType, AbstractSection section) {
+        sections.put(sectionType,section);
+    }
+
+    public AbstractSection getSection(SectionType sectionType) {
+        return sections.get(sectionType);
+    }
+
     @Override
     public String toString() {
         return uuid + " : " + fullName;
@@ -54,21 +70,5 @@ public class Resume implements Comparable<Resume> {
     @Override
     public int compareTo(Resume resume) {
         return uuid.compareTo(resume.uuid);
-    }
-
-    public void setContacts(ContactType contactType, String contact) {
-        contacts.put(contactType,contact);
-    }
-
-    public String getContacts(ContactType contactType) {
-        return contacts.get(contactType);
-    }
-
-    public void setSections(SectionType sectionType, AbstractSection section) {
-        sections.put(sectionType,section);
-    }
-
-    public AbstractSection getSection(SectionType sectionType) {
-        return sections.get(sectionType);
     }
 }

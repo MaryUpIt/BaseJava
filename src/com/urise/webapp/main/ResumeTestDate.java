@@ -60,7 +60,7 @@ public class ResumeTestDate {
         organization.addPosition(new Period("Java Developer", responsibilities, dateFrom, dateTo));
        // System.out.println(organization);
 
-        OrganizationSections organizations = new OrganizationSections();
+        OrganizationSection organizations = new OrganizationSection();
         organizations.addOrganization(organization);
       //  System.out.println(organizations);
 
