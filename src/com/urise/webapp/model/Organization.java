@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Objects;
 
 public class Organization {
-    private String title;
-    private String website;
-    private List<Period> periods;
+    private final String title;
+    private final String website;
+    private final List<Period> periods;
 
     public Organization(String title, String website) {
         this.title = title;
@@ -57,8 +57,8 @@ public class Organization {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Organization that = (Organization) o;
-        return Objects.equals(title, that.title) && Objects.equals(website, that.website)
-                && Objects.equals(periods, that.periods);
+        return title.equals(that.title) && website.equals(that.website)
+                && periods.equals(that.periods);
     }
 
     @Override

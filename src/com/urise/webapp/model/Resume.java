@@ -29,15 +29,15 @@ public class Resume implements Comparable<Resume> {
         return uuid;
     }
 
-    public void setContacts(ContactType contactType, String contact) {
+    public void setContact(ContactType contactType, String contact) {
         contacts.put(contactType,contact);
     }
 
-    public String getContacts(ContactType contactType) {
+    public String getContact(ContactType contactType) {
         return contacts.get(contactType);
     }
 
-    public void setSections(SectionType sectionType, AbstractSection section) {
+    public void setSection(SectionType sectionType, AbstractSection section) {
         sections.put(sectionType,section);
     }
 

@@ -23,7 +23,7 @@ public class Period {
     public String toString() {
         StringBuilder descriptions = new StringBuilder("");
         String period = dateFormat.format(dateFrom) + " - " + dateFormat.format(dateTo);
-        descriptions.append(String.format("%s | position:  %s \n%s", period, position, responsibilities));
+        descriptions.append(String.format("%s | position:  %s \n %s", period, position, responsibilities));
         return descriptions.toString();
     }
 

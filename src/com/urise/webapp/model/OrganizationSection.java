@@ -29,7 +29,7 @@ public class OrganizationSection extends AbstractSection {
     public String toString() {
         StringBuilder organizations = new StringBuilder("");
         for (Organization organization : this.organizations) {
-            organizations.append(organization + "\n");
+            organizations.append(organization);
         }
 
         return organizations.toString();
