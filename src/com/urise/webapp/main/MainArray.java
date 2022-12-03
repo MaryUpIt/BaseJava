@@ -1,5 +1,6 @@
 package com.urise.webapp.main;
 
+import com.urise.webapp.model.ContactType;
 import com.urise.webapp.model.Resume;
 import com.urise.webapp.storage.ArrayStorage;
 
@@ -42,7 +43,8 @@ public class MainArray {
                     break;
                 case "update":
                     resume = ARRAY_STORAGE.get(param);
-                    resume.setFullName(params[2]);
+                    resume.setContact(ContactType.PHONE,"+7-926-547-73-46");
+                   // resume.setFullName(params[2]);
                     ARRAY_STORAGE.update(resume);
                     break;
                 case "delete":

@@ -24,7 +24,7 @@ public class ListSection extends AbstractSection {
     public String toString() {
         StringBuilder listToString = new StringBuilder("");
         for (String text : content) {
-            listToString.append(text + "\n");
+            listToString.append("+" + text + "\n");
         }
         return listToString.toString();
     }
