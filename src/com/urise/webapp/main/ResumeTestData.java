@@ -129,7 +129,5 @@ public class ResumeTestData {
     public static void main(String[] args) {
         printResume(createResume("uuid4576", "John Dou"));
 
-
-
     }
 }
