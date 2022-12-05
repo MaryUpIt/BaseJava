@@ -12,7 +12,7 @@ import static com.urise.webapp.model.ContactType.*;
 import static com.urise.webapp.model.SectionType.*;
 import static java.time.Month.*;
 
-public class ResumeTestDate {
+public class ResumeTestData {
     public static Resume createResume(String uuid, String fullName) {
         Resume resume = new Resume(uuid,fullName);
         //CONTACTS
