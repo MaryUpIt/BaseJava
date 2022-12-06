@@ -11,7 +11,6 @@ import java.util.Objects;
 
 public abstract class AbstractFileStorage extends AbstractStorage<File> {
     private final File directory;
-    private File[] storage;
 
     protected AbstractFileStorage(File directory) {
         Objects.requireNonNull(directory, "directory must not be null");
@@ -23,6 +22,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         }
         this.directory = directory;
     }
+
 
     @Override
     protected void doSave(File file, Resume resume) {
@@ -72,10 +72,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     protected List<Resume> doGetAll() {
         List<Resume> resumes = new ArrayList<>();
-        storage = directory.listFiles();
-        if (storage == null) {
-            throw new StorageException("Unable to get list from dir : ", directory.getName());
-        }
+        File[] storage = getStorage();
         for (File file : storage) {
             try {
                 resumes.add(doRead(file));
@@ -88,18 +85,25 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     public int size() {
+        File[] storage = getStorage();
         return storage.length;
     }
 
     @Override
     public void clear() {
-        storage = directory.listFiles();
-        if (storage == null) {
-            throw new StorageException("Unable to get list from dir : ", directory.getName());
-        }
+        File[] storage = getStorage();
         for (File file : storage) {
             doDelete(file);
         }
+
+    }
+
+    private File[] getStorage() {
+        File[] storage = directory.listFiles();
+        if (storage == null) {
+            throw new StorageException("Unable to get list from dir : ", directory.getName());
+        }
+        return storage;
     }
 
     protected abstract void doWrite(Resume resume, File file) throws IOException;
