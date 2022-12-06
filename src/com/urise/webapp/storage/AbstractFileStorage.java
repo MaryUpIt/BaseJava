@@ -74,7 +74,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         List<Resume> resumes = new ArrayList<>();
         storage = directory.listFiles();
         if (storage == null) {
-            throw new StorageException("Directory is invalid: ", directory.getName());
+            throw new StorageException("Unable to get list from dir : ", directory.getName());
         }
         for (File file : storage) {
             try {
@@ -95,7 +95,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     public void clear() {
         storage = directory.listFiles();
         if (storage == null) {
-            throw new StorageException("Directory is invalid: ", directory.getName());
+            throw new StorageException("Unable to get list from dir : ", directory.getName());
         }
         for (File file : storage) {
             doDelete(file);
