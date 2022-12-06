@@ -9,55 +9,59 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public abstract class AbstractFileStorage extends AbstractStorage<File>{
-    private File directory;
+public abstract class AbstractFileStorage extends AbstractStorage<File> {
+    private final File directory;
+    private File[] storage;
 
     protected AbstractFileStorage(File directory) {
         Objects.requireNonNull(directory, "directory must not be null");
-        if (!directory.isDirectory()){
-
+        if (!directory.isDirectory()) {
             throw new IllegalArgumentException(directory.getAbsolutePath() + "isn't directory");
         }
-        if (!directory.canRead() ||!directory.canWrite()){
+        if (!directory.canRead() || !directory.canWrite()) {
             throw new IllegalArgumentException(directory.getAbsolutePath() + "isn't readable/writeable");
         }
         this.directory = directory;
     }
+
     @Override
     protected void doSave(File file, Resume resume) {
         try {
             file.createNewFile();
-            doWrite(resume,file);
+            doWrite(resume, file);
         } catch (IOException e) {
-            throw new StorageException("IO error", file.getName(),e);
+            throw new StorageException("IO error", file.getName(), e);
         }
-
-
     }
 
     @Override
     protected void doUpdate(File file, Resume resume) {
         try {
-            doWrite(resume,file);
+            doWrite(resume, file);
         } catch (IOException e) {
-            throw new StorageException("IO error", file.getName(),e);
+            throw new StorageException("IO error", file.getName(), e);
         }
-
     }
 
     @Override
     protected void doDelete(File file) {
-        file.delete();
+        if (!file.delete()) {
+            throw new StorageException("Unable to delete file: ", file.getAbsolutePath());
+        }
     }
 
     @Override
     protected Resume doGet(File file) {
-        return doRead(file);
+        try {
+            return doRead(file);
+        } catch (IOException e) {
+            throw new StorageException("IO error", file.getName(), e);
+        }
     }
 
     @Override
     protected File findSearchKey(String uuid) {
-        return new File(directory,uuid);
+        return new File(directory, uuid);
     }
 
     @Override
@@ -68,28 +72,37 @@ public abstract class AbstractFileStorage extends AbstractStorage<File>{
     @Override
     protected List<Resume> doGetAll() {
         List<Resume> resumes = new ArrayList<>();
-        File[] files = directory.listFiles();
-        for(File file : files){
-            resumes.add(doRead(file));
+        storage = directory.listFiles();
+        if (storage == null) {
+            throw new StorageException("Directory is empty: ", directory.getName());
+        }
+        for (File file : storage) {
+            try {
+                resumes.add(doRead(file));
+            } catch (IOException e) {
+                throw new StorageException("IO error", file.getName(), e);
+            }
         }
         return resumes;
     }
 
     @Override
     public int size() {
-        return directory.listFiles().length;
+        return storage.length;
     }
 
     @Override
     public void clear() {
-        File[] files = directory.listFiles();
-        for(File file : files){
-           file.delete();
+        storage = directory.listFiles();
+        if (storage == null) {
+            throw new StorageException("Directory is empty: ", directory.getName());
+        }
+        for (File file : storage) {
+            doDelete(file);
         }
     }
 
     protected abstract void doWrite(Resume resume, File file) throws IOException;
 
-    protected abstract Resume doRead(File file);
-
+    protected abstract Resume doRead(File file) throws IOException;
 }
