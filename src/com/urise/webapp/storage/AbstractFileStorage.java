@@ -74,11 +74,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         List<Resume> resumes = new ArrayList<>();
         File[] storage = getStorage();
         for (File file : storage) {
-            try {
-                resumes.add(doRead(file));
-            } catch (IOException e) {
-                throw new StorageException("IO error", file.getName(), e);
-            }
+            resumes.add(doGet(file));
         }
         return resumes;
     }
@@ -95,7 +91,6 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         for (File file : storage) {
             doDelete(file);
         }
-
     }
 
     private File[] getStorage() {
