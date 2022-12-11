@@ -28,7 +28,7 @@ public class ResumeTestData {
         //QUALIFICATIONS
         ListSection skills = new ListSection();
 
-        skills.addSection("Languages:Java, JavaScript, Python, SQL.");
+        skills.addSection("Languages: Java, JavaScript, Python, SQL.");
         skills.addSection("Version control: Git.");
         skills.addSection("DB: PostgreSQL, MySql.");
         skills.addSection("FrameWorks:  Java 8 (Time API, Streams), Spring (MVC, Security, Data, Clouds, Boot)," +
@@ -45,7 +45,7 @@ public class ResumeTestData {
         achievements.addSection("Implementation of two-factor authentication for  online projects");
 
         //EXPERIENCE
-        OrganizationSection experience = new OrganizationSection();
+
         Organization fistProduction = new Organization("FistProduction", "www.firstproduction.com");
         LocalDate dateFrom = DateUtil.of(2017, JANUARY);
         LocalDate dateTo = DateUtil.of(2018, MAY);
@@ -60,7 +60,7 @@ public class ResumeTestData {
                     Develop documentation to track
                 """;
 
-        fistProduction.addPosition(new Period("Java Junior", responsibilities, dateFrom, dateTo));
+        fistProduction.addPosition(new Organization.Period("Java Junior", responsibilities, dateFrom, dateTo));
         dateFrom = dateTo;
         dateTo = DateUtil.of(2020, OCTOBER);
         responsibilities = """
@@ -75,29 +75,30 @@ public class ResumeTestData {
                     Transforming requirements into stipulations
                     Support continuous improvement
                 """;
-        fistProduction.addPosition(new Period("Java Developer", responsibilities, dateFrom, dateTo));
+        fistProduction.addPosition(new Organization.Period("Java Developer", responsibilities, dateFrom, dateTo));
         Organization secondProduction = new Organization("SecondProduction", "www.secondproduction.com");
         dateFrom = dateTo;
-        dateTo = DateUtil.of(2021, DECEMBER);
-        secondProduction.addPosition(new Period("Java Developer", responsibilities, dateFrom, dateTo));
-        experience.addOrganization(fistProduction);
+        dateTo = DateUtil.NOW;
+        secondProduction.addPosition(new Organization.Period("Java Developer", responsibilities, dateFrom, dateTo));
+
+        OrganizationSection experience = new OrganizationSection(fistProduction,secondProduction);
 
 
 //    EDUCATION("Образование")
-        List<Organization> institutions = new ArrayList<>();
+       // List<Organization> institutions = new ArrayList<>();
 
+        List<Organization.Period> university = new ArrayList<>();
         dateFrom = DateUtil.of(2014, SEPTEMBER);
         dateTo = DateUtil.of(2015, JUNE);
-        List<Period> university = new ArrayList<>();
-        university.add(new Period("first course", "", dateFrom, dateTo));
+        university.add(new Organization.Period("first course", "", dateFrom, dateTo));
         dateFrom = DateUtil.of(2015, SEPTEMBER);
         dateTo = DateUtil.of(2016, JUNE);
-        university.add(new Period("second course", "", dateFrom, dateTo));
+        university.add(new Organization.Period("second course", "", dateFrom, dateTo));
         dateFrom = DateUtil.of(2016, SEPTEMBER);
         dateTo = DateUtil.of(2017, JUNE);
-        university.add(new Period("qualification course", "", dateFrom, dateTo));
-        institutions.add(new Organization("university", "www.university.com", university));
-        OrganizationSection education = new OrganizationSection(institutions);
+        university.add(new Organization.Period("qualification course", "", dateFrom, dateTo));
+      //  institutions.add(new Organization("university", "www.university.com", university));
+        OrganizationSection education = new OrganizationSection(new Organization("university", "www.university.com", university));
 
         resume.setSection(PERSONAL, new TextSection("analytical mindset, logic, creativity, initiative"));
         resume.setSection(OBJECTIVE, new TextSection("Java Developer"));

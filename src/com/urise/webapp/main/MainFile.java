@@ -6,7 +6,7 @@ import java.io.IOException;
 public class MainFile {
     public static void main(String[] args) throws IOException {
 
-        File directory = new File("..\\basejava");
+        File directory = new File("..\\basejava\\src\\com\\urise\\webapp");
         System.out.println(directory.getCanonicalFile());
         System.out.println(directory.getName());
         System.out.println(directory.isDirectory());
@@ -15,7 +15,7 @@ public class MainFile {
     }
 
     private static void printFilesTree(File directory) {
-        System.out.println("dir: " + directory.getName());
+        System.out.println("Directory: " + directory.getName());
         File[] files = directory.listFiles();
         if (files != null) {
             for (File file : files) {
