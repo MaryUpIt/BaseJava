@@ -9,18 +9,17 @@ import java.nio.file.Paths;
 public class MainFile {
     public static void main(String[] args) throws IOException {
         String pathName = "..\\basejava\\src\\com\\urise\\webapp";
-        pathName = "..\\basejava\\resumes";
+        //  pathName = "..\\basejava\\resumes";
         File fileDirectory = new File(pathName);
         System.out.println(fileDirectory.getCanonicalFile());
         System.out.println(fileDirectory.getName());
         System.out.println(fileDirectory.isDirectory());
-//        printFilesTree(fileDirectory);
+        printFilesTree(fileDirectory);
         Path pathDirectory = Paths.get(pathName);
         System.out.println(pathDirectory.getFileName());
         System.out.println(pathDirectory.toAbsolutePath().getRoot());
         System.out.println(Files.isDirectory(pathDirectory));
-
-
+        printFilesTree(pathDirectory);
 
 
     }
@@ -36,6 +35,24 @@ public class MainFile {
                     System.out.println("-> file: " + file.getName());
                 }
             }
+        }
+    }
+
+    private static void printFilesTree(Path directory) {
+        if (Files.isDirectory(directory)) {
+            System.out.println("Directory: " + directory.getFileName());
+            try {
+                Files.list(directory).forEach(path -> {
+                    if (Files.isDirectory(path)) {
+                        printFilesTree(path);
+                    } else {
+                        System.out.println("-> file: " + path.getFileName());
+                    }
+                });
+            } catch (IOException e) {
+                throw new RuntimeException(e.getMessage());
+            }
+
         }
     }
 }

@@ -37,7 +37,6 @@ public class PathStorage extends AbstractStorage<Path> {
             throw new StorageException("IO error", path.getFileName().toString(), e);
         }
         doUpdate(path, resume);
-
     }
 
     @Override
@@ -56,7 +55,6 @@ public class PathStorage extends AbstractStorage<Path> {
         } catch (IOException e) {
             throw new StorageException("Unable to delete file ", path.toString());
         }
-
     }
 
     @Override
@@ -105,7 +103,6 @@ public class PathStorage extends AbstractStorage<Path> {
         } catch (IOException e) {
             throw new StorageException("Path delete error", null);
         }
-
     }
 
 
