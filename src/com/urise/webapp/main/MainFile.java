@@ -2,20 +2,24 @@ package com.urise.webapp.main;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class MainFile {
     public static void main(String[] args) throws IOException {
         String pathName = "..\\basejava\\src\\com\\urise\\webapp";
-//        File fileDirectory = new File(pathName);
-//        System.out.println(fileDirectory.getCanonicalFile());
-//        System.out.println(fileDirectory.getName());
-//        System.out.println(fileDirectory.isDirectory());
+        pathName = "..\\basejava\\resumes";
+        File fileDirectory = new File(pathName);
+        System.out.println(fileDirectory.getCanonicalFile());
+        System.out.println(fileDirectory.getName());
+        System.out.println(fileDirectory.isDirectory());
 //        printFilesTree(fileDirectory);
         Path pathDirectory = Paths.get(pathName);
         System.out.println(pathDirectory.getFileName());
         System.out.println(pathDirectory.toAbsolutePath().getRoot());
+        System.out.println(Files.isDirectory(pathDirectory));
+
 
 
 

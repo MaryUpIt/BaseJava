@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public abstract class AbstractStorageTest {
 
-    protected static final String STORAGE_DIR = "C:\\Users\\Mary\\Desktop\\basejava\\storage";
+    protected static final String STORAGE_DIR = "C:\\Users\\Mary\\Desktop\\basejava\\resumes";
     final Storage storage;
     private static final String UUID_1 = "uuid1";
     private static final Resume RESUME_1 = new Resume(UUID_1, "Anna");
