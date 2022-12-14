@@ -14,13 +14,13 @@ public class FileStorage extends AbstractStorage<File> {
     private final StreamStorage streamStorage;
 
     protected FileStorage(File directory, StreamStorage streamStorage) {
-        Objects.requireNonNull(directory, "directory must not be null");
+        Objects.requireNonNull(directory, " directory must not be null");
         this.streamStorage = streamStorage;
         if (!directory.isDirectory()) {
-            throw new IllegalArgumentException(directory.getAbsolutePath() + "isn't directory");
+            throw new IllegalArgumentException(directory.getAbsolutePath() + " isn't directory");
         }
         if (!directory.canRead() || !directory.canWrite()) {
-            throw new IllegalArgumentException(directory.getAbsolutePath() + "isn't readable/writeable");
+            throw new IllegalArgumentException(directory.getAbsolutePath() + " isn't readable/writeable");
         }
         this.directory = directory;
     }
@@ -31,7 +31,7 @@ public class FileStorage extends AbstractStorage<File> {
         try {
             file.createNewFile();
         } catch (IOException e) {
-            throw new StorageException("IO error", file.getName(), e);
+            throw new StorageException("IO error: ", file.getName(), e);
         }
         doUpdate(file, resume);
     }
@@ -41,7 +41,7 @@ public class FileStorage extends AbstractStorage<File> {
         try {
             streamStorage.doWrite(resume, new BufferedOutputStream(new FileOutputStream(file)));
         } catch (IOException e) {
-            throw new StorageException("IO error", file.getName(), e);
+            throw new StorageException("IO error: ", file.getName(), e);
         }
     }
 
@@ -57,7 +57,7 @@ public class FileStorage extends AbstractStorage<File> {
         try {
             return streamStorage.doRead(new BufferedInputStream(new FileInputStream(file)));
         } catch (IOException e) {
-            throw new StorageException("IO error", file.getName(), e);
+            throw new StorageException("IO error: ", file.getName(), e);
         }
     }
 
