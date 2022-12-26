@@ -9,24 +9,25 @@ public class JsonSectionAdapter<T> implements JsonSerializer<T>, JsonDeserialize
     private static final String INSTANCE = "INSTANCE";
 
     @Override
-    public T deserialize(JsonElement json, Type type, JsonDeserializationContext context) throws JsonParseException {
-        JsonObject object = json.getAsJsonObject();
+    public JsonElement serialize(T section, Type type, JsonSerializationContext context) {
+        JsonObject retValue = new JsonObject();
+        retValue.addProperty(CLASSNAME,section.getClass().getName());
+        JsonElement element = context.serialize(section);
+        retValue.add(INSTANCE,element);
+        return retValue;
+    }
+
+    @Override
+    public T deserialize(JsonElement element, Type type, JsonDeserializationContext context) throws JsonParseException {
+        JsonObject object = element.getAsJsonObject();
         JsonPrimitive primitive = (JsonPrimitive) object.get(CLASSNAME);
         String className = primitive.getAsString();
         try {
             Class clazz = Class.forName(className);
-            return context.deserialize(object.get(INSTANCE), clazz);
+            return context.deserialize(object.get(INSTANCE),clazz);
         } catch (ClassNotFoundException e) {
-            throw new JsonParseException(e.getMessage());
+            throw new RuntimeException(e);
         }
     }
-
-    @Override
-    public JsonElement serialize(T section, Type type, JsonSerializationContext context) {
-        JsonObject retValue = new JsonObject();
-        retValue.addProperty(CLASSNAME, section.getClass().getName());
-        JsonElement element = context.serialize(section);
-        retValue.add(INSTANCE, element);
-        return retValue;
-    }
 }
+

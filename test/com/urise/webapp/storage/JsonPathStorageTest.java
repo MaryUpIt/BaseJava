@@ -2,9 +2,10 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.storage.strategy.JsonStreamStorage;
 
-class JsonPathStorageTest extends AbstractStorageTest {
+import java.io.File;
 
+class JsonPathStorageTest extends AbstractStorageTest {
     protected JsonPathStorageTest() {
-        super(new PathStorage(STORAGE_DIR, new JsonStreamStorage()));
+        super(new FileStorage(new File(STORAGE_DIR), new JsonStreamStorage()));
     }
 }
