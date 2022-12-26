@@ -21,9 +21,24 @@ public class OrganizationSection extends AbstractSection {
         this(Arrays.asList(organizations));
     }
 
+//    public void addOrganization(Organization organization) {
+//        organizations.add(organization);
+//    }
+    public List<Organization> getOrganizations() {
+        return organizations;
+    }
 
-    public void addOrganization(Organization organization) {
-        organizations.add(organization);
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OrganizationSection section = (OrganizationSection) o;
+        return organizations.equals(section.organizations);
+    }
+
+    @Override
+    public int hashCode() {
+        return organizations.hashCode();
     }
 
     @Override
@@ -34,18 +49,5 @@ public class OrganizationSection extends AbstractSection {
         }
 
         return organizations.toString();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        OrganizationSection that = (OrganizationSection) o;
-        return organizations.equals(that.organizations);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(organizations);
     }
 }

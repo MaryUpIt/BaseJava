@@ -44,8 +44,8 @@ public class ListSection extends AbstractSection {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ListSection that = (ListSection) o;
-        return Objects.equals(content, that.content);
+        ListSection section = (ListSection) o;
+        return content.equals(section.content);
     }
 
     @Override

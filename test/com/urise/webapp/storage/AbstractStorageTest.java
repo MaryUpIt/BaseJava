@@ -51,6 +51,7 @@ public abstract class AbstractStorageTest {
     public void save() {
         storage.save(RESUME_4);
         assertSize(4);
+
         assertGet(RESUME_4);
     }
 
@@ -98,8 +99,11 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void get() {
-        //  Resume resume = storage.get(RESUME_1.getUuid());
-        assertEquals(RESUME_1, storage.get(RESUME_1.getUuid()));
+        printResume(storage.get(RESUME_2.getUuid()));
+        assertGet(RESUME_2);
+
+//        Resume resume = storage.get(RESUME_1.getUuid());
+//        assertEquals(RESUME_1, resume);
     }
 
     @Test
@@ -161,12 +165,12 @@ public abstract class AbstractStorageTest {
         resume.setSection(ACHIEVEMENT, new ListSection("achievement 1", "achievement 2"));
         resume.setSection(EDUCATION, new OrganizationSection(
                 new Organization("University", "www.university.com",
-                        new Organization.Period("specialist", "",
+                        new Organization.Period("specialist", "xxx",
                                 DateUtil.of(2012, SEPTEMBER), DateUtil.of(2017, MAY)),
-                        new Organization.Period("magistrate", "",
+                        new Organization.Period("magistrate", "xxx",
                                 DateUtil.of(2017, SEPTEMBER), DateUtil.of(2019, MAY))),
                 new Organization("Courses", "www.courses.com",
-                        new Organization.Period("qualification", "",
+                        new Organization.Period("qualification", "xxx",
                                 DateUtil.of(2019, APRIL), DateUtil.of(2019, AUGUST)))));
         resume.setSection(EXPERIENCE, new OrganizationSection(
                 new Organization("FirstCompany", "www.firstCompany.com",
@@ -177,7 +181,26 @@ public abstract class AbstractStorageTest {
                 new Organization("SecondCompany", "www.secondCompany.com",
                         new Organization.Period("senior", "education new specialists for company",
                                 DateUtil.of(2021, NOVEMBER), DateUtil.NOW))));
+
         return resume;
+    }
+
+    private void printResume (Resume resume){
+        System.out.println(resume);
+        System.out.println(PHONE.getTitle() + " : " + resume.getContact(PHONE));
+        System.out.println(SKYPE.getTitle() + " : " + resume.getContact(SKYPE));
+        System.out.println(EMAIL.getTitle() + " :  " + resume.getContact(EMAIL));
+        System.out.println(LINKEDIN.getTitle() + " : " + resume.getContact(LINKEDIN));
+        System.out.println(GITHUB.getTitle() + " : " + resume.getContact(GITHUB));
+        System.out.println(STACKOVERFLOW.getTitle() + " : " + resume.getContact(STACKOVERFLOW));
+        System.out.println(HOMEPAGE.getTitle() + " : " + resume.getContact(HOMEPAGE));
+
+        System.out.println(PERSONAL.getTitle() + " : " + resume.getSection(PERSONAL));
+        System.out.println(OBJECTIVE.getTitle() + " : " + resume.getSection(OBJECTIVE));
+        System.out.println(ACHIEVEMENT.getTitle() + "\n" + resume.getSection(ACHIEVEMENT));
+        System.out.println(QUALIFICATIONS.getTitle() + "\n" + resume.getSection(QUALIFICATIONS));
+        System.out.println(EXPERIENCE.getTitle() + "\n" + resume.getSection(EXPERIENCE));
+        System.out.println(EDUCATION.getTitle() + "\n" + resume.getSection(EDUCATION));
     }
 
 }

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Organization implements Serializable {
     private String title;
@@ -21,12 +22,9 @@ public class Organization implements Serializable {
     public Organization(String title, String website, List<Period> periods) {
         this.title = title;
         this.website = website;
-        if (periods == null) {
-            this.periods = new ArrayList<>();
-        } else {
-            this.periods = periods;
-        }
+        this.periods = periods;
     }
+
     public Organization(String title, String website) {
         this.title = title;
         this.website = website;
@@ -70,9 +68,10 @@ public class Organization implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Organization that = (Organization) o;
-        return title.equals(that.title) && website.equals(that.website)
-                && periods.equals(that.periods);
+        Organization organization = (Organization) o;
+        return title.equals(organization.title)
+                && website.equals(organization.website)
+                && periods.equals(organization.periods);
     }
 
     @Override
@@ -80,6 +79,7 @@ public class Organization implements Serializable {
         return Objects.hash(title, website, periods);
     }
 
+    @XmlAccessorType(XmlAccessType.FIELD)
     public static class Period implements Serializable {
         public static final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM:yyyy");
         private String position;
@@ -111,8 +111,10 @@ public class Organization implements Serializable {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             Period period = (Period) o;
-            return Objects.equals(position, period.position) && Objects.equals(responsibilities, period.responsibilities)
-                    && Objects.equals(dateFrom, period.dateFrom) && Objects.equals(dateTo, period.dateTo);
+            return position.equals(period.position)
+                    && responsibilities.equals(period.responsibilities)
+                    && dateFrom.equals(period.dateFrom)
+                    && dateTo.equals(period.dateTo);
         }
 
         @Override
