@@ -15,8 +15,7 @@ import java.util.List;
 import static com.urise.webapp.model.ContactType.*;
 import static com.urise.webapp.model.SectionType.*;
 import static java.time.Month.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public abstract class AbstractStorageTest {
@@ -27,6 +26,8 @@ public abstract class AbstractStorageTest {
     private Resume RESUME_2 = createResume("Mariya");
     private Resume RESUME_3 = createResume("Dmitriy");
     private Resume RESUME_4 = createResume("Fedor");
+
+
 
 
     protected AbstractStorageTest(Storage storage) {
@@ -68,10 +69,10 @@ public abstract class AbstractStorageTest {
         String uuid = RESUME_1.getUuid();
         Resume resume = createResume(uuid, "Ignat");
         storage.update(resume);
-//        assertSame(resume, storage.get(uuid));
-//        assertNotSame(RESUME_1, storage.get(uuid));
-//        assertFalse(storage.get(uuid) == RESUME_1);
+        assertNotSame(RESUME_1, storage.get(uuid));
         assertTrue(storage.get(uuid).equals(resume));
+        assertFalse(storage.get(uuid).equals(RESUME_1));
+
     }
 
     @Test
@@ -106,7 +107,7 @@ public abstract class AbstractStorageTest {
     @Test
     public void getNotExist() {
         Assertions.assertThrows(StorageException.class, () -> {
-            storage.get("not_uuid");
+            storage.get(RESUME_4.getUuid());
         });
     }
 
