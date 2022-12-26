@@ -8,13 +8,18 @@ import java.util.EnumMap;
 import java.util.Objects;
 import java.util.UUID;
 
+import static com.urise.webapp.model.ContactType.*;
+import static com.urise.webapp.model.ContactType.HOMEPAGE;
+import static com.urise.webapp.model.SectionType.*;
+import static com.urise.webapp.model.SectionType.EDUCATION;
+
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Resume implements Comparable<Resume>, Serializable {
     private static final long serialVersionUID = 1L;
     private String uuid;
     private String fullName;
-    private final EnumMap<ContactType, String> contacts= new EnumMap<>(ContactType.class);
+    private final EnumMap<ContactType, String> contacts = new EnumMap<>(ContactType.class);
 
     private final EnumMap<SectionType, AbstractSection> sections = new EnumMap<>(SectionType.class);
 
@@ -30,7 +35,6 @@ public class Resume implements Comparable<Resume>, Serializable {
         Objects.requireNonNull(fullName, "fullName must not be null");
         this.uuid = uuid;
         this.fullName = fullName;
-
     }
 
     public String getFullName() {
@@ -55,6 +59,24 @@ public class Resume implements Comparable<Resume>, Serializable {
 
     public AbstractSection getSection(SectionType sectionType) {
         return sections.get(sectionType);
+    }
+
+    public void printResume(Resume resume) {
+        System.out.println(resume);
+        System.out.println(PHONE.getTitle() + " : " + resume.getContact(PHONE));
+        System.out.println(SKYPE.getTitle() + " : " + resume.getContact(SKYPE));
+        System.out.println(EMAIL.getTitle() + " :  " + resume.getContact(EMAIL));
+        System.out.println(LINKEDIN.getTitle() + " : " + resume.getContact(LINKEDIN));
+        System.out.println(GITHUB.getTitle() + " : " + resume.getContact(GITHUB));
+        System.out.println(STACKOVERFLOW.getTitle() + " : " + resume.getContact(STACKOVERFLOW));
+        System.out.println(HOMEPAGE.getTitle() + " : " + resume.getContact(HOMEPAGE));
+
+        System.out.println(PERSONAL.getTitle() + " : " + resume.getSection(PERSONAL));
+        System.out.println(OBJECTIVE.getTitle() + " : " + resume.getSection(OBJECTIVE));
+        System.out.println(ACHIEVEMENT.getTitle() + "\n" + resume.getSection(ACHIEVEMENT));
+        System.out.println(QUALIFICATIONS.getTitle() + "\n" + resume.getSection(QUALIFICATIONS));
+        System.out.println(EXPERIENCE.getTitle() + "\n" + resume.getSection(EXPERIENCE));
+        System.out.println(EDUCATION.getTitle() + "\n" + resume.getSection(EDUCATION));
     }
 
     @Override
