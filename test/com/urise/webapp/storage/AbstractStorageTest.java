@@ -3,30 +3,30 @@ package com.urise.webapp.storage;
 import com.urise.webapp.exceptions.ExistStorageException;
 import com.urise.webapp.exceptions.NotExistStorageException;
 import com.urise.webapp.exceptions.StorageException;
-import com.urise.webapp.model.Resume;
+import com.urise.webapp.model.*;
+import com.urise.webapp.util.DateUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static com.urise.webapp.model.ContactType.*;
+import static com.urise.webapp.model.SectionType.*;
+import static java.time.Month.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 public abstract class AbstractStorageTest {
 
     protected static final String STORAGE_DIR = "C:\\Users\\Mary\\Desktop\\basejava\\resumes";
     final Storage storage;
-    private static final String UUID_1 = "uuid1";
-    private static final Resume RESUME_1 = new Resume(UUID_1, "Anna");
-
-    private static final String UUID_2 = "uuid2";
-    private static final Resume RESUME_2 = new Resume(UUID_2, "Mariya");
-    private static final String UUID_3 = "uuid3";
-    private static final Resume RESUME_3 = new Resume(UUID_3,"Dmitriy");
-    private static final String UUID_4 = "uuid4";
-    private static final Resume RESUME_4 = new Resume(UUID_4, "Fedor");
-
-
+    private Resume RESUME_1 = createResume("Anna");
+    private Resume RESUME_2 = createResume("Mariya");
+    private Resume RESUME_3 = createResume("Dmitriy");
+    private Resume RESUME_4 = createResume("Fedor");
 
 
     protected AbstractStorageTest(Storage storage) {
@@ -64,12 +64,13 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void update() {
-        Resume resume = new Resume(UUID_1, "Ignat");
+        String uuid = RESUME_1.getUuid();
+        Resume resume = createResume(uuid, "Ignat");
         storage.update(resume);
-  //      assertSame(resume, storage.get(UUID_1));
-//        assertNotSame(RESUME_1, storage.get(UUID_1));
-//        assertFalse(storage.get(UUID_1) == RESUME_1);
-       assertTrue(storage.get(UUID_1).equals(resume));
+//        assertSame(resume, storage.get(uuid));
+//        assertNotSame(RESUME_1, storage.get(uuid));
+//        assertFalse(storage.get(uuid) == RESUME_1);
+        assertTrue(storage.get(uuid).equals(resume));
     }
 
     @Test
@@ -82,7 +83,7 @@ public abstract class AbstractStorageTest {
     @Test
     public void delete() {
         Assertions.assertThrows(NotExistStorageException.class, () -> {
-            storage.delete(UUID_2);
+            storage.delete(RESUME_2.getUuid());
             assertSize(2);
             assertGet(RESUME_2);
         });
@@ -91,20 +92,20 @@ public abstract class AbstractStorageTest {
     @Test
     public void deleteNotExist() {
         Assertions.assertThrows(NotExistStorageException.class, () -> {
-            storage.delete(UUID_4);
+            storage.delete(RESUME_4.getUuid());
         });
     }
 
     @Test
     public void get() {
-        Resume resume = storage.get(UUID_1);
-        assertEquals(RESUME_1, resume);
+        //  Resume resume = storage.get(RESUME_1.getUuid());
+        assertEquals(RESUME_1, storage.get(RESUME_1.getUuid()));
     }
 
     @Test
     public void getNotExist() {
         Assertions.assertThrows(StorageException.class, () -> {
-            storage.get(UUID_4);
+            storage.get("not_uuid");
         });
     }
 
@@ -119,18 +120,64 @@ public abstract class AbstractStorageTest {
     public void getAllSorted() {
         List<Resume> list = storage.getAllSorted();
         assertEquals(3, list.size());
-        assertEquals(RESUME_1, list.get(0));
-        assertEquals(RESUME_2, list.get(2));
-        assertEquals(RESUME_3, list.get(1));
+        assertEquals(list, Arrays.asList(RESUME_1, RESUME_3, RESUME_2));
+//        assertEquals(RESUME_1, list.get(0));
+//        assertEquals(RESUME_2, list.get(2));
+//        assertEquals(RESUME_3, list.get(1));
     }
 
-    private void assertSize(int n) {
-        assertEquals(n, storage.size());
+    private void assertSize(int size) {
+        assertEquals(size, storage.size());
     }
 
     private void assertGet(Resume resume) {
         assertEquals(resume, storage.get(resume.getUuid()));
     }
 
+    private Resume createResume(String... arguments) {
+        Resume resume = null;
+        String fullName = null;
+        if (arguments.length == 2) {
+            fullName = arguments[1];
+            resume = new Resume(arguments[0], fullName);
+        } else if (arguments.length == 1) {
+            fullName = arguments[0];
+            resume = new Resume(fullName);
+        } else {
+            throw new IllegalArgumentException("Error");
+        }
+
+        resume.setContact(PHONE, "+7-926-567-34-74");
+        resume.setContact(GITHUB, "github.com/" + fullName);
+        resume.setContact(LINKEDIN, "@LinkedIn/" + fullName);
+        resume.setContact(EMAIL, fullName + "@gmail.com");
+        resume.setContact(SKYPE, fullName + "@skype");
+        resume.setContact(HOMEPAGE, String.format("www.%s.com", fullName));
+        resume.setContact(STACKOVERFLOW, "stackoverflow/" + fullName);
+
+        resume.setSection(PERSONAL, new TextSection("personal characteristics"));
+        resume.setSection(OBJECTIVE, new TextSection("position"));
+        resume.setSection(QUALIFICATIONS, new ListSection("Languages skills", "Frameworks skills", "DB skills"));
+        resume.setSection(ACHIEVEMENT, new ListSection("achievement 1", "achievement 2"));
+        resume.setSection(EDUCATION, new OrganizationSection(
+                new Organization("University", "www.university.com",
+                        new Organization.Period("specialist", "",
+                                DateUtil.of(2012, SEPTEMBER), DateUtil.of(2017, MAY)),
+                        new Organization.Period("magistrate", "",
+                                DateUtil.of(2017, SEPTEMBER), DateUtil.of(2019, MAY))),
+                new Organization("Courses", "www.courses.com",
+                        new Organization.Period("qualification", "",
+                                DateUtil.of(2019, APRIL), DateUtil.of(2019, AUGUST)))));
+        resume.setSection(EXPERIENCE, new OrganizationSection(
+                new Organization("FirstCompany", "www.firstCompany.com",
+                        new Organization.Period("junior", "help for production",
+                                DateUtil.of(2019, SEPTEMBER), DateUtil.of(2020, MARCH)),
+                        new Organization.Period("developer", "create programs",
+                                DateUtil.of(2020, JUNE), DateUtil.of(2021, OCTOBER))),
+                new Organization("SecondCompany", "www.secondCompany.com",
+                        new Organization.Period("senior", "education new specialists for company",
+                                DateUtil.of(2021, NOVEMBER), DateUtil.NOW))));
+        return resume;
+    }
 
 }

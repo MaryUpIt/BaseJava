@@ -128,7 +128,12 @@ public class ResumeTestData {
     }
 
     public static void main(String[] args) {
-        printResume(createResume("uuid4576", "John Dou"));
+        Resume resume = createResume("uuid4576", "John Dou");
+        Resume  resume1 = createResume("uuid4576", "John Dou");
+        Resume resume2 = resume;
+        System.out.println(resume.equals(resume1));
+        System.out.println(resume.equals(resume2));
+        printResume(resume);
 
     }
 }

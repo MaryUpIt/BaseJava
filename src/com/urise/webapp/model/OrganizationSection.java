@@ -4,15 +4,20 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+
 public class OrganizationSection extends AbstractSection {
 
-    private final List<Organization> organizations;
+    private List<Organization> organizations;
+
+    public OrganizationSection() {
+    }
 
     public OrganizationSection(List<Organization> organizations) {
         Objects.requireNonNull(organizations, "organization must not be null");
-            this.organizations = organizations;
+        this.organizations = organizations;
     }
-    public OrganizationSection(Organization...organizations) {
+
+    public OrganizationSection(Organization... organizations) {
         this(Arrays.asList(organizations));
     }
 

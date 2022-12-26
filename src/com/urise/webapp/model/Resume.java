@@ -1,16 +1,25 @@
 package com.urise.webapp.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.EnumMap;
 import java.util.Objects;
 import java.util.UUID;
 
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Resume implements Comparable<Resume>, Serializable {
-    private static final  long  serialVersionUID = 1L;
-    private final String uuid;
-    private final String fullName;
-    private final EnumMap<ContactType, String> contacts;
-    private final EnumMap<SectionType,AbstractSection> sections;
+    private static final long serialVersionUID = 1L;
+    private String uuid;
+    private String fullName;
+    private EnumMap<ContactType, String> contacts= new EnumMap<>(ContactType.class);
+
+    private EnumMap<SectionType, AbstractSection> sections = new EnumMap<>(SectionType.class);
+
+    public Resume() {
+    }
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
@@ -19,8 +28,8 @@ public class Resume implements Comparable<Resume>, Serializable {
     public Resume(String uuid, String fullName) {
         this.uuid = uuid;
         this.fullName = fullName;
-        contacts = new EnumMap<>(ContactType.class);
-        sections = new EnumMap<>(SectionType.class);
+//        contacts = new EnumMap<>(ContactType.class);
+//        sections = new EnumMap<>(SectionType.class);
     }
 
     public String getFullName() {
@@ -32,7 +41,7 @@ public class Resume implements Comparable<Resume>, Serializable {
     }
 
     public void setContact(ContactType contactType, String contact) {
-        contacts.put(contactType,contact);
+        contacts.put(contactType, contact);
     }
 
     public String getContact(ContactType contactType) {
@@ -40,7 +49,7 @@ public class Resume implements Comparable<Resume>, Serializable {
     }
 
     public void setSection(SectionType sectionType, AbstractSection section) {
-        sections.put(sectionType,section);
+        sections.put(sectionType, section);
     }
 
     public AbstractSection getSection(SectionType sectionType) {
@@ -53,7 +62,6 @@ public class Resume implements Comparable<Resume>, Serializable {
     }
 
 
-
     @Override
     public int compareTo(Resume resume) {
         return uuid.compareTo(resume.uuid);
@@ -64,12 +72,14 @@ public class Resume implements Comparable<Resume>, Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Resume resume = (Resume) o;
-        return Objects.equals(uuid, resume.uuid) && Objects.equals(fullName, resume.fullName)
-                && Objects.equals(contacts, resume.contacts) && Objects.equals(sections, resume.sections);
+        return Objects.equals(uuid, resume.uuid)
+                && Objects.equals(fullName, resume.fullName)
+                && Objects.equals(contacts, resume.contacts)
+                && Objects.equals(sections, resume.sections);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(uuid);
+        return Objects.hash(uuid, fullName, contacts, sections);
     }
 }

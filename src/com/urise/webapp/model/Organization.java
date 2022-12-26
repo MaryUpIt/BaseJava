@@ -1,5 +1,7 @@
 package com.urise.webapp.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -7,12 +9,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Organization implements Serializable {
-    private final String title;
-    private final String website;
+    private String title;
+    private String website;
+    private List<Period> periods;
 
-    private final List<Period> periods;
+    public Organization() {
+    }
 
     public Organization(String title, String website, List<Period> periods) {
         this.title = title;
@@ -23,12 +27,15 @@ public class Organization implements Serializable {
             this.periods = periods;
         }
     }
+    public Organization(String title, String website) {
+        this.title = title;
+        this.website = website;
+    }
 
-    public Organization(String title, String website, Period...periods) {
+    public Organization(String title, String website, Period... periods) {
         this(title, website, Arrays.asList(periods));
 
     }
-
 
     public String getTitle() {
         return title;
@@ -43,6 +50,9 @@ public class Organization implements Serializable {
     }
 
     public void addPosition(Period period) {
+        if (periods == null) {
+            periods = new ArrayList<>();
+        }
         periods.add(period);
     }
 
@@ -70,12 +80,15 @@ public class Organization implements Serializable {
         return Objects.hash(title, website, periods);
     }
 
-    public static class Period implements Serializable{
+    public static class Period implements Serializable {
         public static final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM:yyyy");
         private String position;
         private String responsibilities;
         private LocalDate dateFrom;
         private LocalDate dateTo;
+
+        public Period() {
+        }
 
         public Period(String position, String responsibilities, LocalDate dateFrom, LocalDate dateTo) {
             this.position = position;
