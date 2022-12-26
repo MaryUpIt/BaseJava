@@ -99,11 +99,8 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void get() {
-        printResume(storage.get(RESUME_2.getUuid()));
-        assertGet(RESUME_2);
-
-//        Resume resume = storage.get(RESUME_1.getUuid());
-//        assertEquals(RESUME_1, resume);
+        Resume resume = storage.get(RESUME_1.getUuid());
+        assertEquals(RESUME_1, resume);
     }
 
     @Test
@@ -183,24 +180,6 @@ public abstract class AbstractStorageTest {
                                 DateUtil.of(2021, NOVEMBER), DateUtil.NOW))));
 
         return resume;
-    }
-
-    private void printResume (Resume resume){
-        System.out.println(resume);
-        System.out.println(PHONE.getTitle() + " : " + resume.getContact(PHONE));
-        System.out.println(SKYPE.getTitle() + " : " + resume.getContact(SKYPE));
-        System.out.println(EMAIL.getTitle() + " :  " + resume.getContact(EMAIL));
-        System.out.println(LINKEDIN.getTitle() + " : " + resume.getContact(LINKEDIN));
-        System.out.println(GITHUB.getTitle() + " : " + resume.getContact(GITHUB));
-        System.out.println(STACKOVERFLOW.getTitle() + " : " + resume.getContact(STACKOVERFLOW));
-        System.out.println(HOMEPAGE.getTitle() + " : " + resume.getContact(HOMEPAGE));
-
-        System.out.println(PERSONAL.getTitle() + " : " + resume.getSection(PERSONAL));
-        System.out.println(OBJECTIVE.getTitle() + " : " + resume.getSection(OBJECTIVE));
-        System.out.println(ACHIEVEMENT.getTitle() + "\n" + resume.getSection(ACHIEVEMENT));
-        System.out.println(QUALIFICATIONS.getTitle() + "\n" + resume.getSection(QUALIFICATIONS));
-        System.out.println(EXPERIENCE.getTitle() + "\n" + resume.getSection(EXPERIENCE));
-        System.out.println(EDUCATION.getTitle() + "\n" + resume.getSection(EDUCATION));
     }
 
 }

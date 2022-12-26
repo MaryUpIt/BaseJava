@@ -1,7 +1,10 @@
 package com.urise.webapp.model;
 
+import com.urise.webapp.util.LocalDateAdapter;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -84,7 +87,9 @@ public class Organization implements Serializable {
         public static final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM:yyyy");
         private String position;
         private String responsibilities;
+        @XmlJavaTypeAdapter(LocalDateAdapter.class)
         private LocalDate dateFrom;
+        @XmlJavaTypeAdapter(LocalDateAdapter.class)
         private LocalDate dateTo;
 
         public Period() {
