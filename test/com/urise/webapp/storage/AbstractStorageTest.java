@@ -150,13 +150,13 @@ public abstract class AbstractStorageTest {
             throw new IllegalArgumentException("Error");
         }
 
-        resume.setContact(PHONE, "+7-926-567-34-74");
-        resume.setContact(GITHUB, "github.com/" + fullName);
-        resume.setContact(LINKEDIN, "@LinkedIn/" + fullName);
-        resume.setContact(EMAIL, fullName + "@gmail.com");
-        resume.setContact(SKYPE, fullName + "@skype");
-        resume.setContact(HOMEPAGE, String.format("www.%s.com", fullName));
-        resume.setContact(STACKOVERFLOW, "stackoverflow/" + fullName);
+        resume.addContact(PHONE, "+7-926-567-34-74");
+        resume.addContact(GITHUB, "github.com/" + fullName);
+        resume.addContact(LINKEDIN, "@LinkedIn/" + fullName);
+        resume.addContact(EMAIL, fullName + "@gmail.com");
+        resume.addContact(SKYPE, fullName + "@skype");
+        resume.addContact(HOMEPAGE, String.format("www.%s.com", fullName));
+        resume.addContact(STACKOVERFLOW, "stackoverflow/" + fullName);
 
         resume.setSection(PERSONAL, new TextSection("personal characteristics"));
         resume.setSection(OBJECTIVE, new TextSection("position"));

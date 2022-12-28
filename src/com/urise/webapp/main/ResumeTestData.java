@@ -15,14 +15,14 @@ public class ResumeTestData {
     public static Resume createResume(String uuid, String fullName) {
         Resume resume = new Resume(uuid, fullName);
         //CONTACTS
-        resume.setContact(PHONE, "+7-926-567-34-74");
-        resume.setContact(GITHUB, "github.com");
-        resume.setContact(LINKEDIN, "@LinkedIn");
-        resume.setContact(EMAIL, "email@gmail.com");
+        resume.addContact(PHONE, "+7-926-567-34-74");
+        resume.addContact(GITHUB, "github.com");
+        resume.addContact(LINKEDIN, "@LinkedIn");
+        resume.addContact(EMAIL, "email@gmail.com");
 
-        resume.setContact(SKYPE, "@skype");
-        resume.setContact(HOMEPAGE, "www.homepage.com");
-        resume.setContact(STACKOVERFLOW, "stackoverflow");
+        resume.addContact(SKYPE, "@skype");
+        resume.addContact(HOMEPAGE, "www.homepage.com");
+        resume.addContact(STACKOVERFLOW, "stackoverflow");
 
         //QUALIFICATIONS
         ListSection skills = new ListSection("Languages: Java, JavaScript, Python, SQL.",
