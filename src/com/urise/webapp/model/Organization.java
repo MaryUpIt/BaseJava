@@ -17,7 +17,7 @@ import java.util.Objects;
 public class Organization implements Serializable {
     private String title;
     private String website;
-    private List<Period> periods;
+    private List<Period> periods = new ArrayList<>();
 
     public Organization() {
     }
@@ -86,6 +86,23 @@ public class Organization implements Serializable {
     public static class Period implements Serializable {
         public static final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM:yyyy");
         private String position;
+
+        public String getPosition() {
+            return position;
+        }
+
+        public String getResponsibilities() {
+            return responsibilities;
+        }
+
+        public LocalDate getDateFrom() {
+            return dateFrom;
+        }
+
+        public LocalDate getDateTo() {
+            return dateTo;
+        }
+
         private String responsibilities;
         @XmlJavaTypeAdapter(LocalDateAdapter.class)
         private LocalDate dateFrom;
