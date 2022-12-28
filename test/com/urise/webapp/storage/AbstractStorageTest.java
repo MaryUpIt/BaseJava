@@ -164,12 +164,12 @@ public abstract class AbstractStorageTest {
         resume.setSection(ACHIEVEMENT, new ListSection("achievement 1", "achievement 2"));
         resume.setSection(EDUCATION, new OrganizationSection(
                 new Organization("University", "www.university.com",
-                        new Organization.Period("specialist", "xxx",
+                        new Organization.Period("specialist", "",
                                 DateUtil.of(2012, SEPTEMBER), DateUtil.of(2017, MAY)),
-                        new Organization.Period("magistrate", "xxx",
+                        new Organization.Period("magistrate", "",
                                 DateUtil.of(2017, SEPTEMBER), DateUtil.of(2019, MAY))),
                 new Organization("Courses", "www.courses.com",
-                        new Organization.Period("qualification", "xxx",
+                        new Organization.Period("qualification", "",
                                 DateUtil.of(2019, APRIL), DateUtil.of(2019, AUGUST)))));
         resume.setSection(EXPERIENCE, new OrganizationSection(
                 new Organization("FirstCompany", "www.firstCompany.com",

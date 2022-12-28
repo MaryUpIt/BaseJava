@@ -11,26 +11,26 @@ import java.util.Map;
 public class DataStreamStorage implements StreamStorage {
     @Override
     public void doWrite(Resume resume, OutputStream outputStream) throws IOException {
-        try (DataOutputStream stream = new DataOutputStream(outputStream)) {
-            stream.writeUTF(resume.getUuid());
-            stream.writeUTF(resume.getFullName());
+        try (DataOutputStream output = new DataOutputStream(outputStream)) {
+            output.writeUTF(resume.getUuid());
+            output.writeUTF(resume.getFullName());
             Map<ContactType, String> contacts = resume.getContacts();
-            stream.writeInt(contacts.size());
+            output.writeInt(contacts.size());
 
             for (Map.Entry<ContactType, String> entry : contacts.entrySet()) {
-                stream.writeUTF(entry.getKey().name());
-                stream.writeUTF(entry.getValue());
+                output.writeUTF(entry.getKey().name());
+                output.writeUTF(entry.getValue());
             }
             Map<SectionType, AbstractSection> sections = resume.getSections();
-            stream.writeInt(sections.size());
+            output.writeInt(sections.size());
             for (Map.Entry<SectionType, AbstractSection> entry : sections.entrySet()) {
                 SectionType sectionType = entry.getKey();
-                stream.writeUTF(sectionType.name());
+                output.writeUTF(sectionType.name());
                 switch (sectionType) {
-                    case PERSONAL, OBJECTIVE -> stream.writeUTF(entry.getValue().toString());
-                    case ACHIEVEMENT, QUALIFICATIONS -> writeListSection((ListSection) entry.getValue(), stream);
+                    case PERSONAL, OBJECTIVE -> output.writeUTF(entry.getValue().toString());
+                    case ACHIEVEMENT, QUALIFICATIONS -> writeListSection((ListSection) entry.getValue(), output);
                     case EDUCATION, EXPERIENCE ->
-                            writeOrganizationSection((OrganizationSection) entry.getValue(), stream);
+                            writeOrganizationSection((OrganizationSection) entry.getValue(), output);
                 }
             }
         }
@@ -63,7 +63,6 @@ public class DataStreamStorage implements StreamStorage {
                         }
                         resume.setSection(sectionType, new ListSection(list));
                     }
-                    //   writeListSection((ListSection) entry.getValue(), stream);
                     case EDUCATION, EXPERIENCE -> {
                         int organizationSectionSize = input.readInt();
                         List<Organization> organizations = new ArrayList<>();
@@ -93,17 +92,17 @@ public class DataStreamStorage implements StreamStorage {
         }
     }
 
-    private void writeOrganizationSection(OrganizationSection organizationSection, DataOutputStream stream) throws IOException {
-        stream.writeInt(organizationSection.getOrganizations().size());
+    private void writeOrganizationSection(OrganizationSection organizationSection, DataOutputStream output) throws IOException {
+        output.writeInt(organizationSection.getOrganizations().size());
         for (Organization organization : organizationSection.getOrganizations()) {
-            stream.writeUTF(organization.getTitle());
-            stream.writeUTF(organization.getWebsite());
-            stream.writeInt(organization.getPeriods().size());
+            output.writeUTF(organization.getTitle());
+            output.writeUTF(organization.getWebsite());
+            output.writeInt(organization.getPeriods().size());
             for (Organization.Period period : organization.getPeriods()) {
-                stream.writeUTF(period.getPosition());
-                stream.writeUTF(period.getResponsibilities());
-                stream.writeUTF(period.getDateFrom().toString());
-                stream.writeUTF(period.getDateTo().toString());
+                output.writeUTF(period.getPosition());
+                output.writeUTF(period.getResponsibilities());
+                output.writeUTF(period.getDateFrom().toString());
+                output.writeUTF(period.getDateTo().toString());
             }
         }
     }
