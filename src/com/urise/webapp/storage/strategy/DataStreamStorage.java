@@ -68,14 +68,19 @@ public class DataStreamStorage implements StreamStorage {
                         int organizationSectionSize = input.readInt();
                         List<Organization> organizations = new ArrayList<>();
                         for (int j = 0; j < organizationSectionSize; j++) {
-                            Organization organization = new Organization(input.readUTF(), input.readUTF());
+                            String orgTitle = input.readUTF();
+                            String orgWebSite = input.readUTF();
+
                             int periodSize = input.readInt();
                             List<Organization.Period> periods = new ArrayList<>();
                             for (int k = 0; k < periodSize; k++) {
-                                Organization.Period period = new Organization.Period(input.readUTF(), input.readUTF(),
-                                        LocalDate.parse(input.readUTF()), LocalDate.parse(input.readUTF()));
+                                Organization.Period period = new Organization.Period(input.readUTF(),
+                                        input.readUTF(),
+                                        LocalDate.parse(input.readUTF()),
+                                        LocalDate.parse(input.readUTF()));
                                 periods.add(period);
                             }
+                            Organization organization = new Organization(orgTitle,orgWebSite, periods);
                             organizations.add(organization);
                         }
                         resume.setSection(sectionType, new OrganizationSection(organizations));
