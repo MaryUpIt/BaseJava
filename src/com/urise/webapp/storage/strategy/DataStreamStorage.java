@@ -27,10 +27,9 @@ public class DataStreamStorage implements StreamStorage {
                 SectionType sectionType = entry.getKey();
                 output.writeUTF(sectionType.name());
                 switch (sectionType) {
-                    case PERSONAL, OBJECTIVE -> output.writeUTF(entry.getValue().toString());
+                    case PERSONAL, OBJECTIVE -> output.writeUTF(((TextSection)entry.getValue()).getContent());
                     case ACHIEVEMENT, QUALIFICATIONS -> writeListSection((ListSection) entry.getValue(), output);
-                    case EDUCATION, EXPERIENCE ->
-                            writeOrganizationSection((OrganizationSection) entry.getValue(), output);
+                    case EDUCATION, EXPERIENCE -> writeOrganizationSection((OrganizationSection) entry.getValue(), output);
                 }
             }
         }
@@ -86,8 +85,6 @@ public class DataStreamStorage implements StreamStorage {
                     }
                 }
             }
-
-
             return resume;
         }
     }

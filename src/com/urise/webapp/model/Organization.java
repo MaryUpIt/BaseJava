@@ -22,15 +22,16 @@ public class Organization implements Serializable {
     public Organization() {
     }
 
-    public Organization(String title, String website, List<Period> periods) {
+    public Organization(String title, String website) {
+        Objects.requireNonNull(title, "title must not be null");
+        Objects.requireNonNull(website, "website must not be null");
         this.title = title;
         this.website = website;
-        this.periods = periods;
     }
 
-    public Organization(String title, String website) {
-        this.title = title;
-        this.website = website;
+    public Organization(String title, String website, List<Period> periods) {
+        this(title, website);
+        this.periods = periods;
     }
 
     public Organization(String title, String website, Period... periods) {
@@ -50,12 +51,12 @@ public class Organization implements Serializable {
         return periods;
     }
 
-    public void addPosition(Period period) {
-        if (periods == null) {
-            periods = new ArrayList<>();
-        }
-        periods.add(period);
-    }
+//    public void addPosition(Period period) {
+//        if (periods == null) {
+//            periods = new ArrayList<>();
+//        }
+//        periods.add(period);
+//    }
 
     @Override
     public String toString() {

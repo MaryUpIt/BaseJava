@@ -9,7 +9,12 @@ public class TextSection extends AbstractSection {
     }
 
     public TextSection(String content) {
+        Objects.requireNonNull(content, "content must not be null");
         this.content = content;
+    }
+
+    public String getContent() {
+        return content;
     }
 
     @Override

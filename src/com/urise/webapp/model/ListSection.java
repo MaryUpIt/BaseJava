@@ -23,12 +23,12 @@ public class ListSection extends AbstractSection {
         return content;
     }
 
-    public void addSection(String text) {
-        if (content == null){
-            content = new ArrayList<>();
-        }
-        content.add(text);
-    }
+//    public void addSection(String text) {
+//        if (content == null) {
+//            content = new ArrayList<>();
+//        }
+//        content.add(text);
+//    }
 
 
     @Override
