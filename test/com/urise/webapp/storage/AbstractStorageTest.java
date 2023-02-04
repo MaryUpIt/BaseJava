@@ -24,6 +24,8 @@ public abstract class AbstractStorageTest {
     final Storage storage;
     private Resume RESUME_1 = createResume("Anna");
     private Resume RESUME_2 = createResume("Mariya");
+
+
     private Resume RESUME_3 = createResume("Dmitriy");
     private Resume RESUME_4 = createResume("Fedor");
 
@@ -158,11 +160,11 @@ public abstract class AbstractStorageTest {
         resume.addContact(HOMEPAGE, String.format("www.%s.com", fullName));
         resume.addContact(STACKOVERFLOW, "stackoverflow/" + fullName);
 
-        resume.setSection(PERSONAL, new TextSection("personal characteristics"));
-        resume.setSection(OBJECTIVE, new TextSection("position"));
-        resume.setSection(QUALIFICATIONS, new ListSection("Languages skills", "Frameworks skills", "DB skills"));
-        resume.setSection(ACHIEVEMENT, new ListSection("achievement 1", "achievement 2"));
-        resume.setSection(EDUCATION, new OrganizationSection(
+        resume.addSection(PERSONAL, new TextSection("personal characteristics"));
+        resume.addSection(OBJECTIVE, new TextSection("position"));
+        resume.addSection(QUALIFICATIONS, new ListSection("Languages skills", "Frameworks skills", "DB skills"));
+        resume.addSection(ACHIEVEMENT, new ListSection("achievement 1", "achievement 2"));
+        resume.addSection(EDUCATION, new OrganizationSection(
                 new Organization("University", "www.university.com",
                         new Organization.Period("specialist", "",
                                 DateUtil.of(2012, SEPTEMBER), DateUtil.of(2017, MAY)),
@@ -171,7 +173,7 @@ public abstract class AbstractStorageTest {
                 new Organization("Courses", "www.courses.com",
                         new Organization.Period("qualification", "",
                                 DateUtil.of(2019, APRIL), DateUtil.of(2019, AUGUST)))));
-        resume.setSection(EXPERIENCE, new OrganizationSection(
+        resume.addSection(EXPERIENCE, new OrganizationSection(
                 new Organization("FirstCompany", "www.firstCompany.com",
                         new Organization.Period("junior", "help for production",
                                 DateUtil.of(2019, SEPTEMBER), DateUtil.of(2020, MARCH)),

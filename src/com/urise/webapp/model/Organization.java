@@ -17,14 +17,13 @@ import java.util.Objects;
 public class Organization implements Serializable {
     private String title;
     private String website;
-    private List<Period> periods = new ArrayList<>();
+    private List<Period> periods;
 
     public Organization() {
     }
 
     public Organization(String title, String website) {
         Objects.requireNonNull(title, "title must not be null");
-        Objects.requireNonNull(website, "website must not be null");
         this.title = title;
         this.website = website;
     }
@@ -37,6 +36,13 @@ public class Organization implements Serializable {
     public Organization(String title, String website, Period... periods) {
         this(title, website, Arrays.asList(periods));
 
+    }
+
+    public void addPeriod(Period period) {
+        if (periods == null) {
+            periods = new ArrayList<>();
+        }
+        periods.add(period);
     }
 
     public String getTitle() {
@@ -114,6 +120,9 @@ public class Organization implements Serializable {
         }
 
         public Period(String position, String responsibilities, LocalDate dateFrom, LocalDate dateTo) {
+            Objects.requireNonNull(position, "position must not be null");
+            Objects.requireNonNull(dateFrom, "dateFrom must not be null");
+            Objects.requireNonNull(dateTo, "dateTo must not be null");
             this.position = position;
             this.responsibilities = responsibilities;
             this.dateFrom = dateFrom;

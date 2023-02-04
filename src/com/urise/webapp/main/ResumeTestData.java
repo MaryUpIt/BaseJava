@@ -85,12 +85,12 @@ public class ResumeTestData {
         }};
         OrganizationSection education = new OrganizationSection(new Organization("university", "www.university.com", university));
 
-        resume.setSection(PERSONAL, new TextSection("analytical mindset, logic, creativity, initiative"));
-        resume.setSection(OBJECTIVE, new TextSection("Java Developer"));
-        resume.setSection(ACHIEVEMENT, achievements);
-        resume.setSection(QUALIFICATIONS, skills);
-        resume.setSection(EXPERIENCE, experience);
-        resume.setSection(EDUCATION, education);
+        resume.addSection(PERSONAL, new TextSection("analytical mindset, logic, creativity, initiative"));
+        resume.addSection(OBJECTIVE, new TextSection("Java Developer"));
+        resume.addSection(ACHIEVEMENT, achievements);
+        resume.addSection(QUALIFICATIONS, skills);
+        resume.addSection(EXPERIENCE, experience);
+        resume.addSection(EDUCATION, education);
 
         return resume;
     }

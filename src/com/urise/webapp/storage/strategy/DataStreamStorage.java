@@ -4,9 +4,7 @@ import com.urise.webapp.model.*;
 
 import java.io.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.Collection;
 
 public class DataStreamStorage implements StreamStorage {
     @Override
@@ -14,24 +12,52 @@ public class DataStreamStorage implements StreamStorage {
         try (DataOutputStream output = new DataOutputStream(outputStream)) {
             output.writeUTF(resume.getUuid());
             output.writeUTF(resume.getFullName());
-            Map<ContactType, String> contacts = resume.getContacts();
-            output.writeInt(contacts.size());
 
-            for (Map.Entry<ContactType, String> entry : contacts.entrySet()) {
-                output.writeUTF(entry.getKey().name());
-                output.writeUTF(entry.getValue());
-            }
-            Map<SectionType, AbstractSection> sections = resume.getSections();
-            output.writeInt(sections.size());
-            for (Map.Entry<SectionType, AbstractSection> entry : sections.entrySet()) {
-                SectionType sectionType = entry.getKey();
-                output.writeUTF(sectionType.name());
-                switch (sectionType) {
-                    case PERSONAL, OBJECTIVE -> output.writeUTF(((TextSection)entry.getValue()).getContent());
-                    case ACHIEVEMENT, QUALIFICATIONS -> writeListSection((ListSection) entry.getValue(), output);
-                    case EDUCATION, EXPERIENCE -> writeOrganizationSection((OrganizationSection) entry.getValue(), output);
+            writeWithException(resume.getContacts().entrySet(), output, contact -> {
+                output.writeUTF(contact.getKey().name());
+                output.writeUTF(contact.getValue());
+            });
+
+            writeWithException(resume.getSections().keySet(), output, section -> {
+                output.writeUTF(section.name());
+                switch (section) {
+                    case PERSONAL, OBJECTIVE ->
+                            output.writeUTF(((TextSection) resume.getSection(section)).getContent());
+                    case ACHIEVEMENT, QUALIFICATIONS ->
+                            writeWithException(((ListSection) resume.getSection(section)).getContent(), output, listSection -> {
+                                output.writeUTF(listSection);
+                            });
+                    case EDUCATION, EXPERIENCE ->
+                            writeWithException(((OrganizationSection) resume.getSection(section)).getContent(), output, organization -> {
+                                output.writeUTF(organization.getTitle());
+                                output.writeUTF(organization.getWebsite());
+                                writeWithException(organization.getPeriods(), output, period -> {
+                                    output.writeUTF(period.getPosition());
+                                    output.writeUTF(period.getResponsibilities());
+                                    output.writeUTF(period.getDateFrom().toString());
+                                    output.writeUTF(period.getDateTo().toString());
+                                });
+                            });
                 }
-            }
+            });
+//            Map<ContactType, String> contacts = resume.getContacts();
+//            output.writeInt(contacts.size());
+//            for (Map.Entry<ContactType, String> entry : contacts.entrySet()) {
+//                output.writeUTF(entry.getKey().name());
+//                output.writeUTF(entry.getValue());
+//            }
+
+//            Map<SectionType, AbstractSection> sections = resume.getSections();
+//            output.writeInt(sections.size());
+//            for (Map.Entry<SectionType, AbstractSection> entry : sections.entrySet()) {
+//                SectionType sectionType = entry.getKey();
+//                output.writeUTF(sectionType.name());
+//                switch (sectionType) {
+//                    case PERSONAL, OBJECTIVE -> output.writeUTF(((TextSection)entry.getValue()).getContent());
+//                    case ACHIEVEMENT, QUALIFICATIONS -> writeListSection((ListSection) entry.getValue(), output);
+//                    case EDUCATION, EXPERIENCE -> writeOrganizationSection((OrganizationSection) entry.getValue(), output);
+//                }
+//            }
         }
     }
 
@@ -41,66 +67,36 @@ public class DataStreamStorage implements StreamStorage {
             String uuid = input.readUTF();
             String fullName = input.readUTF();
             Resume resume = new Resume(uuid, fullName);
-            int contactSize = input.readInt();
-            for (int i = 0; i < contactSize; i++) {
-                ContactType contactType = ContactType.valueOf(input.readUTF());
-                String contact = input.readUTF();
-                resume.addContact(contactType, contact);
-            }
-            int sectionSize = input.readInt();
-            for (int i = 0; i < sectionSize; i++) {
-                SectionType sectionType = SectionType.valueOf(input.readUTF());
-                switch (sectionType) {
-                    case PERSONAL, OBJECTIVE -> {
-                        resume.setSection(sectionType, new TextSection(input.readUTF()));
-                    }
+            readWithException(input, () -> {
+                resume.addContact(ContactType.valueOf(input.readUTF()), input.readUTF());
+            });
+
+            readWithException(input, () -> {
+                SectionType section = SectionType.valueOf(input.readUTF());
+                switch (section) {
+                    case PERSONAL, OBJECTIVE -> resume.addSection(section, new TextSection(input.readUTF()));
                     case ACHIEVEMENT, QUALIFICATIONS -> {
-                        int listSectionSize = input.readInt();
-                        List<String> list = new ArrayList<>();
-                        for (int j = 0; j < listSectionSize; j++) {
-                            list.add(input.readUTF());
-                        }
-                        resume.setSection(sectionType, new ListSection(list));
+                        ListSection list = new ListSection();
+                        readWithException(input, () ->
+                                list.addSection(input.readUTF()));
+                        resume.addSection(section, list);
                     }
                     case EDUCATION, EXPERIENCE -> {
-                        int organizationSectionSize = input.readInt();
-                        List<Organization> organizations = new ArrayList<>();
-                        for (int j = 0; j < organizationSectionSize; j++) {
-                            String orgTitle = input.readUTF();
-                            String orgWebSite = input.readUTF();
+                        OrganizationSection organizations = new OrganizationSection();
+                        readWithException(input, () -> {
+                            Organization organization = new Organization(input.readUTF(), input.readUTF());
+                            readWithException(input, () -> {
+                                organization.addPeriod(new Organization.Period(input.readUTF(), input.readUTF(),
+                                        LocalDate.parse(input.readUTF()),LocalDate.parse(input.readUTF())));
 
-                            int periodSize = input.readInt();
-                            List<Organization.Period> periods = new ArrayList<>();
-                            for (int k = 0; k < periodSize; k++) {
-                                Organization.Period period = new Organization.Period(input.readUTF(),
-                                        input.readUTF(),
-                                        LocalDate.parse(input.readUTF()),
-                                        LocalDate.parse(input.readUTF()));
-                                periods.add(period);
-                            }
-                            Organization organization = new Organization(orgTitle,orgWebSite, periods);
-                            organizations.add(organization);
-                        }
-                        resume.setSection(sectionType, new OrganizationSection(organizations));
+                            });
+                            organizations.addOrganization(organization);
+                        });
+                        resume.addSection(section, organizations);
                     }
                 }
-            }
+            });
             return resume;
-        }
-    }
-
-    private void writeOrganizationSection(OrganizationSection organizationSection, DataOutputStream output) throws IOException {
-        output.writeInt(organizationSection.getOrganizations().size());
-        for (Organization organization : organizationSection.getOrganizations()) {
-            output.writeUTF(organization.getTitle());
-            output.writeUTF(organization.getWebsite());
-            output.writeInt(organization.getPeriods().size());
-            for (Organization.Period period : organization.getPeriods()) {
-                output.writeUTF(period.getPosition());
-                output.writeUTF(period.getResponsibilities());
-                output.writeUTF(period.getDateFrom().toString());
-                output.writeUTF(period.getDateTo().toString());
-            }
         }
     }
 
@@ -110,5 +106,27 @@ public class DataStreamStorage implements StreamStorage {
         for (String content : listSection.getContent()) {
             stream.writeUTF(content);
         }
+    }
+
+    private <T> void writeWithException(Collection<T> collection, DataOutputStream output, ConsumerWriter<T> consumer) throws IOException {
+        output.writeInt(collection.size());
+        for (T item : collection) {
+            consumer.write(item);
+        }
+    }
+
+    private void readWithException(DataInputStream input, ConsumerReader consumer) throws IOException {
+        int size = input.readInt();
+        for (int i = 0; i < size; i++) {
+            consumer.read();
+        }
+    }
+
+    private interface ConsumerWriter<T> {
+        void write(T item) throws IOException;
+    }
+
+    private interface ConsumerReader {
+        void read() throws IOException;
     }
 }

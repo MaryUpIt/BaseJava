@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class ListSection extends AbstractSection {
-    private List<String> content = new ArrayList<>();
+    private List<String> content; // = new ArrayList<>();
 
     public ListSection() {
     }
@@ -23,12 +23,12 @@ public class ListSection extends AbstractSection {
         return content;
     }
 
-//    public void addSection(String text) {
-//        if (content == null) {
-//            content = new ArrayList<>();
-//        }
-//        content.add(text);
-//    }
+    public void addSection(String text) {
+        if (content == null) {
+            content = new ArrayList<>();
+        }
+        content.add(text);
+    }
 
 
     @Override
