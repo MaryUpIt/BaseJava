@@ -19,6 +19,8 @@ public class ListSection extends AbstractSection {
         this(Arrays.asList(content));
     }
 
+
+
     public List<String> getContent() {
         return content;
     }

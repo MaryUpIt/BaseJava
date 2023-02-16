@@ -25,7 +25,7 @@ public class Organization implements Serializable {
     public Organization(String title, String website) {
         Objects.requireNonNull(title, "title must not be null");
         this.title = title;
-        this.website = website;
+        this.website = website == null ? "" : website;
     }
 
     public Organization(String title, String website, List<Period> periods) {
@@ -56,13 +56,6 @@ public class Organization implements Serializable {
     public List<Period> getPeriods() {
         return periods;
     }
-
-//    public void addPosition(Period period) {
-//        if (periods == null) {
-//            periods = new ArrayList<>();
-//        }
-//        periods.add(period);
-//    }
 
     @Override
     public String toString() {
@@ -124,7 +117,7 @@ public class Organization implements Serializable {
             Objects.requireNonNull(dateFrom, "dateFrom must not be null");
             Objects.requireNonNull(dateTo, "dateTo must not be null");
             this.position = position;
-            this.responsibilities = responsibilities;
+            this.responsibilities = responsibilities == null ? "" : responsibilities;
             this.dateFrom = dateFrom;
             this.dateTo = dateTo;
         }

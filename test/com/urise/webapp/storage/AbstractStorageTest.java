@@ -54,7 +54,6 @@ public abstract class AbstractStorageTest {
     public void save() {
         storage.save(RESUME_4);
         assertSize(4);
-
         assertGet(RESUME_4);
     }
 
@@ -63,7 +62,6 @@ public abstract class AbstractStorageTest {
         Assertions.assertThrows(ExistStorageException.class, () -> {
             storage.save(RESUME_3);
         });
-
     }
 
     @Test
@@ -120,7 +118,6 @@ public abstract class AbstractStorageTest {
         assertSize(0);
     }
 
-
     @Test
     public void getAllSorted() {
         List<Resume> list = storage.getAllSorted();
@@ -149,7 +146,7 @@ public abstract class AbstractStorageTest {
             fullName = arguments[0];
             resume = new Resume(fullName);
         } else {
-            throw new IllegalArgumentException("Error");
+            throw new IllegalArgumentException();
         }
 
         resume.addContact(PHONE, "+7-926-567-34-74");
@@ -166,12 +163,12 @@ public abstract class AbstractStorageTest {
         resume.addSection(ACHIEVEMENT, new ListSection("achievement 1", "achievement 2"));
         resume.addSection(EDUCATION, new OrganizationSection(
                 new Organization("University", "www.university.com",
-                        new Organization.Period("specialist", "",
+                        new Organization.Period("specialist", null,
                                 DateUtil.of(2012, SEPTEMBER), DateUtil.of(2017, MAY)),
-                        new Organization.Period("magistrate", "",
+                        new Organization.Period("magistrate", null,
                                 DateUtil.of(2017, SEPTEMBER), DateUtil.of(2019, MAY))),
                 new Organization("Courses", "www.courses.com",
-                        new Organization.Period("qualification", "",
+                        new Organization.Period("qualification", null,
                                 DateUtil.of(2019, APRIL), DateUtil.of(2019, AUGUST)))));
         resume.addSection(EXPERIENCE, new OrganizationSection(
                 new Organization("FirstCompany", "www.firstCompany.com",
