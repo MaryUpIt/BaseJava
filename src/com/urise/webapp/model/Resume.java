@@ -9,11 +9,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
-import static com.urise.webapp.model.ContactType.*;
-import static com.urise.webapp.model.ContactType.HOMEPAGE;
-import static com.urise.webapp.model.SectionType.*;
-import static com.urise.webapp.model.SectionType.EDUCATION;
-
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Resume implements Comparable<Resume>, Serializable {
@@ -70,39 +65,16 @@ public class Resume implements Comparable<Resume>, Serializable {
         return sections.get(sectionType);
     }
 
-    public String printResume() {
-        return this.getUuid() + " : " + this.getFullName()
-                + "\n" + PHONE.getTitle() + " : " + this.getContact(PHONE)
-                + "\n" + SKYPE.getTitle() + " : " + this.getContact(SKYPE)
-                + "\n" + EMAIL.getTitle() + " :  " + this.getContact(EMAIL)
-                + "\n" + LINKEDIN.getTitle() + " : " + this.getContact(LINKEDIN)
-                + "\n" + GITHUB.getTitle() + " : " + this.getContact(GITHUB)
-                + "\n" + STACKOVERFLOW.getTitle() + " : " + this.getContact(STACKOVERFLOW)
-                + "\n" + HOMEPAGE.getTitle() + " : " + this.getContact(HOMEPAGE)
-                + "\n" + PERSONAL.getTitle() + " : " + this.getSection(PERSONAL)
-                + "\n" + OBJECTIVE.getTitle() + " : " + this.getSection(OBJECTIVE)
-                + "\n" + ACHIEVEMENT.getTitle() + "\n" + this.getSection(ACHIEVEMENT)
-                + "\n" + QUALIFICATIONS.getTitle() + "\n" + this.getSection(QUALIFICATIONS)
-                + "\n" + EXPERIENCE.getTitle() + "\n" + this.getSection(EXPERIENCE)
-                + "\n" + EDUCATION.getTitle() + "\n" + this.getSection(EDUCATION);
+    public void printResume() {
+        System.out.println(uuid + " : " + fullName);
+        contacts.forEach((contactType, contact) -> System.out.println(contactType.getTitle() + " : " + contact));
+        sections.forEach(((sectionType, abstractSection) -> System.out.println(sectionType.getTitle() +" : " + abstractSection.toString())));
+
     }
 
     @Override
     public String toString() {
         return uuid + " : " + fullName;
-//                + "\n" + PHONE.getTitle() + " : " + this.getContact(PHONE)
-//                + "\n" + SKYPE.getTitle() + " : " + this.getContact(SKYPE)
-//                + "\n" + EMAIL.getTitle() + " :  " + this.getContact(EMAIL)
-//                + "\n" + LINKEDIN.getTitle() + " : " + this.getContact(LINKEDIN)
-//                + "\n" + GITHUB.getTitle() + " : " + this.getContact(GITHUB)
-//                + "\n" + STACKOVERFLOW.getTitle() + " : " + this.getContact(STACKOVERFLOW)
-//                + "\n" + HOMEPAGE.getTitle() + " : " + this.getContact(HOMEPAGE)
-//                + "\n" + PERSONAL.getTitle() + " : " + this.getSection(PERSONAL)
-//                + "\n" + OBJECTIVE.getTitle() + " : " + this.getSection(OBJECTIVE)
-//                + "\n" + ACHIEVEMENT.getTitle() + "\n" + this.getSection(ACHIEVEMENT)
-//                + "\n" + QUALIFICATIONS.getTitle() + "\n" + this.getSection(QUALIFICATIONS)
-//                + "\n" + EXPERIENCE.getTitle() + "\n" + this.getSection(EXPERIENCE)
-//                + "\n" + EDUCATION.getTitle() + "\n" + this.getSection(EDUCATION);
     }
 
 
