@@ -24,6 +24,7 @@ CREATE TABLE sections
 (
     id          SERIAL PRIMARY KEY,
     type        TEXT     NOT NULL,
+    --value
 
     resume_uuid CHAR(36) NOT NULL
         CONSTRAINT contacts_resume_uuid_fk
