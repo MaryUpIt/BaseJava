@@ -1,4 +1,4 @@
-package com.urise.webapp.storage.strategy;
+package com.urise.webapp.storage.serializers;
 
 import com.urise.webapp.model.*;
 import com.urise.webapp.util.XmlParser;
@@ -6,10 +6,10 @@ import com.urise.webapp.util.XmlParser;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 
-public class XmlStreamStorage implements StreamStorage {
+public class XmlStreamSerializer implements StreamSerializer {
     private XmlParser xmlParser;
 
-    public XmlStreamStorage() {
+    public XmlStreamSerializer() {
         xmlParser = new XmlParser(Resume.class, Organization.class, Organization.Period.class,
                 OrganizationSection.class, TextSection.class, ListSection.class);
     }

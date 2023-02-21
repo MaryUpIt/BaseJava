@@ -2,7 +2,7 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.exceptions.StorageException;
 import com.urise.webapp.model.Resume;
-import com.urise.webapp.storage.strategy.StreamStorage;
+import com.urise.webapp.storage.serializers.StreamSerializer;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -16,9 +16,9 @@ import java.util.stream.Stream;
 
 public class PathStorage extends AbstractStorage<Path> {
     private final Path directory;
-    private final StreamStorage streamStorage;
+    private final StreamSerializer serializer;
 
-    public PathStorage(String directoryName, StreamStorage streamStorage) {
+    public PathStorage(String directoryName, StreamSerializer streamStorage) {
         directory = Path.of(directoryName);
         Objects.requireNonNull(directory, " directory must not be null");
         if (!Files.isDirectory(directory)) {
@@ -27,7 +27,7 @@ public class PathStorage extends AbstractStorage<Path> {
         if (!Files.isReadable(directory) || !Files.isWritable(directory)) {
             throw new IllegalArgumentException(directoryName + " isn't readable/writeable");
         }
-        this.streamStorage = streamStorage;
+        this.serializer = streamStorage;
     }
 
     @Override
@@ -43,7 +43,7 @@ public class PathStorage extends AbstractStorage<Path> {
     @Override
     protected void doUpdate(Path path, Resume resume) {
         try {
-            streamStorage.doWrite(resume, new BufferedOutputStream(Files.newOutputStream(path)));
+            serializer.doWrite(resume, new BufferedOutputStream(Files.newOutputStream(path)));
         } catch (IOException e) {
             throw new StorageException("IO error: ", e);
         }
@@ -61,7 +61,7 @@ public class PathStorage extends AbstractStorage<Path> {
     @Override
     protected Resume doGet(Path path) {
         try {
-            return streamStorage.doRead(new BufferedInputStream(Files.newInputStream(path)));
+            return serializer.doRead(new BufferedInputStream(Files.newInputStream(path)));
         } catch (IOException e) {
             throw new StorageException("IO error: ", getPathName(path), e);
         }

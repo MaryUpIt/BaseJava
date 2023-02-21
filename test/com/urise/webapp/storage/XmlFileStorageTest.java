@@ -1,13 +1,11 @@
 package com.urise.webapp.storage;
 
-import com.urise.webapp.storage.strategy.XmlStreamStorage;
-
-import java.io.File;
+import com.urise.webapp.storage.serializers.XmlStreamSerializer;
 
 public class XmlFileStorageTest extends AbstractStorageTest {
 
     protected XmlFileStorageTest() {
-        super(new FileStorage(new File(STORAGE_DIR), new XmlStreamStorage()));
+        super(new FileStorage(STORAGE_DIR, new XmlStreamSerializer()));
     }
 
 }

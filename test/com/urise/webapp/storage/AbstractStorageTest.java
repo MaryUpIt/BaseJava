@@ -4,11 +4,13 @@ import com.urise.webapp.exceptions.ExistStorageException;
 import com.urise.webapp.exceptions.NotExistStorageException;
 import com.urise.webapp.exceptions.StorageException;
 import com.urise.webapp.model.*;
+import com.urise.webapp.util.Config;
 import com.urise.webapp.util.DateUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
@@ -20,7 +22,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public abstract class AbstractStorageTest {
 
-    protected static final String STORAGE_DIR = "C:\\Users\\Mary\\Desktop\\basejava\\resumes";
+    protected static final File STORAGE_DIR = Config.getInstance().getStorageDir();
+            //new File("./resumes");
+        //Config.getInstance().getStorageDir();
+            //new File("C:/Users/Mary/Desktop/basejava/resumes");
+        //
+           // "C:/Users/Mary/Desktop/basejava/resumes";
     final Storage storage;
     private Resume RESUME_1 = createResume("Anna");
     private Resume RESUME_2 = createResume("Mariya");

@@ -2,7 +2,7 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.exceptions.StorageException;
 import com.urise.webapp.model.Resume;
-import com.urise.webapp.storage.strategy.StreamStorage;
+import com.urise.webapp.storage.serializers.StreamSerializer;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -11,11 +11,11 @@ import java.util.Objects;
 
 public class FileStorage extends AbstractStorage<File> {
     private final File directory;
-    private final StreamStorage streamStorage;
+    private final StreamSerializer serializer;
 
-    protected FileStorage(File directory, StreamStorage streamStorage) {
+    protected FileStorage(File directory, StreamSerializer streamStorage) {
         Objects.requireNonNull(directory, " directory must not be null");
-        this.streamStorage = streamStorage;
+        this.serializer = streamStorage;
         if (!directory.isDirectory()) {
             throw new IllegalArgumentException(directory.getAbsolutePath() + " isn't directory");
         }
@@ -39,7 +39,7 @@ public class FileStorage extends AbstractStorage<File> {
     @Override
     protected void doUpdate(File file, Resume resume) {
         try {
-            streamStorage.doWrite(resume, new BufferedOutputStream(new FileOutputStream(file)));
+            serializer.doWrite(resume, new BufferedOutputStream(new FileOutputStream(file)));
         } catch (IOException e) {
             throw new StorageException("IO error: ", file.getName(), e);
         }
@@ -55,7 +55,7 @@ public class FileStorage extends AbstractStorage<File> {
     @Override
     protected Resume doGet(File file) {
         try {
-            return streamStorage.doRead(new BufferedInputStream(new FileInputStream(file)));
+            return serializer.doRead(new BufferedInputStream(new FileInputStream(file)));
         } catch (IOException e) {
             throw new StorageException("IO error: ", file.getName(), e);
         }

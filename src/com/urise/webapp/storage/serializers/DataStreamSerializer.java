@@ -1,4 +1,4 @@
-package com.urise.webapp.storage.strategy;
+package com.urise.webapp.storage.serializers;
 
 import com.urise.webapp.model.*;
 
@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class DataStreamStorage implements StreamStorage {
+public class DataStreamSerializer implements StreamSerializer {
     @Override
     public void doWrite(Resume resume, OutputStream outputStream) throws IOException {
         try (DataOutputStream output = new DataOutputStream(outputStream)) {
