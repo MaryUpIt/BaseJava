@@ -35,4 +35,5 @@ public class StreamTest {
             throw new IllegalArgumentException("array is empty");
         }
     }
+
 }
