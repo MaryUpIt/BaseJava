@@ -17,7 +17,7 @@ public class SqlStorage implements Storage {
     private static final String URL = Config.getInstance().getUrl();
     private static final String USER = Config.getInstance().getUser();
     private static final String PASSWORD = Config.getInstance().getPassword();
-    public static final Comparator<Resume> NAME_COMPARATOR = Comparator.comparing(Resume::getFullName).thenComparing(Resume::getUuid);
+    private static final Comparator<Resume> NAME_COMPARATOR = Comparator.comparing(Resume::getFullName).thenComparing(Resume::getUuid);
 
     public SqlStorage() {
         this.connectionFactory = () -> DriverManager.getConnection(URL, USER, PASSWORD);
@@ -25,15 +25,13 @@ public class SqlStorage implements Storage {
 
     @Override
     public int size() {
-        //SELECT count(*) FROM jagers;
         try (Connection connection = connectionFactory.getConnection();
-             PreparedStatement prepared = connection.prepareStatement("SELECT *FROM  resume")) {
+             PreparedStatement prepared = connection.prepareStatement("SELECT count(*) size FROM  resume")) {
             ResultSet result = prepared.executeQuery();
-            int count = 0;
-            while (result.next()) {
-                count++;
+            if (!result.next()) {
+                throw new StorageException("Storage is empty");
             }
-            return count;
+            return result.getInt("size");
         } catch (SQLException e) {
             throw new StorageException(e);
         }
@@ -55,7 +53,6 @@ public class SqlStorage implements Storage {
 
     @Override
     public void update(Resume resume) {
-        // UPDATE jagers SET kaijuKill = kaijuKill + 1 WHERE status = 'active';
         get(resume.getUuid());
         try (Connection connection = connectionFactory.getConnection();
              PreparedStatement prepared = connection.prepareStatement("UPDATE resume  SET full_name= ? WHERE uuid=?")) {
@@ -121,4 +118,5 @@ public class SqlStorage implements Storage {
             throw new StorageException(e);
         }
     }
+
 }

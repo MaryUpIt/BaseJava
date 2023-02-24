@@ -31,14 +31,10 @@ public abstract class AbstractStorageTest {
     private Resume RESUME_2 = new Resume("Mariya");
     //createResume("Mariya");
 
-
     private Resume RESUME_3 = new Resume("Dmitriy");
             //createResume("Dmitriy");
     private Resume RESUME_4 = new Resume("Fedor");
                     //createResume("Fedor");
-
-
-
 
     protected AbstractStorageTest(Storage storage) {
         this.storage = storage;
@@ -51,7 +47,6 @@ public abstract class AbstractStorageTest {
         storage.save(RESUME_2);
         storage.save(RESUME_3);
     }
-
 
     @Test
     public void size() {
