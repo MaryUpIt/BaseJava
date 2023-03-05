@@ -1,0 +1,29 @@
+
+   index.html::
+   <!DOCTYPE html>
+   <html>
+   <head>
+       <meta charset="UTF-8">
+       <title>Практика Java. Разработка Web приложения.</title>
+   </head>
+   <body>
+   <h2>Приложение вебинара <a href="http://javawebinar.ru/basejava/" target="_blank">Практика Java. Разработка Web
+       приложения."</a></h2>
+   </body>
+   </html>
+
+   web::
+    <servlet>
+        <servlet-name>resumeServlet</servlet-name>
+        <servlet-class>com.urise.webapp.web.ResumeServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>resumeServlet</servlet-name>
+        <url-pattern>/resume</url-pattern>
+    </servlet-mapping>
+
+      @Override
+        protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+            String name = request.getParameter("name");
+            response.getWriter().write(name == null ? "Hello resumes!" : "Hello " + name);
+        }
