@@ -23,7 +23,6 @@ import static org.junit.jupiter.api.Assertions.*;
 public abstract class AbstractStorageTest {
 
     protected static final File STORAGE_DIR = Config.getInstance().getStorageDir();
-            //new File("./resumes");
 
     final Storage storage;
     private Resume RESUME_1 = createResume("Anna");

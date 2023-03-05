@@ -1,5 +1,8 @@
 package com.urise.webapp.util;
 
+import com.urise.webapp.storage.SqlStorage;
+import com.urise.webapp.storage.Storage;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -15,6 +18,7 @@ public class Config {
     private String url;
     private String user;
     private String password;
+    private Storage storage;
 
     public static Config getInstance() {
         return INSTANCE;
@@ -27,6 +31,7 @@ public class Config {
             url = properties.getProperty("db.url");
             user = properties.getProperty("db.user");
             password = properties.getProperty("db.password");
+            storage = new SqlStorage(url,user,password);
 
         } catch (IOException e) {
             throw new IllegalStateException("Invalid config file " + PROPERTIES.getAbsolutePath());
@@ -49,4 +54,7 @@ public class Config {
         return password;
     }
 
+    public Storage getStorage() {
+        return storage;
+    }
 }
