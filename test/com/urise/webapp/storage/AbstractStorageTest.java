@@ -3,7 +3,9 @@ package com.urise.webapp.storage;
 import com.urise.webapp.exceptions.ExistStorageException;
 import com.urise.webapp.exceptions.NotExistStorageException;
 import com.urise.webapp.exceptions.StorageException;
+import com.urise.webapp.model.ListSection;
 import com.urise.webapp.model.Resume;
+import com.urise.webapp.model.TextSection;
 import com.urise.webapp.util.Config;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,6 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.urise.webapp.model.ContactType.*;
+import static com.urise.webapp.model.SectionType.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -152,10 +155,10 @@ public abstract class AbstractStorageTest {
         resume.addContact(HOMEPAGE, String.format("www.%s.com", fullName));
         resume.addContact(STACKOVERFLOW, "stackoverflow/" + fullName);
 
-//        resume.addSection(PERSONAL, new TextSection("personal characteristics"));
-//        resume.addSection(OBJECTIVE, new TextSection("position"));
-//        resume.addSection(QUALIFICATIONS, new ListSection("Languages skills", "Frameworks skills", "DB skills"));
-//        resume.addSection(ACHIEVEMENT, new ListSection("achievement 1", "achievement 2"));
+        resume.addSection(PERSONAL, new TextSection("personal characteristics"));
+        resume.addSection(OBJECTIVE, new TextSection("position"));
+        resume.addSection(QUALIFICATIONS, new ListSection("Languages skills", "Frameworks skills", "DB skills"));
+        resume.addSection(ACHIEVEMENT, new ListSection("achievement 1", "achievement 2"));
 //        resume.addSection(EDUCATION, new OrganizationSection(
 //                new Organization("University", "www.university.com",
 //                        new Organization.Period("specialist", null,
