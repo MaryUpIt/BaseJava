@@ -17,7 +17,7 @@ public class StreamTest {
         }
         List<Integer> integers = Arrays.stream(array).boxed().toList();
         System.out.println(oddOrEven(integers));
-        System.out.println(oddOrEven(List.of(1,2,3,4,4,5,5,6,6,32)));
+        System.out.println(oddOrEven(List.of(1, 2, 3, 4, 4, 5, 5, 6, 6, 32)));
     }
 
     private static List<Integer> oddOrEven(List<Integer> integers) {
@@ -35,5 +35,4 @@ public class StreamTest {
             throw new IllegalArgumentException("array is empty");
         }
     }
-
 }
