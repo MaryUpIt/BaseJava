@@ -4,15 +4,14 @@ import com.urise.webapp.exceptions.StorageException;
 import com.urise.webapp.util.ExceptionUtil;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class SqlExecutor {
     public final ConnectionFactory connectionFactory;
 
-    public SqlExecutor(String url, String user, String password) {
-        this.connectionFactory = () -> DriverManager.getConnection(url, user, password);
+    public SqlExecutor(ConnectionFactory connectionFactory) {
+        this.connectionFactory = connectionFactory;
     }
 
     public <T> T execute(String sqlQuery, SQLStatementFunction<T> function) {
