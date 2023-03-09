@@ -1,14 +1,12 @@
 package com.urise.webapp.sql;
 
-import com.urise.webapp.exceptions.ExistStorageException;
 import com.urise.webapp.exceptions.StorageException;
+import com.urise.webapp.util.ExceptionUtil;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-
-import static com.urise.webapp.util.ExceptionUtil.checkExistence;
 
 public class SqlExecutor {
     public final ConnectionFactory connectionFactory;
@@ -23,14 +21,31 @@ public class SqlExecutor {
 
             return function.executeSQL(statement);
         } catch (SQLException e) {
-            if (checkExistence(e)) {
-                throw new ExistStorageException(null);
+
+            throw ExceptionUtil.convertExceptions(e);
+        }
+    }
+    public <T> T transactionalExecute(SqlTransaction<T> transaction) {
+        try (Connection connection = connectionFactory.getConnection()) {
+            try {
+                connection.setAutoCommit(false);
+                T resource = transaction.execute(connection);
+                connection.commit();
+                return resource;
+            } catch (SQLException e) {
+                connection.rollback();
+                throw ExceptionUtil.convertExceptions(e);
             }
-            throw new StorageException(e.getMessage());
+        } catch (SQLException e) {
+            throw new StorageException(e);
         }
     }
 
     public interface SQLStatementFunction<T> {
         T executeSQL(PreparedStatement statement) throws SQLException;
+    }
+
+    public interface SqlTransaction<T> {
+        T execute(Connection connection) throws SQLException;
     }
 }
