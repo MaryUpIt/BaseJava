@@ -150,6 +150,7 @@ public class SqlStorage implements Storage {
         }
     }
 
+
     private void deleteContent(String uuid, String tableName)  {
         sqlExecutor.execute("DELETE FROM " + tableName + " t WHERE t.resume_uuid =?", statement -> {
             statement.setString(1, uuid);

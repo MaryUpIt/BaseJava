@@ -1,15 +1,15 @@
-DROP TABLE contacts;
-DROP TABLE sections;
-DROP TABLE resumes;
+-- DROP TABLE contacts;
+-- DROP TABLE sections;
+-- DROP TABLE resumes;
 --CREATE RESUME
-CREATE TABLE resumes
+CREATE TABLE IF NOT EXISTS resumes
 (
     uuid      CHAR(36) PRIMARY KEY NOT NULL,
     full_name TEXT                 NOT NULL
 
 );
 --CREATE CONTACTS
-CREATE TABLE contacts
+CREATE TABLE IF NOT EXISTS contacts
 (
     id          SERIAL PRIMARY KEY,
     type        TEXT     NOT NULL,
@@ -21,7 +21,7 @@ CREATE TABLE contacts
 );
 
 
-CREATE TABLE sections
+CREATE TABLE IF NOT EXISTS sections
 (
     id          SERIAL PRIMARY KEY,
     type        TEXT     NOT NULL,
