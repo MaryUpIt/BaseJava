@@ -25,8 +25,7 @@ CREATE TABLE sections
 (
     id          SERIAL PRIMARY KEY,
     type        TEXT     NOT NULL,
-    --value
-
+    value       TEXT     NOT NULL,
     resume_uuid CHAR(36) NOT NULL
         CONSTRAINT contacts_resume_uuid_fk
             REFERENCES resumes ON UPDATE RESTRICT ON DELETE CASCADE
