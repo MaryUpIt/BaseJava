@@ -3,6 +3,7 @@ package com.urise.webapp.storage;
 import com.urise.webapp.exceptions.NotExistStorageException;
 import com.urise.webapp.model.*;
 import com.urise.webapp.sql.SqlExecutor;
+import com.urise.webapp.util.JsonParser;
 
 import java.sql.*;
 import java.util.*;
@@ -52,9 +53,9 @@ public class SqlStorage implements Storage {
                     throw new NotExistStorageException(uuid);
                 }
             }
-            deleteContent(uuid, "contacts");
+            deleteContent(connection, uuid, "contacts");
             insertContacts(connection, resume);
-            deleteContent(uuid, "sections");
+            deleteContent(connection, uuid, "sections");
             insertSections(connection, resume);
             return null;
         });
@@ -128,22 +129,24 @@ public class SqlStorage implements Storage {
         try (PreparedStatement statement = connection.prepareStatement("INSERT INTO  sections (type, value, resume_uuid) VALUES (?,?,?)")) {
             for (Map.Entry<SectionType, AbstractSection> entry : resume.getSections().entrySet()) {
                 SectionType type = entry.getKey();
+                AbstractSection section = entry.getValue();
                 statement.setString(1, type.name());
+                statement.setString(2, JsonParser.write(section, AbstractSection.class));
                 statement.setString(3, resume.getUuid());
-                switch (type) {
-                    case PERSONAL, OBJECTIVE -> statement.setString(2, ((TextSection) entry.getValue()).getContent());
-
-                    case ACHIEVEMENT, QUALIFICATIONS -> {
-                        ListSection list = (ListSection) entry.getValue();
-                        String content = "";
-                        for (String text : list.getContent()) {
-                            content += text + "\n";
-                        }
-                        statement.setString(2, content);
-                    }
-                    // case EXPERIENCE, EDUCATION -> {}
-                    default -> throw new IllegalStateException();
-                }
+//                switch (type) {
+//                    case PERSONAL, OBJECTIVE -> statement.setString(2, ((TextSection) entry.getValue()).getContent());
+//
+//                    case ACHIEVEMENT, QUALIFICATIONS -> {
+//                        ListSection list = (ListSection) entry.getValue();
+//                        String content = "";
+//                        for (String text : list.getContent()) {
+//                            content += text + "\n";
+//                        }
+//                        statement.setString(2, content);
+//                    }
+//                    // case EXPERIENCE, EDUCATION -> {}
+//                    default -> throw new IllegalStateException();
+//                }
                 statement.addBatch();
             }
             statement.executeBatch();
@@ -151,13 +154,6 @@ public class SqlStorage implements Storage {
     }
 
 
-    private void deleteContent(String uuid, String tableName)  {
-        sqlExecutor.execute("DELETE FROM " + tableName + " t WHERE t.resume_uuid =?", statement -> {
-            statement.setString(1, uuid);
-            statement.execute();
-            return null;
-        });
-    }
     private void setContacts(Resume resume) {
         sqlExecutor.execute("SELECT * FROM contacts WHERE resume_uuid =?", statement -> {
             statement.setString(1, resume.getUuid());
@@ -177,17 +173,25 @@ public class SqlStorage implements Storage {
             while (result.next()) {
                 SectionType type = SectionType.valueOf(result.getString("type"));
                 String value = result.getString("value");
-                switch (type) {
-                    case PERSONAL, OBJECTIVE -> resume.addSection(type, new TextSection(value));
-
-                    case ACHIEVEMENT, QUALIFICATIONS ->
-                            resume.addSection(type, new ListSection(Arrays.asList(value.split("\\r?\\n"))));
-                    // case EDUCATION, EXPERIENCE -> {}
-                    default -> throw new IllegalStateException();
-                }
+                resume.addSection(type, JsonParser.read(value, AbstractSection.class));
+//                switch (type) {
+//                    case PERSONAL, OBJECTIVE -> resume.addSection(type, new TextSection(value));
+//
+//                    case ACHIEVEMENT, QUALIFICATIONS ->
+//                            resume.addSection(type, new ListSection(Arrays.asList(value.split("\\r?\\n"))));
+//                    // case EDUCATION, EXPERIENCE -> {}
+//                    default -> throw new IllegalStateException();
+//                }
             }
             return null;
         });
+    }
+
+    private void deleteContent(Connection connection, String uuid, String tableName) throws SQLException {
+        try (PreparedStatement statement = connection.prepareStatement("DELETE FROM " + tableName + " t WHERE t.resume_uuid =?")) {
+            statement.setString(1, uuid);
+            statement.execute();
+        }
     }
 
 

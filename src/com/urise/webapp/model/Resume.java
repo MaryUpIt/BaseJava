@@ -68,7 +68,7 @@ public class Resume implements Comparable<Resume>, Serializable {
     public void printResume() {
         System.out.println(uuid + " : " + fullName);
         contacts.forEach((contactType, contact) -> System.out.println(contactType.getTitle() + " : " + contact));
-        sections.forEach(((sectionType, abstractSection) -> System.out.println(sectionType.getTitle() +" : " + abstractSection.toString())));
+        sections.forEach(((sectionType, abstractSection) -> System.out.println(sectionType.getTitle() + " : " + abstractSection.toString())));
 
     }
 
