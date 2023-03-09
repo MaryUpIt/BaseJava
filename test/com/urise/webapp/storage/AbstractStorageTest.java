@@ -155,7 +155,6 @@ public abstract class AbstractStorageTest {
         resume.addSection(QUALIFICATIONS, new ListSection("Languages skills", "Frameworks skills", "DB skills"));
         resume.addSection(ACHIEVEMENT, new ListSection("achievement 1", "achievement 2"));
 
-
 //        resume.addSection(EDUCATION, new OrganizationSection(
 //                new Organization("University", "www.university.com",
 //                        new Organization.Period("specialist", null,

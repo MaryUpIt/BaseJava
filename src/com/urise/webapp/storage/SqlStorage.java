@@ -158,7 +158,6 @@ public class SqlStorage implements Storage {
             return null;
         });
     }
-
     private void setContacts(Resume resume) {
         sqlExecutor.execute("SELECT * FROM contacts WHERE resume_uuid =?", statement -> {
             statement.setString(1, resume.getUuid());
