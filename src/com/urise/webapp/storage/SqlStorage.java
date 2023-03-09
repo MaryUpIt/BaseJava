@@ -18,6 +18,7 @@ public class SqlStorage implements Storage {
         this.sqlExecutor = new SqlExecutor(() -> DriverManager.getConnection(url, user, password));
     }
 
+
     @Override
     public int size() {
         return sqlExecutor.execute("SELECT count(*) size FROM  resumes", statement -> {
@@ -32,13 +33,12 @@ public class SqlStorage implements Storage {
     @Override
     public void save(Resume resume) {
         sqlExecutor.transactionalExecute(connection -> {
-            try (PreparedStatement statement = connection.prepareStatement(
-                    "INSERT INTO  resumes (uuid, full_name)VALUES (?,?)")) {
+            try (PreparedStatement statement = connection.prepareStatement("INSERT INTO  resumes (uuid, full_name)VALUES (?,?)")) {
                 statement.setString(1, resume.getUuid());
                 statement.setString(2, resume.getFullName());
                 statement.execute();
             }
-            insertContacs(connection, resume);
+            insertContacts(connection, resume);
 
             return null;
         });
@@ -46,11 +46,9 @@ public class SqlStorage implements Storage {
 
     @Override
     public void update(Resume resume) {
-
         sqlExecutor.transactionalExecute(connection -> {
             String uuid = resume.getUuid();
-            try (PreparedStatement statement = connection.prepareStatement(
-                    "UPDATE resumes  SET full_name= ? WHERE uuid=?")) {
+            try (PreparedStatement statement = connection.prepareStatement("UPDATE resumes SET full_name= ?  WHERE uuid= ?")) {
                 statement.setString(2, uuid);
                 statement.setString(1, resume.getFullName());
                 if (statement.executeUpdate() == 0) {
@@ -58,7 +56,7 @@ public class SqlStorage implements Storage {
                 }
             }
             deleteContacts(uuid);
-            insertContacs(connection, resume);
+            insertContacts(connection, resume);
             return null;
         });
 
@@ -66,13 +64,23 @@ public class SqlStorage implements Storage {
 
     @Override
     public void delete(String uuid) {
-        sqlExecutor.execute("DELETE FROM resumes r  WHERE r.uuid =?", statement -> {
+        sqlExecutor.execute("DELETE FROM resumes r WHERE r.uuid =?", statement -> {
             statement.setString(1, uuid);
             if (statement.executeUpdate() == 0) {
                 throw new NotExistStorageException(uuid);
             }
             return null;
         });
+//        sqlExecutor.transactionalExecute(connection -> {
+//            try (PreparedStatement statement = connection.prepareStatement("DELETE FROM resumes r WHERE r.uuid =?")) {
+//                statement.setString(1, uuid);
+//                if (statement.executeUpdate() == 0) {
+//                    throw new NotExistStorageException(uuid);
+//                }
+//            }
+//            deleteContacts(uuid);
+//            return null;
+//        });
     }
 
     @Override
@@ -108,9 +116,9 @@ public class SqlStorage implements Storage {
     public List<Resume> getAllSorted() {
         Map<String, Resume> resumes = new LinkedHashMap<>();
         return sqlExecutor.execute("SELECT * FROM resumes " +
-                "LEFT JOIN contacts c " +
-                "ON resumes.uuid = c.resume_uuid  " +
-                "ORDER BY full_name, uuid ", statement -> {
+                                        "LEFT JOIN contacts c " +
+                                        "ON resumes.uuid = c.resume_uuid " +
+                                        "ORDER BY full_name, uuid ", statement -> {
             ResultSet result = statement.executeQuery();
             while (result.next()) {
                 String uuid = result.getString("uuid");
@@ -130,7 +138,7 @@ public class SqlStorage implements Storage {
         });
     }
 
-    private void insertContacs(Connection connection, Resume resume) throws SQLException {
+    private void insertContacts(Connection connection, Resume resume) throws SQLException {
         try (PreparedStatement statement = connection.prepareStatement("INSERT INTO  contacts (type, value, resume_uuid) VALUES (?,?,?)")) {
             for (Map.Entry<ContactType, String> entry : resume.getContacts().entrySet()) {
                 statement.setString(1, entry.getKey().name());
@@ -142,7 +150,7 @@ public class SqlStorage implements Storage {
         }
     }
 
-    private void deleteContacts(String uuid) {
+    private void deleteContacts(String uuid) throws SQLException {
         sqlExecutor.execute("DELETE FROM contacts c WHERE c.resume_uuid =?", statement -> {
             statement.setString(1, uuid);
             return null;

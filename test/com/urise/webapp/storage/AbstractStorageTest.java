@@ -23,15 +23,11 @@ public abstract class AbstractStorageTest {
             //new File("./resumes");
 
     final Storage storage;
-    private Resume RESUME_1 = new Resume("Anna");
-            //createResume("Anna");
-    private Resume RESUME_2 = new Resume("Mariya");
-    //createResume("Mariya");
+    private Resume RESUME_1 = createResume("Anna");
+    private Resume RESUME_2 = createResume("Mariya");
 
-    private Resume RESUME_3 = new Resume("Dmitriy");
-            //createResume("Dmitriy");
-    private Resume RESUME_4 = new Resume("Fedor");
-                    //createResume("Fedor");
+    private Resume RESUME_3 = createResume("Dmitriy");
+    private Resume RESUME_4 = createResume("Fedor");
 
     protected AbstractStorageTest(Storage storage) {
         this.storage = storage;
@@ -67,13 +63,10 @@ public abstract class AbstractStorageTest {
     @Test
     public void update() {
         String uuid = RESUME_1.getUuid();
-        Resume resume = new Resume(uuid, "Ignat");
-      //  Resume resume = createResume(uuid, "Ignat");
+        Resume resume =  createResume(uuid, "Ignat");
         storage.update(resume);
         assertTrue(storage.get(uuid).equals(resume));
         assertNotSame(RESUME_1, storage.get(uuid));
-//        assertFalse(storage.get(uuid).equals(RESUME_1));
-
     }
 
     @Test
@@ -123,9 +116,6 @@ public abstract class AbstractStorageTest {
         List<Resume> list = storage.getAllSorted();
         assertEquals(3, list.size());
         assertEquals(list, Arrays.asList(RESUME_1, RESUME_3, RESUME_2));
-//        assertEquals(RESUME_1, list.get(0));
-//        assertEquals(RESUME_2, list.get(2));
-//        assertEquals(RESUME_3, list.get(1));
     }
 
     private void assertSize(int size) {
