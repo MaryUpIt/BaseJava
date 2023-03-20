@@ -1,6 +1,6 @@
--- DROP TABLE contacts;
--- DROP TABLE sections;
--- DROP TABLE resumes;
+DROP TABLE contacts;
+DROP TABLE sections;
+DROP TABLE resumes;
 --CREATE RESUME
 CREATE TABLE IF NOT EXISTS resumes
 (

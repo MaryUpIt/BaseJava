@@ -15,14 +15,14 @@ public class ResumeTestData {
     public static Resume createResume(String uuid, String fullName) {
         Resume resume = new Resume(uuid, fullName);
         //CONTACTS
-        resume.addContact(PHONE, "+7-926-567-34-74");
-        resume.addContact(GITHUB, "github.com");
-        resume.addContact(LINKEDIN, "@LinkedIn");
-        resume.addContact(EMAIL, "email@gmail.com");
+        resume.setContact(PHONE, "+7-926-567-34-74");
+        resume.setContact(GITHUB, "github.com");
+        resume.setContact(LINKEDIN, "@LinkedIn");
+        resume.setContact(EMAIL, "email@gmail.com");
 
-        resume.addContact(SKYPE, "@skype");
-        resume.addContact(HOMEPAGE, "www.homepage.com");
-        resume.addContact(STACKOVERFLOW, "stackoverflow");
+        resume.setContact(SKYPE, "@skype");
+        resume.setContact(HOMEPAGE, "www.homepage.com");
+        resume.setContact(STACKOVERFLOW, "stackoverflow");
 
         //QUALIFICATIONS
         ListSection skills = new ListSection("Languages: Java, JavaScript, Python, SQL.",
@@ -85,12 +85,12 @@ public class ResumeTestData {
         }};
         OrganizationSection education = new OrganizationSection(new Organization("university", "www.university.com", university));
 
-        resume.addSection(PERSONAL, new TextSection("analytical mindset, logic, creativity, initiative"));
-        resume.addSection(OBJECTIVE, new TextSection("Java Developer"));
-        resume.addSection(ACHIEVEMENT, achievements);
-        resume.addSection(QUALIFICATIONS, skills);
-        resume.addSection(EXPERIENCE, experience);
-        resume.addSection(EDUCATION, education);
+        resume.setSection(PERSONAL, new TextSection("analytical mindset, logic, creativity, initiative"));
+        resume.setSection(OBJECTIVE, new TextSection("Java Developer"));
+        resume.setSection(ACHIEVEMENTS, achievements);
+        resume.setSection(QUALIFICATIONS, skills);
+        resume.setSection(EXPERIENCE, experience);
+        resume.setSection(EDUCATION, education);
 
         return resume;
     }
@@ -107,7 +107,7 @@ public class ResumeTestData {
 
         System.out.println(PERSONAL.getTitle() + " : " + resume.getSection(PERSONAL));
         System.out.println(OBJECTIVE.getTitle() + " : " + resume.getSection(OBJECTIVE));
-        System.out.println(ACHIEVEMENT.getTitle() + "\n" + resume.getSection(ACHIEVEMENT));
+        System.out.println(ACHIEVEMENTS.getTitle() + "\n" + resume.getSection(ACHIEVEMENTS));
         System.out.println(QUALIFICATIONS.getTitle() + "\n" + resume.getSection(QUALIFICATIONS));
         System.out.println(EXPERIENCE.getTitle() + "\n" + resume.getSection(EXPERIENCE));
         System.out.println(EDUCATION.getTitle() + "\n" + resume.getSection(EDUCATION));

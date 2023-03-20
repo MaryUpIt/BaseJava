@@ -165,7 +165,7 @@ public class SqlStorage implements Storage {
             ResultSet result = statement.executeQuery();
             while (result.next()) {
                 ContactType type = ContactType.valueOf(result.getString("type"));
-                resume.addContact(type, result.getString("value"));
+                resume.setContact(type, result.getString("value"));
             }
             return null;
         });
@@ -178,7 +178,7 @@ public class SqlStorage implements Storage {
             while (result.next()) {
                 SectionType type = SectionType.valueOf(result.getString("type"));
                 String value = result.getString("value");
-                resume.addSection(type, JsonParser.read(value, AbstractSection.class));
+                resume.setSection(type, JsonParser.read(value, AbstractSection.class));
 //                switch (type) {
 //                    case PERSONAL, OBJECTIVE -> resume.addSection(type, new TextSection(value));
 //

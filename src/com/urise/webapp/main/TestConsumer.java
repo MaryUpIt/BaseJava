@@ -44,19 +44,19 @@ public class TestConsumer {
             throw new IllegalArgumentException("Error");
         }
 
-        resume.addContact(PHONE, "+7-926-567-34-74");
-        resume.addContact(GITHUB, "github.com/" + fullName);
-        resume.addContact(LINKEDIN, "@LinkedIn/" + fullName);
-        resume.addContact(EMAIL, fullName + "@gmail.com");
-        resume.addContact(SKYPE, fullName + "@skype");
-        resume.addContact(HOMEPAGE, String.format("www.%s.com", fullName));
-        resume.addContact(STACKOVERFLOW, "stackoverflow/" + fullName);
+        resume.setContact(PHONE, "+7-926-567-34-74");
+        resume.setContact(GITHUB, "github.com/" + fullName);
+        resume.setContact(LINKEDIN, "@LinkedIn/" + fullName);
+        resume.setContact(EMAIL, fullName + "@gmail.com");
+        resume.setContact(SKYPE, fullName + "@skype");
+        resume.setContact(HOMEPAGE, String.format("www.%s.com", fullName));
+        resume.setContact(STACKOVERFLOW, "stackoverflow/" + fullName);
 
-        resume.addSection(PERSONAL, new TextSection("personal characteristics"));
-        resume.addSection(OBJECTIVE, new TextSection("position"));
-        resume.addSection(QUALIFICATIONS, new ListSection("Languages skills", "Frameworks skills", "DB skills"));
-        resume.addSection(ACHIEVEMENT, new ListSection("achievement 1", "achievement 2"));
-        resume.addSection(EDUCATION, new OrganizationSection(
+        resume.setSection(PERSONAL, new TextSection("personal characteristics"));
+        resume.setSection(OBJECTIVE, new TextSection("position"));
+        resume.setSection(QUALIFICATIONS, new ListSection("Languages skills", "Frameworks skills", "DB skills"));
+        resume.setSection(ACHIEVEMENTS, new ListSection("achievement 1", "achievement 2"));
+        resume.setSection(EDUCATION, new OrganizationSection(
                 new Organization("University", "www.university.com",
                         new Organization.Period("specialist", "",
                                 DateUtil.of(2012, SEPTEMBER), DateUtil.of(2017, MAY)),
@@ -65,7 +65,7 @@ public class TestConsumer {
                 new Organization("Courses", "www.courses.com",
                         new Organization.Period("qualification", "",
                                 DateUtil.of(2019, APRIL), DateUtil.of(2019, AUGUST)))));
-        resume.addSection(EXPERIENCE, new OrganizationSection(
+        resume.setSection(EXPERIENCE, new OrganizationSection(
                 new Organization("FirstCompany", "www.firstCompany.com",
                         new Organization.Period("junior", "help for production",
                                 DateUtil.of(2019, SEPTEMBER), DateUtil.of(2020, MARCH)),
