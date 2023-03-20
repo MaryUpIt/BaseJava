@@ -1,0 +1,64 @@
+header {
+    background: lightgoldenrodyellow;
+    color: lightsalmon;
+    font-size: 20px;
+    padding: 7px;
+}
+
+section {
+    background: linen;
+    color: tomato;
+
+}
+
+.table {
+    width: 700px;
+    border: 5px solid white;
+    outline: 3px solid lightsalmon;
+    border-collapse: collapse;
+    background: lightgoldenrodyellow;
+}
+
+.table th {
+    padding: 7px;
+    background: gold;
+    text-align: left;
+    font-size: 15px;
+    border: 1px lightsteelblue;
+}
+
+.table td {
+    padding: 7px;
+    font-size: 15px;
+    border-top: 2px solid lightsalmon;
+
+}
+
+
+dl {
+    background: none repeat scroll 0 0 lightgoldenrodyellow;
+    margin: 8px 0;
+    padding: 0;
+}
+
+dt {
+    display: inline-block;
+    width: 170px;
+}
+
+dd {
+    display: inline-block;
+    margin-left: 8px;
+    vertical-align: top;
+    color: dimgrey;
+}
+
+
+footer {
+    background: lightgoldenrodyellow;
+    color: lightsalmon;
+    font-size: 20px;
+    padding: 7px;
+    text-align: justify;
+}
+

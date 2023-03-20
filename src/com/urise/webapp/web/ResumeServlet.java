@@ -1,8 +1,11 @@
 package com.urise.webapp.web;
 
-import com.urise.webapp.model.Resume;
+import com.urise.webapp.exceptions.NotExistStorageException;
+import com.urise.webapp.model.*;
 import com.urise.webapp.storage.Storage;
 import com.urise.webapp.util.Config;
+import com.urise.webapp.util.DateUtil;
+import com.urise.webapp.util.HtmlUtil;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -10,7 +13,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.Writer;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ResumeServlet extends HttpServlet {
 
@@ -26,46 +30,112 @@ public class ResumeServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
-        response.setCharacterEncoding("UTF-8");
-        response.setContentType("text/html; charset=UTF-8");
-        Writer writer = response.getWriter();
-        writer.write(
-                "<html>\n" +
-                        "<head>\n" +
-                        "    <title> DBResumes </title>\n" +
-                        "</head>\n" +
-                        "<body>\n" +
-                        "<header>Application for web-course</a></header>\n" +
-                        "<style>\n" +
-                        "    table, th, td {\n" +
-                        "        border:1px solid black;\n" +
-                        "    }\n" +
-                        "</style>\n" +
-                        "<h1>DateBase Of Resumes</h1>\n" +
-                        "<table style=\"width:90%\">\n" +
-                        "    <tr>\n" +
-                        "        <th> UUID</th>\n" +
-                        "        <th>Full Name</th>\n" +
-                        "    </tr>\n");
-
-        for (Resume resume : storage.getAllSorted()) {
-            writer.write(
-                    "    <tr>\n" +
-                            "        <th> " + resume.getUuid() + "</th>\n" +
-                            "        <th>" + resume.getFullName() + "</th>\n" +
-                            "    </tr>\n");
+        String uuid = request.getParameter("uuid");
+        String action = request.getParameter("action");
+        if (action == null) {
+            request.setAttribute("resumes", storage.getAllSorted());
+            request.getRequestDispatcher("/WEB-INF/jsp/list_resumes.jsp").forward(request, response);
+            return;
         }
+        Resume resume;
+        switch (action) {
+            case "delete" -> {
+                storage.delete(uuid);
+                response.sendRedirect("resume");
+                return;
+            }
+            case "save" -> resume = Resume.EMPTY;
+            case "view" -> resume = storage.get(uuid);
+            case "edit" -> {
+                resume = storage.get(uuid);
+                for (SectionType type : new SectionType[]{SectionType.EDUCATION, SectionType.EXPERIENCE}) {
+                    OrganizationSection resumeOrgSection = (OrganizationSection) resume.getSection(type);
+                    List<Organization> emptyOrganizations = new ArrayList<>();
+                    emptyOrganizations.add(Organization.EMPTY);
+                    if (resumeOrgSection != null) {
+                        for (Organization organization : resumeOrgSection.getContent()) {
+                            organization.addPeriod(Organization.Period.EMPTY);
 
-        writer.write(
-                "  </table>\n" +
-                        "<footer>Practice on Java-education</a></footer>\n" +
-                        "</body>\n" +
-                        "</html>");
+                        }
+                        emptyOrganizations.addAll(resumeOrgSection.getContent());
+                    }
+
+                    resume.setSection(type, new OrganizationSection(emptyOrganizations));
+
+                }
+            }
+            default -> throw new IllegalArgumentException("Action " + action + " is illegal");
+        }
+        request.setAttribute("resume", resume);
+        request.getRequestDispatcher("view".equals(action) ?
+                        "/WEB-INF/jsp/view_resume.jsp" : "/WEB-INF/jsp/edit_resume.jsp").
+                forward(request, response);
+
     }
-
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+        String uuid = request.getParameter("uuid");
+        String fullName = request.getParameter("full_name");
+        Resume resume = new Resume("");
+        boolean isNewResume = false;
+        try {
+            resume = storage.get(uuid);
+        } catch (NotExistStorageException e) {
+            isNewResume = true;
+        }
+        resume.setFullName(fullName);
+        for (ContactType type : ContactType.values()) {
+            String value = request.getParameter(type.name());
+            if (!HtmlUtil.isEmpty(value)) {
+                resume.setContact(type, value);
+            } else {
+                resume.getContacts().remove(type);
+            }
+        }
+        for (SectionType type : SectionType.values()) {
+            String value = request.getParameter(type.name());
+            String[] titles = request.getParameterValues(type.name());
+            if (HtmlUtil.isEmpty(value) && titles.length < 2) {
+                resume.getSections().remove(type);
+                continue;
+            }
+            switch (type) {
+                case OBJECTIVE, PERSONAL -> resume.setSection(type, new TextSection(value));
+                case ACHIEVEMENTS, QUALIFICATIONS -> resume.setSection(type, new ListSection(value.split("\n")));
+                case EDUCATION, EXPERIENCE -> {
+                    List<Organization> organizations = new ArrayList<>();
+                    String[] webSites = request.getParameterValues(type.name() + "url");
+                    for (int i = 0; i < titles.length; i++) {
+                        String title = titles[i];
+                        List<Organization.Period> periods = new ArrayList<>();
+                        if (!HtmlUtil.isEmpty(title)) {
+                            String counter = type.name() + i;
+                            String[] positions = request.getParameterValues(counter + "position");
+                            String[] startDates = request.getParameterValues(counter + "dateFrom");
+                            String[] endDates = request.getParameterValues(counter + "dateTo");
+                            String[] descriptions = request.getParameterValues(counter + "description");
+                            for (int j = 0; j < positions.length; j++) {
+                                String position = positions[j];
+                                if (!HtmlUtil.isEmpty(position)) {
+                                    periods.add(new Organization.Period(position, descriptions[j],
+                                            DateUtil.parse(startDates[j]), DateUtil.parse(endDates[j])));
+                                }
+                            }
+                            organizations.add(new Organization(title, webSites[i], periods));
+                        }
+                    }
+                    resume.setSection(type, new OrganizationSection(organizations));
+                }
+            }
+        }
+        if (isNewResume) {
+            storage.save(resume);
+        } else {
+            storage.update(resume);
+        }
 
+        response.sendRedirect("resume");
     }
 }
