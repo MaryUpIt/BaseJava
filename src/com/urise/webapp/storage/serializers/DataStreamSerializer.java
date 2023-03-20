@@ -25,7 +25,7 @@ public class DataStreamSerializer implements StreamSerializer {
                 AbstractSection section = resume.getSection(sectionType);
                 switch (sectionType) {
                     case PERSONAL, OBJECTIVE -> output.writeUTF(((TextSection) section).getContent());
-                    case ACHIEVEMENT, QUALIFICATIONS ->
+                    case ACHIEVEMENTS, QUALIFICATIONS ->
                             writeCollection(output, ((ListSection) section).getContent(), output::writeUTF);
                     case EDUCATION, EXPERIENCE ->
                             writeCollection(output, ((OrganizationSection) section).getContent(), organization -> {
@@ -49,11 +49,11 @@ public class DataStreamSerializer implements StreamSerializer {
             String uuid = input.readUTF();
             String fullName = input.readUTF();
             Resume resume = new Resume(uuid, fullName);
-            readCollection(input, () -> resume.addContact(ContactType.valueOf(input.readUTF()), input.readUTF()));
+            readCollection(input, () -> resume.setContact(ContactType.valueOf(input.readUTF()), input.readUTF()));
 
             readCollection(input, () -> {
                 SectionType section = SectionType.valueOf(input.readUTF());
-                resume.addSection(section, readSection(input, section));
+                resume.setSection(section, readSection(input, section));
             });
             return resume;
         }
@@ -64,7 +64,7 @@ public class DataStreamSerializer implements StreamSerializer {
             case PERSONAL, OBJECTIVE -> {
                 return new TextSection(input.readUTF());
             }
-            case ACHIEVEMENT, QUALIFICATIONS -> {
+            case ACHIEVEMENTS, QUALIFICATIONS -> {
                 return new ListSection(readList(input, input::readUTF));
             }
             case EDUCATION, EXPERIENCE -> {

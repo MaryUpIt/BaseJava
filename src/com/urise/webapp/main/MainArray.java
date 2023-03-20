@@ -42,7 +42,7 @@ public class MainArray {
                     break;
                 case "update":
                     resume = ARRAY_STORAGE.get(param);
-                    resume.addContact(ContactType.PHONE,"+7-926-547-73-46");
+                    resume.setContact(ContactType.PHONE,"+7-926-547-73-46");
                    // resume.setFullName(params[2]);
                     ARRAY_STORAGE.update(resume);
                     break;

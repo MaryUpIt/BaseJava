@@ -3,10 +3,9 @@ package com.urise.webapp.storage;
 import com.urise.webapp.exceptions.ExistStorageException;
 import com.urise.webapp.exceptions.NotExistStorageException;
 import com.urise.webapp.exceptions.StorageException;
-import com.urise.webapp.model.ListSection;
-import com.urise.webapp.model.Resume;
-import com.urise.webapp.model.TextSection;
+import com.urise.webapp.model.*;
 import com.urise.webapp.util.Config;
+import com.urise.webapp.util.DateUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,6 +16,7 @@ import java.util.List;
 
 import static com.urise.webapp.model.ContactType.*;
 import static com.urise.webapp.model.SectionType.*;
+import static java.time.Month.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -142,37 +142,37 @@ public abstract class AbstractStorageTest {
             throw new IllegalArgumentException();
         }
 
-        resume.addContact(PHONE, "+7-926-567-34-74");
-        resume.addContact(GITHUB, "github.com/" + fullName);
-        resume.addContact(LINKEDIN, "@LinkedIn/" + fullName);
-        resume.addContact(EMAIL, fullName + "@gmail.com");
-        resume.addContact(SKYPE, fullName + "@skype");
-        resume.addContact(HOMEPAGE, String.format("www.%s.com", fullName));
-        resume.addContact(STACKOVERFLOW, "stackoverflow/" + fullName);
+        resume.setContact(PHONE, "+7-926-567-34-74");
+        resume.setContact(GITHUB, "github.com/" + fullName);
+        resume.setContact(LINKEDIN, "@LinkedIn/" + fullName);
+        resume.setContact(EMAIL, fullName + "@gmail.com");
+        resume.setContact(SKYPE, fullName + "@skype");
+        resume.setContact(HOMEPAGE, String.format("www.%s.com", fullName));
+        resume.setContact(STACKOVERFLOW, "stackoverflow/" + fullName);
 
-        resume.addSection(PERSONAL, new TextSection("personal characteristics"));
-        resume.addSection(OBJECTIVE, new TextSection("position"));
-        resume.addSection(QUALIFICATIONS, new ListSection("Languages skills", "Frameworks skills", "DB skills"));
-        resume.addSection(ACHIEVEMENT, new ListSection("achievement 1", "achievement 2"));
+        resume.setSection(PERSONAL, new TextSection("personal characteristics"));
+        resume.setSection(OBJECTIVE, new TextSection("position"));
+        resume.setSection(QUALIFICATIONS, new ListSection("Languages skills", "Frameworks skills", "DB skills"));
+        resume.setSection(ACHIEVEMENTS, new ListSection("achievement 1", "achievement 2"));
 
-//        resume.addSection(EDUCATION, new OrganizationSection(
-//                new Organization("University", "www.university.com",
-//                        new Organization.Period("specialist", null,
-//                                DateUtil.of(2012, SEPTEMBER), DateUtil.of(2017, MAY)),
-//                        new Organization.Period("magistrate", null,
-//                                DateUtil.of(2017, SEPTEMBER), DateUtil.of(2019, MAY))),
-//                new Organization("Courses", "www.courses.com",
-//                        new Organization.Period("qualification", null,
-//                                DateUtil.of(2019, APRIL), DateUtil.of(2019, AUGUST)))));
-//        resume.addSection(EXPERIENCE, new OrganizationSection(
-//                new Organization("FirstCompany", "www.firstCompany.com",
-//                        new Organization.Period("junior", "help for production",
-//                                DateUtil.of(2019, SEPTEMBER), DateUtil.of(2020, MARCH)),
-//                        new Organization.Period("developer", "create programs",
-//                                DateUtil.of(2020, JUNE), DateUtil.of(2021, OCTOBER))),
-//                new Organization("SecondCompany", "www.secondCompany.com",
-//                        new Organization.Period("senior", "education new specialists for company",
-//                                DateUtil.of(2021, NOVEMBER), DateUtil.NOW))));
+        resume.setSection(EDUCATION, new OrganizationSection(
+                new Organization("University", "www.university.com",
+                        new Organization.Period("specialist", null,
+                                DateUtil.of(2012, SEPTEMBER), DateUtil.of(2017, MAY)),
+                        new Organization.Period("magistrate", null,
+                                DateUtil.of(2017, SEPTEMBER), DateUtil.of(2019, MAY))),
+                new Organization("Courses", "www.courses.com",
+                        new Organization.Period("qualification", null,
+                                DateUtil.of(2019, APRIL), DateUtil.of(2019, AUGUST)))));
+        resume.setSection(EXPERIENCE, new OrganizationSection(
+                new Organization("FirstCompany", "www.firstCompany.com",
+                        new Organization.Period("junior", "help for production",
+                                DateUtil.of(2019, SEPTEMBER), DateUtil.of(2020, MARCH)),
+                        new Organization.Period("developer", "create programs",
+                                DateUtil.of(2020, JUNE), DateUtil.of(2021, OCTOBER))),
+                new Organization("SecondCompany", "www.secondCompany.com",
+                        new Organization.Period("senior", "education new specialists for company",
+                                DateUtil.of(2021, NOVEMBER), DateUtil.NOW))));
 
         return resume;
     }
