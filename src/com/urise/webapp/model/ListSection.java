@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class ListSection extends AbstractSection {
+    final public static ListSection EMPTY = new ListSection("");
     private List<String> content; // = new ArrayList<>();
 
     public ListSection() {

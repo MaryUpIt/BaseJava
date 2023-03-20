@@ -8,13 +8,13 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Organization implements Serializable {
+    final public static Organization EMPTY = new Organization("", "", Period.EMPTY);
+    public static final Comparator<Period> PERIOD_COMPARATOR = Comparator.comparing(Period::getDateFrom).thenComparing(Period::getDateTo);
+
     private String title;
     private String website;
     private List<Period> periods;
@@ -30,6 +30,7 @@ public class Organization implements Serializable {
 
     public Organization(String title, String website, List<Period> periods) {
         this(title, website);
+        periods.sort(PERIOD_COMPARATOR);
         this.periods = periods;
     }
 
@@ -83,8 +84,9 @@ public class Organization implements Serializable {
     }
 
     @XmlAccessorType(XmlAccessType.FIELD)
-    public static class Period implements Serializable {
+    public static class Period implements Comparable<Period>, Serializable {
         public static final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM:yyyy");
+        public static final Period EMPTY = new Period();
         private String position;
 
         public String getPosition() {
@@ -145,6 +147,11 @@ public class Organization implements Serializable {
         @Override
         public int hashCode() {
             return Objects.hash(position, responsibilities, dateFrom, dateTo);
+        }
+
+        @Override
+        public int compareTo(Period period) {
+            return dateFrom.compareTo(period.dateFrom);
         }
     }
 }

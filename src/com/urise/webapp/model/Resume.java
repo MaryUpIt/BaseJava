@@ -12,6 +12,15 @@ import java.util.UUID;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Resume implements Comparable<Resume>, Serializable {
+    final public static Resume EMPTY = new Resume();
+    static {
+        EMPTY.setSection(SectionType.OBJECTIVE,  TextSection.EMPTY);
+        EMPTY.setSection(SectionType.PERSONAL,  TextSection.EMPTY);
+        EMPTY.setSection(SectionType.ACHIEVEMENTS,  ListSection.EMPTY);
+        EMPTY.setSection(SectionType.QUALIFICATIONS,  ListSection.EMPTY);
+        EMPTY.setSection(SectionType.EDUCATION,  new OrganizationSection(Organization.EMPTY));
+        EMPTY.setSection(SectionType.EXPERIENCE,  new OrganizationSection(Organization.EMPTY));
+    }
     private static final long serialVersionUID = 1L;
     private String uuid;
     private String fullName;
@@ -37,6 +46,11 @@ public class Resume implements Comparable<Resume>, Serializable {
         return contacts;
     }
 
+    public void setFullName(String fullName) {
+        Objects.requireNonNull(fullName, "fullName must not be null");
+        this.fullName = fullName;
+    }
+
     public Map<SectionType, AbstractSection> getSections() {
         return sections;
     }
@@ -49,7 +63,7 @@ public class Resume implements Comparable<Resume>, Serializable {
         return uuid;
     }
 
-    public void addContact(ContactType contactType, String contact) {
+    public void setContact(ContactType contactType, String contact) {
         contacts.put(contactType, contact);
     }
 
@@ -57,19 +71,12 @@ public class Resume implements Comparable<Resume>, Serializable {
         return contacts.get(contactType);
     }
 
-    public void addSection(SectionType sectionType, AbstractSection section) {
+    public void setSection(SectionType sectionType, AbstractSection section) {
         sections.put(sectionType, section);
     }
 
     public AbstractSection getSection(SectionType sectionType) {
         return sections.get(sectionType);
-    }
-
-    public void printResume() {
-        System.out.println(uuid + " : " + fullName);
-        contacts.forEach((contactType, contact) -> System.out.println(contactType.getTitle() + " : " + contact));
-        sections.forEach(((sectionType, abstractSection) -> System.out.println(sectionType.getTitle() + " : " + abstractSection.toString())));
-
     }
 
     @Override
@@ -98,5 +105,12 @@ public class Resume implements Comparable<Resume>, Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(uuid, fullName, contacts, sections);
+    }
+
+    public void printResume() {
+        System.out.println(uuid + " : " + fullName);
+        contacts.forEach((contactType, contact) -> System.out.println(contactType.getTitle() + " : " + contact));
+        sections.forEach(((sectionType, abstractSection) -> System.out.println(sectionType.getTitle() + " : " + abstractSection.toString())));
+
     }
 }
