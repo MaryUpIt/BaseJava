@@ -29,11 +29,11 @@ public class ResumeServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
+//        request.setCharacterEncoding("UTF-8");
         String uuid = request.getParameter("uuid");
         String action = request.getParameter("action");
         if (action == null) {
-            request.setAttribute("resumes", storage.getAllSorted());
+            request.setAttribute("resume", storage.getAllSorted());
             request.getRequestDispatcher("/WEB-INF/jsp/list_resumes.jsp").forward(request, response);
             return;
         }
@@ -48,20 +48,33 @@ public class ResumeServlet extends HttpServlet {
             case "view" -> resume = storage.get(uuid);
             case "edit" -> {
                 resume = storage.get(uuid);
-                for (SectionType type : new SectionType[]{SectionType.EDUCATION, SectionType.EXPERIENCE}) {
-                    OrganizationSection resumeOrgSection = (OrganizationSection) resume.getSection(type);
-                    List<Organization> emptyOrganizations = new ArrayList<>();
-                    emptyOrganizations.add(Organization.EMPTY);
-                    if (resumeOrgSection != null) {
-                        for (Organization organization : resumeOrgSection.getContent()) {
-                            organization.addPeriod(Organization.Period.EMPTY);
-
+                for (SectionType type : SectionType.values()) {
+                    AbstractSection section = resume.getSection(type);
+                    switch (type) {
+                        case OBJECTIVE, PERSONAL -> {
+                            if (section == null) {
+                                resume.setSection(type, TextSection.EMPTY);
+                            }
                         }
-                        emptyOrganizations.addAll(resumeOrgSection.getContent());
+                        case ACHIEVEMENTS, QUALIFICATIONS -> {
+                            if (section == null) {
+                                resume.setSection(type, ListSection.EMPTY);
+                            }
+                        }
+                        case EXPERIENCE, EDUCATION -> {
+                            OrganizationSection resumeOrgSection = (OrganizationSection) section;
+                            List<Organization> emptyOrganizations = new ArrayList<>();
+                            emptyOrganizations.add(Organization.EMPTY);
+                            if (resumeOrgSection != null) {
+                                for (Organization organization : resumeOrgSection.getContent()) {
+                                    organization.addPeriod(Organization.Period.EMPTY);
+
+                                }
+                                emptyOrganizations.addAll(resumeOrgSection.getContent());
+                            }
+                            resume.setSection(type, new OrganizationSection(emptyOrganizations));
+                        }
                     }
-
-                    resume.setSection(type, new OrganizationSection(emptyOrganizations));
-
                 }
             }
             default -> throw new IllegalArgumentException("Action " + action + " is illegal");
@@ -78,11 +91,13 @@ public class ResumeServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         String uuid = request.getParameter("uuid");
         String fullName = request.getParameter("full_name");
-        Resume resume = new Resume("");
+
+        Resume resume;
         boolean isNewResume = false;
         try {
             resume = storage.get(uuid);
         } catch (NotExistStorageException e) {
+            resume = new Resume(fullName);
             isNewResume = true;
         }
         resume.setFullName(fullName);

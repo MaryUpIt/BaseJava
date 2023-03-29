@@ -17,7 +17,9 @@ public class SqlStorage implements Storage {
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-        this.sqlExecutor = new SqlExecutor(() -> DriverManager.getConnection(url, user, password));
+        this.sqlExecutor = new SqlExecutor(() -> DriverManager.getConnection(
+                url , user, password));
+
     }
 
 

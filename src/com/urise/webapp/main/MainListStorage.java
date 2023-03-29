@@ -7,7 +7,7 @@ public class MainListStorage {
     static final ListStorage LIST_STORAGE = new ListStorage();
 
     public static void main(String[] args) {
-        Resume resume1 = new Resume("uuid1", "Anna");
+        Resume resume1 = new Resume("uuid1", "Анна");
         Resume resume2 = new Resume("uuid2", "Fedor");
         Resume resume3 = new Resume("uuid3", "Boris");
 

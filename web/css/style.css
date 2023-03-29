@@ -31,7 +31,6 @@ section {
     padding: 7px;
     font-size: 15px;
     border-top: 2px solid lightsalmon;
-
 }
 
 
@@ -44,13 +43,16 @@ dl {
 dt {
     display: inline-block;
     width: 170px;
+    font-size: 20px;
 }
 
 dd {
     display: inline-block;
     margin-left: 8px;
-    vertical-align: top;
+    text-align: left;
+    /*vertical-align: top;*/
     color: dimgrey;
+    font-size: 20px;
 }
 
 

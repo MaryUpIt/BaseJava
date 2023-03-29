@@ -27,7 +27,7 @@ public class HtmlUtil {
                 return "type=\"tel\" placeholder=\"+7-111-11-11\" size=\"15\"";
             }
             case HOMEPAGE -> {
-                return "type=\"url\" placeholder=\"siteName.com\" size=\"30\"";
+                return "type=\"url\" placeholder=\"https://siteName.com\" size=\"30\"";
             }
             default -> {
                 return "type=\"text\"placeholder=\"idName\" size=\"30\"";
@@ -38,25 +38,25 @@ public class HtmlUtil {
     public static String contactToHtml(ContactType type, String value) {
         switch (type) {
             case EMAIL -> {
-                return image("email") + link("mailto:", value);
+                return  link("mailto:", value, image("email"));
             }
             case PHONE -> {
-                return image("phone") + link("tel:", value);
+                return  link("tel:", value, image("phone"));
             }
             case SKYPE -> {
-                return image("skype") + link("skype:", value);
+                return  link("skype:", value, image("skype"));
             }
             case HOMEPAGE -> {
-                return image("site") + link("", value);
+                return link("", value, image("site"));
             }
             case GITHUB -> {
-                return image("github") + link("https://github.com/", value);
+                return  link("https://github.com/", value, image("github"));
             }
             case LINKEDIN -> {
-                return  image("linkedIn") + link("https://www.linkedin.com/", value);
+                return  link("https://www.linkedin.com/", value, image("linkedIn") );
             }
             case STACKOVERFLOW -> {
-                return image("sof") + link("https://stackoverflow.com/", value);
+                return link("https://stackoverflow.com/", value, image("sof"));
             }
             default -> {
                 return value;
@@ -66,8 +66,8 @@ public class HtmlUtil {
 
 
 
-    private static String link(String url, String value) {
-        return "<a href=\"" + url + value + "\">" + value + "</a>";
+    private static String link(String url, String value, String image) {
+        return "<a href=\"" + url + value + "\">" + image + "</a>" +value;
     }
 
     private static String image(String img){

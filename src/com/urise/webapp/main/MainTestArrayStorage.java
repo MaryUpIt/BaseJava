@@ -10,7 +10,7 @@ public class MainTestArrayStorage {
     static final ArrayStorage ARRAY_STORAGE = new ArrayStorage();
 
     public static void main(String[] args) {
-        Resume resume1 = new Resume("uuid1", "Anna");
+        Resume resume1 = new Resume("uuid1", "Анна");
         Resume resume2 = new Resume("uuid2", "Fedor");
         Resume resume3 = new Resume("uuid3", "Boris");
 //        System.out.println(resume1.compareTo(resume2));

@@ -1,34 +1,12 @@
-DROP TABLE contacts;
-DROP TABLE sections;
-DROP TABLE resumes;
---CREATE RESUME
-CREATE TABLE IF NOT EXISTS resumes
-(
-    uuid      CHAR(36) PRIMARY KEY NOT NULL,
-    full_name TEXT                 NOT NULL
+CREATE DATABASE db_resumes
+    WITH
+    OWNER = postgres
+    ENCODING = 'UTF8'
+    LC_COLLATE = 'Russian_Russia.1251'
+    LC_CTYPE = 'Russian_Russia.1251'
+    TABLESPACE = pg_default
+    CONNECTION LIMIT = -1
+    IS_TEMPLATE = False;
 
-);
---CREATE CONTACTS
-CREATE TABLE IF NOT EXISTS contacts
-(
-    id          SERIAL PRIMARY KEY,
-    type        TEXT     NOT NULL,
-    value       TEXT     NOT NULL,
-    resume_uuid CHAR(36) NOT NULL
-        CONSTRAINT contacts_resume_uuid_fk
-            REFERENCES resumes ON UPDATE RESTRICT ON DELETE CASCADE
-
-);
-
-
-CREATE TABLE IF NOT EXISTS sections
-(
-    id          SERIAL PRIMARY KEY,
-    type        TEXT     NOT NULL,
-    value       TEXT     NOT NULL,
-    resume_uuid CHAR(36) NOT NULL
-        CONSTRAINT contacts_resume_uuid_fk
-            REFERENCES resumes ON UPDATE RESTRICT ON DELETE CASCADE
-);
-
-
+COMMENT ON DATABASE db_resumes
+    IS 'default administrative connection database';

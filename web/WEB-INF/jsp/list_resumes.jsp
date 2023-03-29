@@ -13,7 +13,7 @@
 
 </head>
 <body>
-<jsp:include page="fragment/header.jsp"/>
+<jsp:include page="fragments/header.jsp"/>
 <section>
     <h1>RESUME'S STORAGE</h1>
     <table class="table">
@@ -24,7 +24,7 @@
             <th></th>
             <th></th>
         </tr>
-        <c:forEach items="${resumes}" var="resume">
+        <c:forEach items="${resume}" var="resume">
             <jsp:useBean id="resume" type="com.urise.webapp.model.Resume"/>
             <tr>
                 <td><a
@@ -39,12 +39,12 @@
         </c:forEach>
         <tr>
             <td colspan="3">
-            <td colspan="2" style="text-align: center;"><a href="resume?uuid=${resume.uuid}&action=save">ADD RESUME</a>
+            <td colspan="2" style="text-align: center;"><a href="resume?action=save">ADD RESUME</a>
             </td>
         </tr>
     </table>
     <button></button>
 </section>
 </body>
-<jsp:include page="fragment/footer.jsp"/>
+<jsp:include page="fragments/footer.jsp"/>
 </html>
