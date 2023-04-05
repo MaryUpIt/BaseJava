@@ -14,29 +14,39 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ResumeServlet extends HttpServlet {
 
+
+
     private Storage storage;
+    private Set<String> themes= new HashSet<>();
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         storage = Config.getInstance().getStorage();
+        for (Themes theme: Themes.values()){
+            themes.add(theme.name());
+        }
     }
 
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        request.setCharacterEncoding("UTF-8");
         String uuid = request.getParameter("uuid");
         String action = request.getParameter("action");
+        request.setAttribute("theme", getTheme(request));
+
         if (action == null) {
             request.setAttribute("resume", storage.getAllSorted());
             request.getRequestDispatcher("/WEB-INF/jsp/list_resumes.jsp").forward(request, response);
             return;
         }
+
         Resume resume;
         switch (action) {
             case "delete" -> {
@@ -44,8 +54,8 @@ public class ResumeServlet extends HttpServlet {
                 response.sendRedirect("resume");
                 return;
             }
-            case "save" -> resume = Resume.EMPTY;
             case "view" -> resume = storage.get(uuid);
+            case "add" -> resume = Resume.EMPTY;
             case "edit" -> {
                 resume = storage.get(uuid);
                 for (SectionType type : SectionType.values()) {
@@ -86,11 +96,17 @@ public class ResumeServlet extends HttpServlet {
 
     }
 
+    private String getTheme(HttpServletRequest request) {
+        String theme = request.getParameter("theme");
+        return themes.contains(theme) ? theme : Themes.light.name();
+    }
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         String uuid = request.getParameter("uuid");
         String fullName = request.getParameter("full_name");
+
 
         Resume resume;
         boolean isNewResume = false;
@@ -150,7 +166,6 @@ public class ResumeServlet extends HttpServlet {
         } else {
             storage.update(resume);
         }
-
         response.sendRedirect("resume");
     }
 }
