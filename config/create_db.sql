@@ -1,3 +1,5 @@
+
+/*C:/Users/Mary/Desktop/basejava/config/create_db.sql*/
 CREATE DATABASE db_resumes
     WITH
     OWNER = postgres
