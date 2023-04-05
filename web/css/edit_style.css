@@ -1,0 +1,66 @@
+.edit-wrapper {
+    font-size: 25px;
+    color: var(--text-color);
+    margin: 3% 25% 3% 25%;
+    display: block;
+}
+
+input, textarea {
+    height: 50px;
+    width: 100%;
+    background: var(--header-background);
+
+    font-size: 25px;
+    text-align: left;
+    color: var(--theme-text);
+
+    border: 0;
+    border-radius: 10px;
+    box-shadow: 0 0 30px 0 var(--placeholder) inset;
+    padding: 0 25px 0 25px;
+    margin: 10px 10px 10px 10px;
+}
+
+input:focus, input:focus-visible,
+textarea:focus, textarea:focus-visible {
+    outline: 3px var(--table-color) !important;
+    background: var(--background-focus) !important;
+    color: var(--text-focus) !important;
+}
+
+input::placeholder, textarea::placeholder {
+    color: var(--placeholder);
+}
+
+.field {
+    padding-top: 25px;
+    text-align: left;
+    height: auto;
+    min-height: 150px;
+}
+
+.field-data {
+    width: 40% !important;
+}
+
+button {
+    width: 440px;
+    height: 80px;
+    background: var(--table-color);
+    margin: 10px 10px;
+
+    border: 0;
+    border-radius: 15px;
+    box-shadow: 0 0 50px 0 var(--button-shadow) inset;
+
+    font-size: 30px;
+    color: var(--table-title);
+}
+
+button:hover {
+    opacity: 0.8;
+    box-shadow: 0 0 50px 0 var(--shadow);
+}
+
+
+

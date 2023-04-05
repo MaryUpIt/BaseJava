@@ -1,0 +1,16 @@
+:root {
+    --background: #FFE4E1;
+    --header-background: #ffdcd1;
+    --theme-text: #fa7341;
+    --link-text: #e74930;
+    --text-color: #fa5947;
+    --table-title: #9d1507;
+    --table-color: #ffd300;
+    --organization-link: #9d1507;
+    --basic: #fff;
+    --shadow: #ec8d7e;
+    --placeholder: #ee8f85;
+    --button-shadow: #f1963a;
+    --background-focus: #ffdcd1;
+    --text-focus: #690e05;
+}

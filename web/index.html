@@ -1,32 +1,43 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+
     <meta charset="UTF-8">
+    <meta http-equiv="refresh" content="0; url=resume"/>
     <link rel="stylesheet" href="css/style.css">
-    <title> DBResumes </title>
+    <link rel="stylesheet" href="css/themes/light.css">
 </head>
+<header>
+    <div class="header">
+        <a class="contact-link" href="resume?theme=${theme==null? 'light' : theme}">
+            <span>Управление списком резюме</span>
+        </a>
+    </div>
+    <form action="option1.php">
+        <p><select size="3" name="hero">
+            <option disabled>Выберите героя</option>
+            <option value="t1" selected>Чебурашка</option>
+            <option value="t2">Крокодил Гена</option>
+            <option value="t3">Шапокляк</option>
+            <option value="t4">Крыса Лариса</option>
+        </select></p>
+        <p><input type="submit" value="Отправить"></p>
+    </form>
+</header>
 <body>
-<header><a>Application for web-course</a></header>
-<section>
-    <h1>DateBase Of Resumes</h1>
-    <h2><a href="http://localhost:8080/project_resumes/resume">view all resumes</a></h2>
-    <table class="table">
-        <tr>
-            <th> UUID</th>
-            <th>Full Name</th>
-        </tr>
-        <tr>
-            <td> cfe4f35c-6f61-4bfb-a316-409848627130</td>
-            <td>Inga Vicktorovna</td>
-        </tr>
-        <tr>
-            <td> 7a2b1c25-2637-499a-8d8e-bb9201909ef4</td>
-            <td> Danila Vissarionovich</td>
-        </tr>
-    </table>
-</section>
-<footer><a>Practice on Java-education</a></footer>
+
+</div>
+<p><a href="resume">Список резюме</a></p>
+
 </body>
+<footer>
+    <div class="footer">
+        Выпускной проект разработка веб-приложения "База данных резюме"
+        <span> Школа <a class="contact-link" href="https://javaops.ru" target="=_blank">JavaOps</a>
+        курс <a class="contact-link" href="https://javaops.ru/reg/basejava">BaseJava</a></span>
+
+    </div>
+</footer>
 </html>
 
 

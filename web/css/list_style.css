@@ -1,0 +1,62 @@
+
+
+.table_resumes {
+    width: 70%;
+    margin: 5% 10% 10% 15%;
+    border: 5px solid var(--basic);
+    border-top: 5px solid var(--basic);
+    border-collapse: collapse;
+    outline: 8px solid var(--table-color);
+    outline-style: double;
+    font-size: 25px;
+    color: var(--text-color);
+    background: var(--basic);
+    box-shadow: 0 0 50px var(--shadow);
+
+}
+
+
+.table_resumes th {
+    padding: 7px;
+    background: var(--table-color);
+    color: var(--table-title);
+    font-weight: bold;
+
+    border: none;
+    text-align: left;
+    border-top: 5px solid var(--basic);
+    border-bottom: 1px solid var(--basic);
+}
+
+.table_resumes td {
+    padding: 10px;
+    border: none;
+    border-top: 1px solid var(--basic);
+    border-bottom: 1px solid var(--basic);
+}
+
+.table_resumes tbody tr:nth-child(even) {
+    height: 80px;
+    background: var(--header-background) !important;
+}
+
+.table_resumes tbody tr:nth-child(odd) {
+    height: 80px;
+    background: var(--background) !important;
+}
+
+.table_resumes th:first-of-type {
+    border-top-left-radius: 30px;
+}
+
+.table_resumes th:last-of-type {
+    border-top-right-radius: 30px;
+}
+
+.table_resumes tr:last-of-type td:first-of-type {
+    border-bottom-left-radius: 30px;
+}
+
+.table_resumes tr:last-of-type td:last-of-type {
+    border-bottom-right-radius: 30px;
+}

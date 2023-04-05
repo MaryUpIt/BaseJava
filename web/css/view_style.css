@@ -1,0 +1,70 @@
+/*.form-wrapper {*/
+
+/*    font-size: 25px;*/
+/*    color: var(--text-color);*/
+/*    margin: 3% 25% 3% 25%;*/
+/*    display: block;*/
+
+/*}*/
+
+.info {
+    text-align: left;
+    color: var(--text-color);
+    font-size: 25px;
+    height: 50px;
+}
+
+.position {
+    height: auto;
+    color: var(--organization-link);
+
+    padding-top: 20px;
+    padding-left: 150px;
+    padding-bottom: 20px;
+
+    text-align: left;
+    font-weight: bold;
+    font-size: 25px;
+}
+
+.descriptions{
+    height: auto;
+    min-height: 60px;
+    color: var(--text-color);
+
+    padding-top: 20px;
+    padding-left: 150px;
+    padding-bottom: 20px;
+
+    text-align: left;
+    font-size: 25px;
+}
+.organization-link {
+    color: var(--organization-link);
+    text-decoration: none;
+    font-weight: bold;
+
+    padding-top: 20px;
+    padding-left: 150px;
+    padding-bottom: 20px;
+}
+.organization-link:hover{
+    text-decoration: underline;
+}
+.experience {
+    font-size: 25px;
+    color: var(--text-color);
+
+
+    padding-top: 20px;
+    padding-left: 15px;
+    padding-bottom: 20px;
+}
+
+.period {
+    width: 250px;
+
+    padding-top: 20px;
+    padding-left: 15px;
+    padding-bottom: 20px;
+}

@@ -1,3 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<header><a href="resume">Resumes Project Management</a></header>
-</hr>
+<div class="header">
+    <a class="link-style" href="resume?theme=${theme==null? 'light' : theme}">
+        <span>Управление списком резюме</span>
+    </a>
+</div>
+

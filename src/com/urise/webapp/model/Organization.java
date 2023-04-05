@@ -93,8 +93,8 @@ public class Organization implements Serializable {
             return position;
         }
 
-        public String getResponsibilities() {
-            return responsibilities;
+        public String getDescription() {
+            return description;
         }
 
         public LocalDate getDateFrom() {
@@ -105,7 +105,7 @@ public class Organization implements Serializable {
             return dateTo;
         }
 
-        private String responsibilities;
+        private String description;
         @XmlJavaTypeAdapter(LocalDateAdapter.class)
         private LocalDate dateFrom;
         @XmlJavaTypeAdapter(LocalDateAdapter.class)
@@ -114,12 +114,12 @@ public class Organization implements Serializable {
         public Period() {
         }
 
-        public Period(String position, String responsibilities, LocalDate dateFrom, LocalDate dateTo) {
+        public Period(String position, String description, LocalDate dateFrom, LocalDate dateTo) {
             Objects.requireNonNull(position, "position must not be null");
             Objects.requireNonNull(dateFrom, "dateFrom must not be null");
             Objects.requireNonNull(dateTo, "dateTo must not be null");
             this.position = position;
-            this.responsibilities = responsibilities == null ? "" : responsibilities;
+            this.description = description == null ? "" : description;
             this.dateFrom = dateFrom;
             this.dateTo = dateTo;
         }
@@ -129,7 +129,7 @@ public class Organization implements Serializable {
         public String toString() {
             StringBuilder descriptions = new StringBuilder("");
             String period = dateFormat.format(dateFrom) + " - " + dateFormat.format(dateTo);
-            descriptions.append(String.format("%s | position:  %s \n %s", period, position, responsibilities));
+            descriptions.append(String.format("%s | position:  %s \n %s", period, position, description));
             return descriptions.toString();
         }
 
@@ -139,14 +139,14 @@ public class Organization implements Serializable {
             if (o == null || getClass() != o.getClass()) return false;
             Period period = (Period) o;
             return position.equals(period.position)
-                    && responsibilities.equals(period.responsibilities)
+                    && description.equals(period.description)
                     && dateFrom.equals(period.dateFrom)
                     && dateTo.equals(period.dateTo);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(position, responsibilities, dateFrom, dateTo);
+            return Objects.hash(position, description, dateFrom, dateTo);
         }
 
         @Override

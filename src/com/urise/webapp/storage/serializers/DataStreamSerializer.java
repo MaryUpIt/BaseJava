@@ -33,7 +33,7 @@ public class DataStreamSerializer implements StreamSerializer {
                                 output.writeUTF(organization.getWebsite());
                                 writeCollection(output, organization.getPeriods(), period -> {
                                     output.writeUTF(period.getPosition());
-                                    output.writeUTF(period.getResponsibilities());
+                                    output.writeUTF(period.getDescription());
                                     output.writeUTF(period.getDateFrom().toString());
                                     output.writeUTF(period.getDateTo().toString());
                                 });
