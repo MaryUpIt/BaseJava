@@ -26,7 +26,7 @@ public abstract class AbstractStorageTest {
             //new File("./resumes");
 
     final Storage storage;
-    private Resume RESUME_1 = createResume("Anna");
+    private Resume RESUME_1 = createResume("Nicki");
     private Resume RESUME_2 = createResume("Mariya");
 
     private Resume RESUME_3 = createResume("Dmitriy");
@@ -118,7 +118,7 @@ public abstract class AbstractStorageTest {
     public void getAllSorted() {
         List<Resume> list = storage.getAllSorted();
         assertEquals(3, list.size());
-        assertEquals(list, Arrays.asList(RESUME_1, RESUME_3, RESUME_2));
+        assertEquals(list, Arrays.asList(RESUME_3, RESUME_2, RESUME_1));
     }
 
     private void assertSize(int size) {
