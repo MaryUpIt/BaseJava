@@ -6,6 +6,7 @@ import com.urise.webapp.model.Organization;
 import java.util.UUID;
 
 public class HtmlUtil {
+
     public static boolean isEmpty(String value) {
         return value == null || value.trim().length() == 0;
     }
@@ -21,42 +22,44 @@ public class HtmlUtil {
     public static String contactPattern(ContactType type) {
         switch (type) {
             case EMAIL -> {
-                return "type=\"email\" placeholder=\"example@gmail.com\" size=\"30\"";
+                return "type=\"email\" placeholder=\"" + type.getTitle() + ": example@gmail.com\" maxlength=\"30\"";
             }
             case PHONE -> {
-                return "type=\"tel\" placeholder=\"+7-111-11-11\" size=\"15\"";
+                String phonePattern ="pattern=\"[0-9]{1,4}-[0-9]{3}-[0-9]{3}-[0-9]{4}\"";
+                return "<type=\"tel\" placeholder=\"" + type.getTitle() + ": 7-900-123-4567\" " +
+                         phonePattern +" maxlength=\"20\"";
             }
             case HOMEPAGE -> {
-                return "type=\"url\" placeholder=\"https://siteName.com\" size=\"30\"";
+                return "type=\"url\" placeholder=\"" + type.getTitle() + ": https://siteName.com\" maxlength=\"30\"";
             }
             default -> {
-                return "type=\"text\"placeholder=\"idName\" size=\"30\"";
+                return "type=\"text\"placeholder=\"" + type.getTitle() + ": idName\" maxlength=\"30\"";
             }
         }
     }
 
-    public static String contactToHtml(ContactType type, String value) {
+    public static String contactToHtml(ContactType type, String value, String theme) {
         switch (type) {
             case EMAIL -> {
-                return  link("mailto:", value, image("email"));
+                return link("mailto:", value, image("email", theme));
             }
             case PHONE -> {
-                return  link("tel:", value, image("phone"));
+                return link("tel:", value, image("phone", theme));
             }
             case SKYPE -> {
-                return  link("skype:", value, image("skype"));
+                return link("skype:", value, image("skype", theme));
             }
             case HOMEPAGE -> {
-                return link("", value, image("site"));
+                return link("", value, image("site", theme));
             }
             case GITHUB -> {
-                return  link("https://github.com/", value, image("github"));
+                return link("https://github.com/", value, image("github", theme));
             }
             case LINKEDIN -> {
-                return  link("https://www.linkedin.com/", value, image("linkedIn") );
+                return link("https://www.linkedin.com/", value, image("linkedIn", theme));
             }
             case STACKOVERFLOW -> {
-                return link("https://stackoverflow.com/", value, image("sof"));
+                return link("https://stackoverflow.com/", value, image("sof", theme));
             }
             default -> {
                 return value;
@@ -65,13 +68,11 @@ public class HtmlUtil {
     }
 
 
-
     private static String link(String url, String value, String image) {
-        return "<a href=\"" + url + value + "\">" + image + "</a>" +value;
+        return "<a class='link-style' href=\"" + url + value + "\">" + image + value + "</a>";
     }
 
-    private static String image(String img){
-        return "<img src=\"image_source/" + img + ".png\" width=\"25px\">";
+    public static String image(String img, String theme) {
+        return "<img class='image' src=\"image_source/" + theme + "/" + img + ".png\"" + "alt=" + img + ">";
     }
-
-}
+    }
