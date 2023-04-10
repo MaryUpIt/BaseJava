@@ -27,7 +27,8 @@
                 <img class="photo" src="image_source/female.png" alt="employee">
             </td>
             <td class="profile-content">
-                <input class="field-profile" type="text" required placeholder="Name Surname" maxlength="50"
+                <input class="field-profile" type="text" required placeholder="Name Surname"
+                       pattern="^[A-Za-zА-Яа-яЁё\s]+$" maxlength="50"
                        name="full_name" size="30" value="${resume.fullName}">
 
                 <c:forEach var="contact" items="<%=ContactType.values()%>">
@@ -62,10 +63,10 @@
                             <c:forEach var="period" items="${organization.periods}">
 
                                 <jsp:useBean id="period" type="com.urise.webapp.model.Organization.Period"/>
-                                <input class="field-data" type="date" min="1940-01-01" max="${DateUtil.NOW}"
+                                <input class="field-data" type="date" min="1960-01-01" max="${DateUtil.NOW}"
                                        name="${type}${counter.index}dateFrom"
                                        value="<%=period.getDateFrom()%>">
-                                <input class="field-data" type="date" min="1940-01-01" max="${DateUtil.NOW}"
+                                <input class="field-data" type="date" min="1960-01-01" max="${DateUtil.NOW}"
                                        name="${type}${counter.index}dateTo"
                                        value="<%=period.getDateTo()%>">
 

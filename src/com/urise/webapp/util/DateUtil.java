@@ -17,8 +17,6 @@ public class DateUtil {
         return HtmlUtil.isEmpty(value) ? NOW : LocalDate.from(DateTimeFormatter.ofPattern("yyyy-MM-dd").parse(value));
     }
 
-
-
     public static String format(LocalDate date) {
         return date == null ? "" : date.format(DATE_TIME_FORMATTER);
     }

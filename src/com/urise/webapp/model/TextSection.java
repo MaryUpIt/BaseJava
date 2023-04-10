@@ -3,6 +3,7 @@ package com.urise.webapp.model;
 import java.util.Objects;
 
 public class TextSection extends AbstractSection {
+
     final public static TextSection EMPTY = new TextSection("");
     private String content;
 

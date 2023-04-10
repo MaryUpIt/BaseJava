@@ -3,8 +3,6 @@ package com.urise.webapp.util;
 import com.urise.webapp.model.ContactType;
 import com.urise.webapp.model.Organization;
 
-import java.util.UUID;
-
 public class HtmlUtil {
 
     public static boolean isEmpty(String value) {
@@ -13,10 +11,6 @@ public class HtmlUtil {
 
     public static String periodToHtml(Organization.Period period) {
         return DateUtil.format(period.getDateFrom()) + " - " + DateUtil.format(period.getDateTo());
-    }
-
-    public static String generateUuid() {
-        return UUID.randomUUID().toString();
     }
 
     public static String contactPattern(ContactType type) {
